@@ -3,9 +3,11 @@
 
 var http = require("http");
 var fs = require("fs");
+var ejs = require("ejs");
 //var sqlite = require("sqlite3").verbose();
 
 db = [];
+var indstr = fs.readFileSync("index.ejs", "utf-8");
 
 // response to http-request
 function on_request(request, response) {
@@ -15,19 +17,19 @@ function on_request(request, response) {
       // send the user index page
       if (request.url == "/") {
          // if the user wants index page
-         fs.readFile("./index.html", null, function(error,data) {
+         fs.readFile("./index.ejs", null, function(error,data) {
             if (error) {
                response.writeHead("404");
                response.write("File not found!")
             } else {
-               response.write(data);
+               response.write(ejs.render(indstr, {"notes":db}));
             }
             response.end();
          })
          } else {
-         response.writeHead("404");
-         response.write("File not found!");
-         response.end();
+            response.writeHead("404");
+            response.write("File not found!");
+            response.end();
       }
    } else if (request.method == "POST") {
       // user posted something, prosess the post request
@@ -42,11 +44,12 @@ function on_request(request, response) {
          if (a[0] == "note") { 
             db.push(a[1]);
          }
+         response.write(ejs.render(indstr, {"notes":db}));
          response.end();
-         // console.log(db)
      });
    }
 }
+
 
 
 http.createServer(on_request).listen(8000);
