@@ -4,10 +4,31 @@
 var http = require("http");
 var fs = require("fs");
 var ejs = require("ejs");
-//var sqlite = require("sqlite3").verbose();
+var sqlite3 = require("sqlite3").verbose();
 
-db = [];
+// load the base-page template to RAM
 var indstr = fs.readFileSync("index.ejs", "utf-8");
+
+// make a database connection
+function connectdb() {
+   return new sqlite3.Database('./db/meerkat.db', (err) => {
+      if (err) {
+         return console.error(err.message);
+      } 
+      console.log("Meerkat database connection initiated.");
+   });
+}
+
+// needs probably event bus
+function get_notes(callback) {
+   var notes = [];
+   let db = connectdb();
+   db.each("SELECT * FROM notes", function (err, row) {
+      notes.push(row.note);
+   }, callback(notes));
+   db.close();
+   return notes;
+}
 
 // response to http-request
 function on_request(request, response) {
@@ -22,9 +43,20 @@ function on_request(request, response) {
                response.writeHead("404");
                response.write("File not found!")
             } else {
-               response.write(ejs.render(indstr, {"notes":db}));
+               // all okay, render page with database stuff               
+               var notes = [];
+               let db = connectdb();
+
+               // find notes, with each do a callback, after query go to another callback
+               db.each("SELECT * FROM notes", function (err, row) {
+                  notes.push(row.note);
+               }, function (err, cntx) {
+                  // here we know query is done
+                  response.write(ejs.render(indstr, {"notes":notes}));
+                  response.end();});
+                  db.close();
             }
-            response.end();
+            //response.end();
          })
          } else {
             response.writeHead("404");
@@ -41,11 +73,23 @@ function on_request(request, response) {
       request.on("end", function(){
          // when transfer has ended, add new note to db
          var a = posted.split("=")
-         if (a[0] == "note") { 
-            db.push(a[1]);
-         }
-         response.write(ejs.render(indstr, {"notes":db}));
-         response.end();
+         if (a[0] == "note") {
+            let db = connectdb();
+            db.run("INSERT INTO notes (note, user) VALUES (?,?)", [a[1], "user1"], (err) => {
+               if (err) {
+                  console.log("something went wrong.");
+               }
+               // duplicate, improve how and when to render site
+               var notes = [];
+               db.each("SELECT * FROM notes", function (err, row) {
+                  notes.push(row.note);
+               }, function (err, cntx) {
+                  // here we know query is done
+                  response.write(ejs.render(indstr, {"notes":notes}));
+                  response.end();});
+                  db.close();
+            });
+         }         
      });
    }
 }
