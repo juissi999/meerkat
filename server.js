@@ -19,16 +19,31 @@ function connectdb() {
    });
 }
 
-// needs probably event bus
-function get_notes(callback) {
-   var notes = [];
-   let db = connectdb();
-   db.each("SELECT * FROM notes", function (err, row) {
-      notes.push(row.note);
-   }, callback(notes));
+function closedb(db) {
    db.close();
-   return notes;
+   console.log("Db connection closed.")
 }
+
+function render_index_page(response, db, username) {
+   var notes = [];
+   // find notes, with each do a callback, after query go to another callback
+   db.each("SELECT * FROM notes WHERE user=?",(username), function (err, row) {
+      notes.push(row.note);
+   }, function (err, cntx) {
+      // here we know query is done, I guess
+      response.write(ejs.render(indstr, {"notes":notes}));
+      response.end();});
+      closedb(db);
+}
+
+function render_404(response) {
+   response.writeHead("404");
+   response.write("File not found!");
+   response.end();
+}
+
+
+var username = "user1"
 
 // response to http-request
 function on_request(request, response) {
@@ -40,28 +55,16 @@ function on_request(request, response) {
          // if the user wants index page
          fs.readFile("./index.ejs", null, function(error,data) {
             if (error) {
-               response.writeHead("404");
-               response.write("File not found!")
+               render_404(response);
             } else {
-               // all okay, render page with database stuff               
-               var notes = [];
+               // all okay, render page with database stuff
                let db = connectdb();
 
-               // find notes, with each do a callback, after query go to another callback
-               db.each("SELECT * FROM notes", function (err, row) {
-                  notes.push(row.note);
-               }, function (err, cntx) {
-                  // here we know query is done
-                  response.write(ejs.render(indstr, {"notes":notes}));
-                  response.end();});
-                  db.close();
+               render_index_page(response, db, username);
             }
-            //response.end();
          })
          } else {
-            response.writeHead("404");
-            response.write("File not found!");
-            response.end();
+            render_404(response);
       }
    } else if (request.method == "POST") {
       // user posted something, prosess the post request
@@ -75,25 +78,17 @@ function on_request(request, response) {
          var a = posted.split("=")
          if (a[0] == "note") {
             let db = connectdb();
-            db.run("INSERT INTO notes (note, user) VALUES (?,?)", [a[1], "user1"], (err) => {
+            db.run("INSERT INTO notes (note, user) VALUES (?,?)", [a[1], username], (err) => {
                if (err) {
                   console.log("something went wrong.");
+                  return;
                }
-               // duplicate, improve how and when to render site
-               var notes = [];
-               db.each("SELECT * FROM notes", function (err, row) {
-                  notes.push(row.note);
-               }, function (err, cntx) {
-                  // here we know query is done
-                  response.write(ejs.render(indstr, {"notes":notes}));
-                  response.end();});
-                  db.close();
+               // when query okay, render page again
+               render_index_page(response, db, username);
             });
          }         
      });
    }
 }
-
-
 
 http.createServer(on_request).listen(8000);

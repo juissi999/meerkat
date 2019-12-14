@@ -8,6 +8,6 @@ A quick animal who probably forgots a lot quickly. Also meerkat resembles the wo
 ### Technologies used
 
 * javascript
-
 * node.js
 * ejs
+* sqlite3
