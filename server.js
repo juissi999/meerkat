@@ -8,16 +8,8 @@ var sqlite3 = require("sqlite3").verbose();
 
 // load the base-page template to RAM
 var indstr = fs.readFileSync("index.ejs", "utf-8");
+var dbname = './db/meerkat.db';
 
-// make a database connection
-function connectdb() {
-   return new sqlite3.Database('./db/meerkat.db', (err) => {
-      if (err) {
-         return console.error(err.message);
-      } 
-      console.log("Meerkat database connection initiated.");
-   });
-}
 
 function closedb(db) {
    db.close();
@@ -26,14 +18,16 @@ function closedb(db) {
 
 function render_index_page(response, db, username) {
    var notes = [];
+   
    // find notes, with each do a callback, after query go to another callback
-   db.each("SELECT * FROM notes WHERE user=?",(username), function (err, row) {
+
+   db.each("SELECT * FROM notes WHERE user=?", (username), function (err, row) {
       notes.push(row.note);
    }, function (err, cntx) {
       // here we know query is done, I guess
       response.write(ejs.render(indstr, {"notes":notes}));
       response.end();});
-      closedb(db);
+   closedb(db);
 }
 
 function render_404(response) {
@@ -58,9 +52,13 @@ function on_request(request, response) {
                render_404(response);
             } else {
                // all okay, render page with database stuff
-               let db = connectdb();
-
-               render_index_page(response, db, username);
+               let db =  new sqlite3.Database('./db/meerkat.db', (err) => {
+                  if (err) {
+                     return console.error(err.message);
+                  }
+                  console.log("Connected to meerkat database.")
+                  render_index_page(response, db, username);
+               });
             }
          })
          } else {
@@ -77,14 +75,20 @@ function on_request(request, response) {
          // when transfer has ended, add new note to db
          var a = posted.split("=")
          if (a[0] == "note") {
-            let db = connectdb();
-            db.run("INSERT INTO notes (note, user) VALUES (?,?)", [a[1], username], (err) => {
+            let db = new sqlite3.Database('./db/meerkat.db', (err) => {
                if (err) {
-                  console.log("something went wrong.");
-                  return;
+                  return console.error(err.message);
                }
-               // when query okay, render page again
-               render_index_page(response, db, username);
+               console.log("Connected to meerkat database.")
+               // make insertion to table
+               db.run("INSERT INTO notes (note, user) VALUES (?,?)", [a[1], username], (err) => {
+                  if (err) {
+                     console.log("something went wrong.");
+                     return;
+                  }
+                  // when query okay, render page again
+                  render_index_page(response, db, username);
+               });
             });
          }         
      });
