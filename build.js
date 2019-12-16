@@ -3,15 +3,16 @@
 
 const sqlite = require("sqlite3").verbose();
 
-let db = new sqlite.Database('./db/meerkat.db', (err) => {
+let db = new sqlite.Database("./db/meerkat.db", (err) => {
    if (err) {
      console.error(err.message);
    } else {
-      console.log('Database created.');
+      console.log("Database created.");
 
       // add tables
-    //  db.run("CREATE TABLE users(user TEXT PRIMARY KEY, password TEXT)", create_table_callback);
+      db.run("CREATE TABLE users(user TEXT PRIMARY KEY, password TEXT)", create_table_callback);
       db.run("CREATE TABLE notes(note TEXT, user TEXT)", create_table_callback);
+      db.run("CREATE TABLE sessions(session_id TEXT, user TEXT)", create_table_callback);
    }
    db.close();
  });

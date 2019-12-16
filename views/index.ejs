@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <title>Meerkat</title>
+
+</head>
+<body>
+   <script>
+      function on_submit() {
+         var x = document.forms["formi"]["note"].value;
+         if (x == "") {
+            alert("A note must have writing.");
+            return false;
+         }
+      }
+   </script>
+
+   <h3>Meerkat</h3>
+   <% if(!loginpage){ %>
+      <form name = "logoutform" action="/" method="POST">
+      Connected as <%- username %>. <input name="logoutbutton" type="submit" value="logout"></input>
+      </form>
+      <br>
+      <form name = "pushform" action="/" onsubmit="return on_submit()" method="POST">
+      <input name="note" type="text" value=""></input> <br>
+      <input id="membutton" type="submit" value="Remember"></input>
+   </form> 
+   <%- notes.join("<br> "); %>
+   <% } else { %>
+   <form name = "loginform" action="/" onsubmit="return on_submit()" method="POST">
+      <input name="username" type="text" value=""></input> <br>
+      <input id="loginbutton" type="submit" value="Login"></input>
+   </form>
+   <% } %>
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+</html>
