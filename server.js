@@ -59,11 +59,7 @@ function add_note(response, username, note) {
    });
 }
 
-function login(response, username) {
-   var session_id = Math.floor(Math.random()*100);
-
-   // put session_id to cookie so that browser remembers that
-   response.writeHead(200, {"Content-Type": "text/html", "Set-Cookie": "session_id=" + session_id});
+function login(response, username, pwd) {
 
    let db = new sqlite3.Database('./db/meerkat.db', (err) => {
       if (err) {
@@ -71,16 +67,35 @@ function login(response, username) {
       }
       console.log("Connected to meerkat database.");
       
-      // insert session id to database
-      db.run("INSERT INTO sessions (session_id, user) VALUES (?,?)", [session_id, username], (err) => {
+      // check if password is correct
+      db.get("SELECT * FROM users WHERE user=? AND password=?", [username, pwd], (err, row) => {
          if (err) {
             console.log("something went wrong.");
             return;
          }
 
-         render_index_page(response, username);
+         if (typeof row === "undefined") {
+            // password/user pair does not return anything - no login
+            // TODO: maybe a better solution?
+            render_login_page(response);
+         } else {
+            // login
+            // put session_id to cookie so that browser remembers that
+            var session_id = Math.floor(Math.random()*100);
+            response.writeHead(200, {"Content-Type": "text/html", "Set-Cookie": "session_id=" + session_id});
+                  // insert session id to database
+            db.run("INSERT INTO sessions (session_id, user) VALUES (?,?)", [session_id, username], (err) => {
+               if (err) {
+                  console.log("something went wrong.");
+                  return;
+               }
+
+               render_index_page(response, username);
+            });
+         }
       });
    });
+   db.close();
 }
 
 function logout(response, session_id) {
@@ -172,21 +187,26 @@ function on_request(request, response) {
          
                request.on("end", function() {
                   // when transfer has ended, add new note to db
-                  var a = posted.split("=")
+                  var a = posted.split("&");
+                  var values = {};
+                  a.forEach(function (value) {
+                     let pair = value.split("=");
+                     values[pair[0]] = pair[1];
+                  });
          
                   if (session_found) {
-                     if (a[0] == "note") {
+                     if ("note" in values) {
                         // note addition
-                        add_note(response, username, a[1]);
+                        add_note(response, username, values["note"]);
                      } else {
                         // logoutform only option left
                         logout(response, session_id);
                      }
                   } else {
                      // no session found
-                     if (a[0] == "username") {
+                     if ("username" in values) {
                         // login, create random session_id
-                        login(response, a[1]);
+                        login(response, values["username"], values["pwd"]);
                      }
                   }
                });
