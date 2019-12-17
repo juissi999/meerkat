@@ -10,7 +10,7 @@
 <body>
    <script>
       function on_submit() {
-         var x = document.forms["formi"]["note"].value;
+         var x = document.forms["pushform"]["note"].value;
          if (x == "") {
             alert("A note must have writing.");
             return false;
@@ -28,7 +28,9 @@
       <input name="note" type="text" value=""></input> <br>
       <input id="membutton" type="submit" value="Remember"></input>
    </form> 
-   <%- notes.join("<br> "); %>
+      <% notes.forEach(function(note) { %>
+         <br><div class="memory"><%-note %></div>
+      <% }); %>
    <% } else { %>
    <form name = "loginform" action="/" onsubmit="return on_submit()" method="POST">
       <input name="username" type="text" value=""></input> <br>
@@ -36,6 +38,7 @@
    </form>
    <% } %>
 </body>
+<link rel="stylesheet" href="css/style.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </html>

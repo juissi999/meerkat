@@ -12,6 +12,14 @@ var index_view = fs.readFileSync(indexfile, "utf-8");
 var dbname = "./db/meerkat.db";
 
 
+function return_css(response) {
+
+   var fileContents = fs.readFileSync('./css/style.css', {encoding: 'utf8'})
+   response.writeHead(200, {'Content-type' : 'text/css'});
+   response.write(fileContents);
+   response.end();
+}
+
 function render_index_page(response, username) {
    var notes = [];
    
@@ -149,7 +157,10 @@ function on_request(request, response) {
                   } else {
                      render_login_page(response);
                   }
-               } else {
+               } else if (request.url === '/css/style.css') {
+                  return_css(response);
+               }
+               else {
                   render_404(response);
                }
             } else if (request.method == "POST") {
@@ -184,6 +195,7 @@ function on_request(request, response) {
 
          });
       });
+      db.close()
    } else {
       render_login_page(response);
       return;
