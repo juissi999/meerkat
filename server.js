@@ -10,7 +10,7 @@ var sqlite3 = require("sqlite3").verbose();
 var indexfile = "views/index.ejs";
 var index_view = fs.readFileSync(indexfile, "utf-8");
 var dbname = "./db/meerkat.db";
-
+var cookie_ttl = 10; // seconds: 60*60*24 is one day
 
 function return_css(response) {
 
@@ -24,7 +24,7 @@ function render_index_page(response, username) {
    var notes = [];
    
    // find notes, with each do a callback, after query go to another callback
-   let db =  new sqlite3.Database('./db/meerkat.db', (err) => {
+   let db =  new sqlite3.Database(dbname, (err) => {
       if (err) {
          return console.error(err.message);
       }
@@ -42,7 +42,7 @@ function render_index_page(response, username) {
 }
 
 function add_note(response, username, note) {
-   let db = new sqlite3.Database('./db/meerkat.db', (err) => {
+   let db = new sqlite3.Database(dbname, (err) => {
       if (err) {
          return console.error(err.message);
       }
@@ -62,7 +62,7 @@ function add_note(response, username, note) {
 function new_user(response, username, pwd) {
    // add a new user to users database
 
-   let db = new sqlite3.Database('./db/meerkat.db', (err) => {
+   let db = new sqlite3.Database(dbname, (err) => {
       if (err) {
          return console.error(err.message);
       }
@@ -81,7 +81,7 @@ function new_user(response, username, pwd) {
 
 function login(response, username, pwd) {
 
-   let db = new sqlite3.Database('./db/meerkat.db', (err) => {
+   let db = new sqlite3.Database(dbname, (err) => {
       if (err) {
          return console.error(err.message);
       }
@@ -101,8 +101,9 @@ function login(response, username, pwd) {
          } else {
             // login
             // put session_id to cookie so that browser remembers that
+            var expiresattrib = new Date(Date.now() + cookie_ttl*1000 );
             var session_id = Math.floor(Math.random()*100);
-            response.writeHead(200, {"Content-Type": "text/html", "Set-Cookie": "session_id=" + session_id});
+            response.writeHead(200, {"Content-Type": "text/html", "Set-Cookie": "session_id=" + session_id + ";expires=" + expiresattrib});
                   // insert session id to database
             db.run("INSERT INTO sessions (session_id, user) VALUES (?,?)", [session_id, username], (err) => {
                if (err) {
@@ -119,7 +120,7 @@ function login(response, username, pwd) {
 }
 
 function logout(response, session_id) {
-   let db = new sqlite3.Database("./db/meerkat.db", (err) => {
+   let db = new sqlite3.Database(dbname, (err) => {
       if (err) {
          return console.error(err.message);
       }
@@ -157,6 +158,45 @@ function parseCookies (request) {
    return list;
 }
 
+function process_post_request(request, response, session_found, session_id, username) {
+   var posted = "";
+   request.on("data", function (chunk) {
+      posted += chunk.toString();
+   });
+
+   request.on("end", function() {
+      // when transfer has ended, add new note to db
+      var a = posted.split("&");
+      var values = {};
+      a.forEach(function (value) {
+         let pair = value.split("=");
+         values[pair[0]] = pair[1];
+      });
+
+      if (session_found) {
+         if ("note" in values) {
+            // note addition
+            add_note(response, username, values["note"]);
+         } else {
+            // logoutform only option left
+            logout(response, session_id);
+         }
+      } else {
+         // no session found
+         if ("username" in values) {
+            if ("newuserbutton" in values) {
+               new_user(response, values["username"], values["pwd"])
+            } else {
+               // login, create random session_id
+               login(response, values["username"], values["pwd"]);
+            }
+         } else {
+            render_login_page(response);
+         }
+      }
+   });
+}
+
 // response to http-request
 function on_request(request, response) {
 
@@ -167,7 +207,12 @@ function on_request(request, response) {
 
    // get cookies and check if user is logged in
    if ("session_id" in cookies) {
+
       var session_id = cookies.session_id;
+      // refresh cookie
+      var expiresattrib = new Date(Date.now() + cookie_ttl*1000 );
+      response.writeHead(200, {"Content-Type": "text/html", "Set-Cookie": "session_id=" + session_id + ";expires=" + expiresattrib});
+
       let db =  new sqlite3.Database('./db/meerkat.db', (err) => {
          if (err) {
             return console.error(err.message);
@@ -200,48 +245,18 @@ function on_request(request, response) {
                }
             } else if (request.method == "POST") {
                // user posted something, prosess the post request
-               var posted = "";
-               request.on("data", function (chunk) {
-                  posted += chunk.toString();
-               });
-         
-               request.on("end", function() {
-                  // when transfer has ended, add new note to db
-                  var a = posted.split("&");
-                  var values = {};
-                  a.forEach(function (value) {
-                     let pair = value.split("=");
-                     values[pair[0]] = pair[1];
-                  });
-
-                  if (session_found) {
-                     if ("note" in values) {
-                        // note addition
-                        add_note(response, username, values["note"]);
-                     } else {
-                        // logoutform only option left
-                        logout(response, session_id);
-                     }
-                  } else {
-                     // no session found
-                     if ("username" in values) {
-                        if ("newuserbutton" in values) {
-                           new_user(response, values["username"], values["pwd"])
-                        } else {
-                           // login, create random session_id
-                           login(response, values["username"], values["pwd"]);
-                        }
-                     }
-                  }
-               });
+               process_post_request(request, response, session_found, session_id, username);
             }
 
          });
       });
       db.close()
    } else {
-      render_login_page(response);
-      return;
+      if (request.method == "POST") {
+         process_post_request(request, response, false, "", "");
+      } else {
+         render_login_page(response);
+      }
    }
 }
 
