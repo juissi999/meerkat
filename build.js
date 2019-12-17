@@ -13,7 +13,6 @@ let db = new sqlite.Database("./db/meerkat.db", (err) => {
       db.run("CREATE TABLE users(user TEXT PRIMARY KEY, password TEXT)", create_table_callback);
       db.run("CREATE TABLE notes(note TEXT, user TEXT)", create_table_callback);
       db.run("CREATE TABLE sessions(session_id TEXT, user TEXT)", create_table_callback);
-      //db.run("INSERT INTO users (user, password) VALUES (\"test\", \"test\")")
    }
    db.close();
  });

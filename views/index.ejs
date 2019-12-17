@@ -26,16 +26,21 @@
       <br>
       <form name = "pushform" action="/" onsubmit="return on_submit()" method="POST">
       <input name="note" type="text" value=""></input> <br>
-      <input id="membutton" type="submit" value="Remember"></input>
+      <input name="membutton" type="submit" value="Remember"></input>
    </form> 
       <% notes.forEach(function(note) { %>
          <br><div class="memory"><%-note %></div>
       <% }); %>
    <% } else { %>
-   <form name = "loginform" action="/" onsubmit="return on_submit()" method="POST">
-      <input name="username" type="text" value=""></input> <br>
-      <input name="pwd" type="password" value=""></input> <br>
-      <input id="loginbutton" type="submit" value="Login"></input>
+   <form name = "loginform" action="/" method="POST">
+      <input name="username" type="text" value=""></input><br>
+      <input name="pwd" type="password" value=""></input><br>
+      <table>
+         <tr>
+            <td><input name="loginbutton" type="submit" value="Login"></input></td>
+            <td><input name="newuserbutton" type="submit" value="New user"></input></td>
+         </tr>
+      </table>
    </form>
    <% } %>
 </body>

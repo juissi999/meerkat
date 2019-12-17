@@ -59,6 +59,26 @@ function add_note(response, username, note) {
    });
 }
 
+function new_user(response, username, pwd) {
+   // add a new user to users database
+
+   let db = new sqlite3.Database('./db/meerkat.db', (err) => {
+      if (err) {
+         return console.error(err.message);
+      }
+      console.log("Connected to meerkat database.");
+      db.run("INSERT INTO users (user, password) VALUES (?,?)", [username, pwd], (err) => {
+         if (err) {
+            console.log("something went wrong. Username probably taken.");
+            render_404(response);
+            return;
+         }
+         render_login_page(response);
+      });
+   });
+   db.close();
+}
+
 function login(response, username, pwd) {
 
    let db = new sqlite3.Database('./db/meerkat.db', (err) => {
@@ -99,7 +119,7 @@ function login(response, username, pwd) {
 }
 
 function logout(response, session_id) {
-   let db = new sqlite3.Database('./db/meerkat.db', (err) => {
+   let db = new sqlite3.Database("./db/meerkat.db", (err) => {
       if (err) {
          return console.error(err.message);
       }
@@ -129,9 +149,9 @@ function parseCookies (request) {
    var list = {},
        rc = request.headers.cookie;
 
-   rc && rc.split(';').forEach(function( cookie ) {
-       var parts = cookie.split('=');
-       list[parts.shift().trim()] = decodeURI(parts.join('='));
+   rc && rc.split(";").forEach(function( cookie ) {
+       var parts = cookie.split("=");
+       list[parts.shift().trim()] = decodeURI(parts.join("="));
    });
 
    return list;
@@ -172,7 +192,7 @@ function on_request(request, response) {
                   } else {
                      render_login_page(response);
                   }
-               } else if (request.url === '/css/style.css') {
+               } else if (request.url === "/css/style.css") {
                   return_css(response);
                }
                else {
@@ -193,7 +213,7 @@ function on_request(request, response) {
                      let pair = value.split("=");
                      values[pair[0]] = pair[1];
                   });
-         
+
                   if (session_found) {
                      if ("note" in values) {
                         // note addition
@@ -205,13 +225,16 @@ function on_request(request, response) {
                   } else {
                      // no session found
                      if ("username" in values) {
-                        // login, create random session_id
-                        login(response, values["username"], values["pwd"]);
+                        if ("newuserbutton" in values) {
+                           new_user(response, values["username"], values["pwd"])
+                        } else {
+                           // login, create random session_id
+                           login(response, values["username"], values["pwd"]);
+                        }
                      }
                   }
                });
             }
-
 
          });
       });
