@@ -29,7 +29,7 @@
       <input name="membutton" type="submit" value="Remember"></input>
    </form> 
       <% notes.forEach(function(note) { %>
-         <br><div class="memory"><%-note %></div>
+         <br><div class="memory"><div class="date"><%- note.date %></div><%- note.text %></div>
       <% }); %>
    <% } else { %>
    <form name = "loginform" action="/" method="POST">

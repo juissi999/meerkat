@@ -10,7 +10,7 @@ var sqlite3 = require("sqlite3").verbose();
 var indexfile = "views/index.ejs";
 var index_view = fs.readFileSync(indexfile, "utf-8");
 var dbname = "./db/meerkat.db";
-var cookie_ttl = 10; // seconds: 60*60*24 is one day
+var cookie_ttl = 60*60; // seconds: 60*60*24 is one day
 
 function return_css(response) {
 
@@ -31,7 +31,7 @@ function render_index_page(response, username) {
       console.log("Connected to meerkat database.")
 
       db.each("SELECT * FROM notes WHERE user=?", (username), function (err, row) {
-         notes.push(row.note);
+         notes.push({"text":row.note, "date":row.posttime});
       }, function (err, cntx) {
          // here we know query is done, I guess
 
@@ -48,7 +48,7 @@ function add_note(response, username, note) {
       }
       console.log("Connected to meerkat database.")
       // make insertion to table
-      db.run("INSERT INTO notes (note, user) VALUES (?,?)", [note, username], (err) => {
+      db.run("INSERT INTO notes (note, user, posttime) VALUES (?,?, datetime('now', 'localtime'))", [note, username], (err) => {
          if (err) {
             console.log("something went wrong.");
             return;
