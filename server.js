@@ -5,6 +5,7 @@ var http = require("http");
 var fs = require("fs");
 var ejs = require("ejs");
 var sqlite3 = require("sqlite3").verbose();
+var qs = require("querystring");
 
 // load the base-page template to RAM
 var indexfile = "views/index.ejs";
@@ -14,8 +15,8 @@ var cookie_ttl = 60*60; // seconds: 60*60*24 is one day
 
 function return_css(response) {
 
-   var fileContents = fs.readFileSync('./css/style.css', {encoding: 'utf8'})
-   response.writeHead(200, {'Content-type' : 'text/css'});
+   var fileContents = fs.readFileSync("./css/style.css", {encoding: "utf8"});
+   response.writeHead(200, {"Content-type" : "text/css"});
    response.write(fileContents);
    response.end();
 }
@@ -28,7 +29,7 @@ function render_index_page(response, username) {
       if (err) {
          return console.error(err.message);
       }
-      console.log("Connected to meerkat database.")
+      console.log("Connected to meerkat database.");
 
       db.each("SELECT * FROM notes WHERE user=? ORDER BY datetime(posttime) DESC", (username), function (err, row) {
          notes.push({"text":row.note, "date":row.posttime});
@@ -46,7 +47,7 @@ function add_note(response, username, note) {
       if (err) {
          return console.error(err.message);
       }
-      console.log("Connected to meerkat database.")
+      console.log("Connected to meerkat database.");
       // make insertion to table
       db.run("INSERT INTO notes (note, user, posttime) VALUES (?,?, datetime('now', 'localtime'))", [note, username], (err) => {
          if (err) {
@@ -166,12 +167,13 @@ function process_post_request(request, response, session_found, session_id, user
 
    request.on("end", function() {
       // when transfer has ended, add new note to db
-      var a = posted.split("&");
-      var values = {};
-      a.forEach(function (value) {
-         let pair = value.split("=");
-         values[pair[0]] = pair[1];
-      });
+      // var a = posted.split("&");
+      // var values = {};
+      // a.forEach(function (value) {
+      //    let pair = value.split("=");
+      //    values[pair[0]] = pair[1];
+      // });
+      var values = qs.parse(posted);
 
       if (session_found) {
          if ("note" in values) {
