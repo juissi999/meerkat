@@ -30,7 +30,7 @@ function render_index_page(response, username) {
       }
       console.log("Connected to meerkat database.")
 
-      db.each("SELECT * FROM notes WHERE user=?", (username), function (err, row) {
+      db.each("SELECT * FROM notes WHERE user=? ORDER BY datetime(posttime) DESC", (username), function (err, row) {
          notes.push({"text":row.note, "date":row.posttime});
       }, function (err, cntx) {
          // here we know query is done, I guess
