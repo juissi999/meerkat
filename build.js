@@ -11,8 +11,9 @@ let db = new sqlite.Database("./db/meerkat.db", (err) => {
 
       // add tables
       db.run("CREATE TABLE users(user TEXT PRIMARY KEY, password TEXT)", create_table_callback);
-      db.run("CREATE TABLE notes(note TEXT, user TEXT, posttime TEXT)", create_table_callback);
+      db.run("CREATE TABLE notes(note TEXT, user TEXT, posttime TEXT, noteid INT PRIMARY KEY)", create_table_callback);
       db.run("CREATE TABLE sessions(session_id TEXT, user TEXT)", create_table_callback);
+      db.run("CREATE TABLE hashtags(noteid INT, hashtag TEXT, PRIMARY KEY (noteid, hashtag))", create_table_callback);
    }
    db.close();
  });

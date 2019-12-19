@@ -42,22 +42,48 @@ function render_index_page(response, username) {
    db.close();
 }
 
-function add_note(response, username, note) {
+function add_note(response, username, note, hashtags) {
    let db = new sqlite3.Database(dbname, (err) => {
       if (err) {
          return console.error(err.message);
       }
       console.log("Connected to meerkat database.");
+      // figure out what to put as unique identifier, decided to put random of very large num
+      let noteid = Math.floor(Math.random()*1000000000);
+      // TODO test that there are no same noteids present (do query and repeat if not going)
+      // cant ask the id from database as during this time someone else could use it
+
       // make insertion to table
-      db.run("INSERT INTO notes (note, user, posttime) VALUES (?,?, datetime('now', 'localtime'))", [note, username], (err) => {
+      db.run("INSERT INTO notes (noteid, note, user, posttime) VALUES (?, ?,?, datetime(\"now\", \"localtime\"))", [noteid, note, username], (err) => {
          if (err) {
             console.log("something went wrong.");
             return;
          }
-         // when query okay, render page again
-         render_index_page(response, username);
+         // add each hashtag
+         if (hashtags.length == 0) {
+            render_index_page(response, username);
+         } else {
+            var queries_left = hashtags.length;
+
+            hashtags.forEach( element => { 
+               db.run("INSERT INTO hashtags (noteid, hashtag) VALUES (?,?)", [noteid, element], (err) => { 
+                  if (err) {
+                     console.log("something went wrong.");
+                     return;
+                  }
+                  queries_left--;
+
+                  if (queries_left == 0) {
+                     // every hashtag was added to database
+                     // when query okay, render page again
+                     render_index_page(response, username);
+                  }
+               });
+            });
+         }
       });
    });
+   db.close();
 }
 
 function new_user(response, username, pwd) {
@@ -132,8 +158,8 @@ function logout(response, session_id) {
          }
          render_login_page(response);
       });
-      db.close();
    });
+   db.close();
 }
  
 function render_login_page(response) {
@@ -159,6 +185,17 @@ function parseCookies (request) {
    return list;
 }
 
+function find_hashtags(notestr) {
+   let hashtags = [];
+
+   notestr.split(" ").forEach( (element) => {
+      if (element[0] == "#") {
+         hashtags.push(element);
+      }
+   });
+   return hashtags;
+}
+
 function process_post_request(request, response, session_found, session_id, username) {
    var posted = "";
    request.on("data", function (chunk) {
@@ -178,7 +215,12 @@ function process_post_request(request, response, session_found, session_id, user
       if (session_found) {
          if ("note" in values) {
             // note addition
-            add_note(response, username, values["note"]);
+            let notestr = values["note"];
+            // find hashtags
+            let hashtags = find_hashtags(notestr);
+
+            // add_note
+            add_note(response, username, notestr, hashtags);
          } else {
             // logoutform only option left
             logout(response, session_id);
