@@ -26,9 +26,14 @@
       <form name = "pushform" action="/" onsubmit="return on_submit()" method="POST">
       <input name="note" type="text" value=""></input> <br>
       <input name="membutton" type="submit" value="Remember"></input>
-   </form> 
-      <% notes.forEach(function(note) { %>
-         <br><div class="memory"><div class="date"><%- note.date %></div><%- note.text %></div>
+   </form>
+   <div class="hashtags_container">
+      <% hashtags.forEach(function(ht) { %>
+         <div class="hashtag"><%- ht %></div>
+      <% }); %>
+   </div>
+   <% notes.forEach(function(note) { %>
+         <div class="memory"><div class="date"><%- note.date %></div><%- note.text %></div><br>
       <% }); %>
    <% } else { %>
    <form name = "loginform" action="/" method="POST">

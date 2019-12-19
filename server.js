@@ -22,7 +22,6 @@ function return_css(response) {
 }
 
 function render_index_page(response, username) {
-   var notes = [];
    
    // find notes, with each do a callback, after query go to another callback
    let db =  new sqlite3.Database(dbname, (err) => {
@@ -31,13 +30,24 @@ function render_index_page(response, username) {
       }
       console.log("Connected to meerkat database.");
 
+      var notes = [];
       db.each("SELECT * FROM notes WHERE user=? ORDER BY datetime(posttime) DESC", (username), function (err, row) {
          notes.push({"text":row.note, "date":row.posttime});
       }, function (err, cntx) {
          // here we know query is done, I guess
-
-         response.write(ejs.render(index_view, {"notes":notes, "loginpage":false, "username":username}));
-         response.end();});
+         // find all hashtags for there posts
+         var hashtags = [];
+      //   db.each("SELECT * FROM hashtags WHERE noteid=(SELECT noteid FROM notes WHERE user=?)", (username), function (err, row) {
+      //   db.each("SELECT noteid FROM notes WHERE user=?", (username), function (err, row) {
+         db.each("SELECT DISTINCT hashtags.hashtag FROM hashtags, notes WHERE notes.user=? and hashtags.noteid=notes.noteid", (username), function (err, row) {
+            hashtags.push(row.hashtag);
+         }, function (err, cntx) {
+            if (err) {
+               console.log(err.message);
+            }
+            response.write(ejs.render(index_view, {"notes":notes, "loginpage":false, "username":username, "hashtags":hashtags}));
+            response.end();});   
+         })
    });
    db.close();
 }
