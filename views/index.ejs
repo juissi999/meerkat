@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+   <link rel="stylesheet" href="css/style.css">
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -28,9 +29,12 @@
       <input name="membutton" type="submit" value="Remember"></input>
    </form>
    <div class="hashtags_container">
-      <% hashtags.forEach(function(ht) { %>
-         <div class="hashtag"><%- ht %></div>
-      <% }); %>
+      <form name = "hashtagsform" action="/" method="POST">
+         <button name="hashtag" value="all" type="submit" class="hashtag">All</button>
+         <% hashtags.forEach(function(ht) { %>
+            <button name="hashtag" value="<%- ht %>" type="submit" class="hashtag"><%- ht %></button>
+         <% }); %>
+      </form>
    </div>
    <% notes.forEach(function(note) { %>
          <div class="memory"><div class="date"><%- note.date %></div><%- note.text %></div><br>
@@ -48,7 +52,6 @@
    </form>
    <% } %>
 </body>
-<link rel="stylesheet" href="css/style.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </html>

@@ -37,8 +37,6 @@ function render_index_page(response, username) {
          // here we know query is done, I guess
          // find all hashtags for there posts
          var hashtags = [];
-      //   db.each("SELECT * FROM hashtags WHERE noteid=(SELECT noteid FROM notes WHERE user=?)", (username), function (err, row) {
-      //   db.each("SELECT noteid FROM notes WHERE user=?", (username), function (err, row) {
          db.each("SELECT DISTINCT hashtags.hashtag FROM hashtags, notes WHERE notes.user=? and hashtags.noteid=notes.noteid", (username), function (err, row) {
             hashtags.push(row.hashtag);
          }, function (err, cntx) {
@@ -47,10 +45,12 @@ function render_index_page(response, username) {
             }
             response.write(ejs.render(index_view, {"notes":notes, "loginpage":false, "username":username, "hashtags":hashtags}));
             response.end();});   
-         })
+      })
    });
    db.close();
 }
+
+
 
 function add_note(response, username, note, hashtags) {
    let db = new sqlite3.Database(dbname, (err) => {
@@ -213,13 +213,6 @@ function process_post_request(request, response, session_found, session_id, user
    });
 
    request.on("end", function() {
-      // when transfer has ended, add new note to db
-      // var a = posted.split("&");
-      // var values = {};
-      // a.forEach(function (value) {
-      //    let pair = value.split("=");
-      //    values[pair[0]] = pair[1];
-      // });
       var values = qs.parse(posted);
 
       if (session_found) {
@@ -231,6 +224,14 @@ function process_post_request(request, response, session_found, session_id, user
 
             // add_note
             add_note(response, username, notestr, hashtags);
+         } else if ("hashtag" in values) {
+            if (values.hashtag == "all") {
+               // render all notes
+               render_index_page(response, username);
+            } else {
+               // user wanted specific hashtags
+               render_index_page(response, username); // , hashtags
+            }
          } else {
             // logoutform only option left
             logout(response, session_id);
