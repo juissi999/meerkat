@@ -30,9 +30,14 @@
    </form>
    <div class="hashtags_container">
       <form name = "hashtagsform" action="/" method="POST">
-         <button name="hashtag" value="all" type="submit" class="hashtag">All</button>
+         <button name="selected_hashtag" value="all" type="submit" class="hashtag">All</button>
          <% hashtags.forEach(function(ht) { %>
-            <button name="hashtag" value="<%- ht %>" type="submit" class="hashtag"><%- ht %></button>
+            <input type="hidden" name="<%- ht.hashtag %>" value=<%- ht.selected%>>
+            <% if(ht.selected == true){ %>
+               <button name="selected_hashtag" value="<%- ht.hashtag %>" type="submit" class="selected"><%- ht.hashtag %></button>
+            <% } else { %>
+               <button name="selected_hashtag" value="<%- ht.hashtag %>" type="submit" class="hashtag"><%- ht.hashtag %></button>
+            <% } %>
          <% }); %>
       </form>
    </div>

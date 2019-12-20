@@ -21,7 +21,7 @@ function return_css(response) {
    response.end();
 }
 
-function render_index_page(response, username) {
+function render_index_page(response, username, selected_hashtags) {
    
    // find notes, with each do a callback, after query go to another callback
    let db =  new sqlite3.Database(dbname, (err) => {
@@ -31,25 +31,59 @@ function render_index_page(response, username) {
       console.log("Connected to meerkat database.");
 
       var notes = [];
-      db.each("SELECT * FROM notes WHERE user=? ORDER BY datetime(posttime) DESC", (username), function (err, row) {
-         notes.push({"text":row.note, "date":row.posttime});
-      }, function (err, cntx) {
-         // here we know query is done, I guess
-         // find all hashtags for there posts
-         var hashtags = [];
-         db.each("SELECT DISTINCT hashtags.hashtag FROM hashtags, notes WHERE notes.user=? and hashtags.noteid=notes.noteid", (username), function (err, row) {
-            hashtags.push(row.hashtag);
+      if (Object.keys(selected_hashtags).length == 0) {
+         // no special hashtags were selected or was selected "all"
+         db.each("SELECT * FROM notes WHERE user=? ORDER BY datetime(posttime) DESC", (username), function (err, row) {
+            notes.push({"text":row.note, "date":row.posttime});
+         }, function (err, cntx) {
+            // here we know query is done, I guess
+            notes_retrieved_callback(response, username, notes, db, selected_hashtags)
+         });
+      } else {
+         // special hashtags are expected
+         // TODO: THIS QUERY AND NOT WORKING YET!
+         let q = "SELECT notes.note FROM notes, hashtags WHERE notes.user=\"" + username + 
+                 "\" AND notes.noteid=hashtags.noteid AND hashtags.hashtag = (\"" +
+                  selected_hashtags.join("\" AND \"") + "\") ORDER BY datetime(posttime) DESC";
+         
+         db.each(q, function (err, row) {
+            notes.push({"text":row.note, "date":row.posttime});
          }, function (err, cntx) {
             if (err) {
-               console.log(err.message);
+               console.log(err.message)
             }
-            response.write(ejs.render(index_view, {"notes":notes, "loginpage":false, "username":username, "hashtags":hashtags}));
-            response.end();});   
-      })
+            // here we know query is done, I guess
+            notes_retrieved_callback(response, username, notes, db, selected_hashtags)
+         })
+      }
    });
    db.close();
 }
 
+
+function notes_retrieved_callback(response, username, notes, db, selected_hashtags) {
+   // find all hashtags for the posts
+   var hashtags = [];
+   db.each("SELECT DISTINCT hashtags.hashtag FROM hashtags, notes WHERE notes.user=? and hashtags.noteid=notes.noteid", (username), function (err, row) {
+      // retrieve all hashtags
+      let ht = {};
+      // can we find the hashtag retrieved from selected hashtags
+      if (selected_hashtags.indexOf(row.hashtag)>=0) {
+         ht["selected"] = true;
+      } else {
+         ht["selected"] = false;
+      }
+      ht["hashtag"] = row.hashtag
+      hashtags.push(ht);
+   }, function (err, cntx) {
+      if (err) {
+         console.log(err.message);
+      }
+
+      response.write(ejs.render(index_view, {"notes":notes, "loginpage":false, "username":username, "hashtags":hashtags}));
+      response.end();
+   });
+}
 
 
 function add_note(response, username, note, hashtags) {
@@ -71,7 +105,7 @@ function add_note(response, username, note, hashtags) {
          }
          // add each hashtag
          if (hashtags.length == 0) {
-            render_index_page(response, username);
+            render_index_page(response, username, []);
          } else {
             var queries_left = hashtags.length;
 
@@ -86,7 +120,7 @@ function add_note(response, username, note, hashtags) {
                   if (queries_left == 0) {
                      // every hashtag was added to database
                      // when query okay, render page again
-                     render_index_page(response, username);
+                     render_index_page(response, username, []);
                   }
                });
             });
@@ -148,7 +182,7 @@ function login(response, username, pwd) {
                   return;
                }
 
-               render_index_page(response, username);
+               render_index_page(response, username, []);
             });
          }
       });
@@ -224,13 +258,33 @@ function process_post_request(request, response, session_found, session_id, user
 
             // add_note
             add_note(response, username, notestr, hashtags);
-         } else if ("hashtag" in values) {
-            if (values.hashtag == "all") {
+         } else if ("selected_hashtag" in values) {
+
+            // retrieve the button that user pressed
+            var pressed = values.selected_hashtag;
+
+            // remove pressed id from valuelist, easier to process
+            delete(values.selected_hashtag);
+
+            if (pressed == "all") {
                // render all notes
-               render_index_page(response, username);
+               render_index_page(response, username, []);
             } else {
-               // user wanted specific hashtags
-               render_index_page(response, username); // , hashtags
+               // user wanted specific hashtags, toggle the pressed value
+               if (values[pressed] == "true") {
+                  values[pressed] = "false";
+               } else {
+                  values[pressed] = "true";
+               }
+               
+               // find hashtags that have true toggled on
+               hts = [];
+               for (key in values) {
+                  if (values[key] == "true") {
+                     hts.push(key);
+                  }
+               }
+               render_index_page(response, username, hts); // , hashtags
             }
          } else {
             // logoutform only option left
@@ -288,7 +342,7 @@ function on_request(request, response) {
                   // if the user wants index page
                   // all okay, render page with database stuff
                   if (session_found) {
-                     render_index_page(response, username);
+                     render_index_page(response, username, []);
                   } else {
                      render_login_page(response);
                   }

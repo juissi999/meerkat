@@ -34,3 +34,12 @@ h3 {
    border-radius: 5px;
    padding: 3px 3px 3px 3px;
 }
+
+.selected {
+   background-color: #E6E6FA;
+   color:#8FBC8F;
+   display: inline-block;
+   border: 1px solid #8FBC8F;
+   border-radius: 5px;
+   padding: 3px 3px 3px 3px;
+}
