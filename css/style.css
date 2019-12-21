@@ -1,3 +1,7 @@
+body {
+   font-family: Arial, Helvetica, sans-serif;
+}
+
 button {
    padding-bottom: 1px;
 }
@@ -12,6 +16,7 @@ h3 {
    margin: 4px 0px 4px 0px;
    border-radius: 5px;
    display: inline-block;
+   font-family: Arial, Helvetica, sans-serif;
 }
 
 .date {
@@ -28,6 +33,7 @@ h3 {
 }
 
 .hashtag {
+   font-size: 17px;
    background-color:#E6E6FA;
    display: inline-block;
    border: 1px solid #E6E6FA;
@@ -36,6 +42,7 @@ h3 {
 }
 
 .selected {
+   font-size: 17px;
    background-color: #ADD8E6;
    display: inline-block;
    border: 1px solid #ADD8E6; 

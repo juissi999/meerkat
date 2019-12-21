@@ -28,7 +28,6 @@ function render_index_page(response, username, selected_hashtags) {
       if (err) {
          return console.error(err.message);
       }
-      console.log("Connected to meerkat database.");
 
       var notes = [];
       if (Object.keys(selected_hashtags).length == 0) {
@@ -68,7 +67,8 @@ function render_index_page(response, username, selected_hashtags) {
 function notes_retrieved_callback(response, username, notes, db, selected_hashtags) {
    // find all hashtags for the posts
    var hashtags = [];
-   db.each("SELECT DISTINCT hashtags.hashtag FROM hashtags, notes WHERE notes.user=? and hashtags.noteid=notes.noteid", (username), function (err, row) {
+   db.each("SELECT DISTINCT hashtags.hashtag FROM hashtags, notes WHERE notes.user=? AND " + 
+           "hashtags.noteid=notes.noteid ORDER BY (hashtags.hashtag) ASC", (username), function (err, row) {
       // retrieve all hashtags
       let ht = {};
       // can we find the hashtag retrieved from selected hashtags
@@ -95,7 +95,6 @@ function add_note(response, username, note, hashtags) {
       if (err) {
          return console.error(err.message);
       }
-      console.log("Connected to meerkat database.");
       // figure out what to put as unique identifier, decided to put random of very large num
       let noteid = Math.floor(Math.random()*1000000000);
       // TODO test that there are no same noteids present (do query and repeat if not going)
@@ -141,7 +140,6 @@ function new_user(response, username, pwd) {
       if (err) {
          return console.error(err.message);
       }
-      console.log("Connected to meerkat database.");
       db.run("INSERT INTO users (user, password) VALUES (?,?)", [username, pwd], (err) => {
          if (err) {
             console.log("something went wrong. Username probably taken.");
@@ -160,7 +158,6 @@ function login(response, username, pwd) {
       if (err) {
          return console.error(err.message);
       }
-      console.log("Connected to meerkat database.");
       
       // check if password is correct
       db.get("SELECT * FROM users WHERE user=? AND password=?", [username, pwd], (err, row) => {
@@ -313,6 +310,7 @@ function process_post_request(request, response, session_found, session_id, user
 // response to http-request
 function on_request(request, response) {
 
+   console.log("Connection from: " + request.connection.remoteAddress)
    response.writeHead(200, {"Content-Type": "text/html"}); // , 'Set-Cookie': 'mycookie=test'
 
    var cookies = parseCookies(request);
