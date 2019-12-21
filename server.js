@@ -41,7 +41,7 @@ function render_index_page(response, username, selected_hashtags) {
       } else {
          // special hashtags are expected
          // construct query
-         let q = "SELECT note FROM notes WHERE user=\"" + username + 
+         let q = "SELECT * FROM notes WHERE user=\"" + username + 
                  "\" AND noteid IN (SELECT noteid FROM hashtags WHERE hashtag=\"" + selected_hashtags[0] + "\")";
 
          for (let i=1;i<selected_hashtags.length;i++) {
