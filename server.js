@@ -41,10 +41,14 @@ function render_index_page(response, username, selected_hashtags) {
          });
       } else {
          // special hashtags are expected
-         // TODO: THIS QUERY AND NOT WORKING YET!
-         let q = "SELECT notes.note FROM notes, hashtags WHERE notes.user=\"" + username + 
-                 "\" AND notes.noteid=hashtags.noteid AND hashtags.hashtag = (\"" +
-                  selected_hashtags.join("\" AND \"") + "\") ORDER BY datetime(posttime) DESC";
+         // construct query
+         let q = "SELECT note FROM notes WHERE user=\"" + username + 
+                 "\" AND noteid IN (SELECT noteid FROM hashtags WHERE hashtag=\"" + selected_hashtags[0] + "\")";
+
+         for (let i=1;i<selected_hashtags.length;i++) {
+            q += " AND noteid IN (SELECT noteid FROM hashtags WHERE hashtag=\"" + selected_hashtags[i] + "\")"
+         }
+         q += " ORDER BY datetime(posttime) DESC";
          
          db.each(q, function (err, row) {
             notes.push({"text":row.note, "date":row.posttime});
