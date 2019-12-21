@@ -1,11 +1,12 @@
 // a node.js webserver without any frameworks
 // run: "node ./server"
 
-var http = require("http");
-var fs = require("fs");
-var ejs = require("ejs");
-var sqlite3 = require("sqlite3").verbose();
-var qs = require("querystring");
+const http = require("http");
+const fs = require("fs");
+const ejs = require("ejs");
+const sqlite3 = require("sqlite3").verbose();
+const qs = require("querystring");
+const crypto = require("crypto");
 
 // load the base-page template to RAM
 var indexfile = "views/index.ejs";
@@ -136,11 +137,14 @@ function add_note(response, username, note, hashtags) {
 function new_user(response, username, pwd) {
    // add a new user to users database
 
+   // hash the password
+   let hashed_pwd = calculate_hash(pwd);
+
    let db = new sqlite3.Database(dbname, (err) => {
       if (err) {
          return console.error(err.message);
       }
-      db.run("INSERT INTO users (user, password) VALUES (?,?)", [username, pwd], (err) => {
+      db.run("INSERT INTO users (user, password) VALUES (?,?)", [username, hashed_pwd], (err) => {
          if (err) {
             console.log("something went wrong. Username probably taken.");
             render_404(response);
@@ -152,6 +156,12 @@ function new_user(response, username, pwd) {
    db.close();
 }
 
+function calculate_hash(plain_pwd) {
+   shasum = crypto.createHash("sha1")
+   shasum.update(plain_pwd);
+   return shasum.digest("hex");
+}
+
 function login(response, username, pwd) {
 
    let db = new sqlite3.Database(dbname, (err) => {
@@ -159,8 +169,11 @@ function login(response, username, pwd) {
          return console.error(err.message);
       }
       
+      // calculate password hash
+      let hashed_pwd = calculate_hash(pwd);
+
       // check if password is correct
-      db.get("SELECT * FROM users WHERE user=? AND password=?", [username, pwd], (err, row) => {
+      db.get("SELECT * FROM users WHERE user=? AND password=?", [username, hashed_pwd], (err, row) => {
          if (err) {
             console.log("something went wrong.");
             return;
@@ -311,7 +324,7 @@ function process_post_request(request, response, session_found, session_id, user
 function on_request(request, response) {
 
    console.log("Connection from: " + request.connection.remoteAddress)
-   response.writeHead(200, {"Content-Type": "text/html"}); // , 'Set-Cookie': 'mycookie=test'
+   response.writeHead(200, {"Content-Type": "text/html"});
 
    var cookies = parseCookies(request);
    var username = "unknown";
