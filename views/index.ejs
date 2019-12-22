@@ -21,6 +21,7 @@
    </script>
 
    <h3>Meerkat</h3>
+   
    <% if(!loginpage){ %>
       <form name = "logoutform" action="/" method="POST">
       Connected as <%- username %>. <input name="logoutbutton" type="submit" value="logout"></input>
@@ -42,20 +43,25 @@
          <% }); %>
       </form>
    </div>
-   <% notes.forEach(function(note) { %>
-         <div class="memory"><div class="date"><%- note.date %></div><%- note.text %></div><br>
-      <% }); %>
-   <% } else { %>
-   <form name = "loginform" action="/" method="POST">
-      <input name="username" type="text" value=""></input><br>
-      <input name="pwd" type="password" value=""></input><br>
-      <table>
-         <tr>
-            <td><input name="loginbutton" type="submit" value="Login"></input></td>
-            <td><input name="newuserbutton" type="submit" value="New user"></input></td>
-         </tr>
-      </table>
-   </form>
-   <% } %>
+
+      <div class="memory_container">
+      <% notes.forEach(function(note) { %>
+         
+            <div class="memory"><div class="date"><%- note.date %></div><%- note.text %></div>
+         <% }); %>
+      </div>
+      <% } else { %>
+      <form name = "loginform" action="/" method="POST">
+         <input name="username" type="text" value=""></input><br>
+         <input name="pwd" type="password" value=""></input><br>
+         <table>
+            <tr>
+               <td><input name="loginbutton" type="submit" value="Login"></input></td>
+               <td><input name="newuserbutton" type="submit" value="New user"></input></td>
+            </tr>
+         </table>
+      </form>
+      <% } %>
+   
 </body>
 </html>

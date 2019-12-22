@@ -12,10 +12,14 @@ h3 {
 }
 
 textarea {
-   font-size: 17px;
    width:100%;
+   font-size: 17px;
    height:70px;
    box-sizing: border-box;
+}
+
+.memory_container {
+   width:100%;
 }
 
 .memory {
@@ -23,7 +27,6 @@ textarea {
    padding: 3px 3px 3px 3px;
    margin: 4px 0px 4px 0px;
    border-radius: 5px;
-   display: inline-block;
    font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -40,27 +43,27 @@ textarea {
    margin: 8px 0px 8px 2px;
 }
 
-.hashtag {
+.hashtag, .selected {
    font-size: 17px;
-   background-color:#E6E6FA;
-   display: inline-block;
-   border: 1px solid #E6E6FA;
    border-radius: 5px;
    padding: 3px 3px 3px 3px;
+   margin: 3px 0px 3px 2px;
+}
+
+.hashtag {
+   background-color:#E6E6FA;
+   border: 1px solid #E6E6FA;
 }
 
 .selected {
-   font-size: 17px;
    background-color: #ADD8E6;
-   display: inline-block;
    border: 1px solid #ADD8E6; 
  /*  border: 1px solid #8FBC8F; */
-   border-radius: 5px;
-   padding: 3px 3px 3px 3px;
 }
 
-@media screen and (min-width:468px) {
-   textarea {
-      width:460px;
+@media screen and (min-width:700px) {
+   /*  min-width:468px */
+   .memory_container, textarea {
+      width:690px;
    }
 }
