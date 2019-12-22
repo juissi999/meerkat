@@ -13,7 +13,7 @@ h3 {
 
 textarea {
    font-size: 17px;
-   width:300px;
+   width:100%;
    height:70px;
    box-sizing: border-box;
 }
@@ -57,4 +57,10 @@ textarea {
  /*  border: 1px solid #8FBC8F; */
    border-radius: 5px;
    padding: 3px 3px 3px 3px;
+}
+
+@media screen and (min-width:468px) {
+   textarea {
+      width:460px;
+   }
 }
