@@ -187,7 +187,7 @@ function login(response, username, pwd) {
             // login
             // put session_id to cookie so that browser remembers that
             var expiresattrib = new Date(Date.now() + cookie_ttl*1000 );
-            var session_id = Math.floor(Math.random()*100);
+            var session_id = Math.floor(Math.random()*1000000000);
             response.writeHead(200, {"Content-Type": "text/html", "Set-Cookie": "session_id=" + session_id + ";expires=" + expiresattrib});
                   // insert session id to database
             db.run("INSERT INTO sessions (session_id, user) VALUES (?,?)", [session_id, username], (err) => {
