@@ -35,7 +35,7 @@
          </form>
       <% } else { %>
          <form name = "logoutform" action="/" method="POST">
-            Connected as <%- username %>. <input name="logoutbutton" type="submit" value="logout"></input>
+            Connected as <%= username %>. <input name="logoutbutton" type="submit" value="logout"></input>
             </form>
             <form name = "pushform" action="/" onsubmit="return on_submit()" method="POST">
             <textarea name="note" value=""></textarea> <br>
@@ -45,11 +45,11 @@
             <form name = "hashtagsform" action="/" method="POST">
                <button name="selected_hashtag" value="all" type="submit" class="hashtag">Show all</button>
                <% hashtags.forEach(function(ht) { %>
-                  <input type="hidden" name="<%- ht.hashtag %>" value=<%- ht.selected%>>
+                  <input type="hidden" name="<%= ht.hashtag %>" value=<%= ht.selected%>>
                   <% if(ht.selected == true){ %>
-                     <button name="selected_hashtag" value="<%- ht.hashtag %>" type="submit" class="selected"><%- ht.hashtag %></button>
+                     <button name="selected_hashtag" value="<%= ht.hashtag %>" type="submit" class="selected"><%= ht.hashtag %></button>
                   <% } else { %>
-                     <button name="selected_hashtag" value="<%- ht.hashtag %>" type="submit" class="hashtag"><%- ht.hashtag %></button>
+                     <button name="selected_hashtag" value="<%= ht.hashtag %>" type="submit" class="hashtag"><%= ht.hashtag %></button>
                   <% } %>
                <% }); %>
             </form>
@@ -57,7 +57,7 @@
             <div class="memory_container">
             <% notes.forEach(function(note) { %>
                
-                  <div class="memory"><div class="date"><%- note.date %></div><%- note.text %></div>
+                  <div class="memory"><div class="date"><%= note.date %></div><%= note.text %></div>
                <% }); %>
             </div>
       <% } %>
