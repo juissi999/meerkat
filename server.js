@@ -14,6 +14,21 @@ var index_view = fs.readFileSync(indexfile, "utf-8");
 var dbname = "./db/meerkat.db";
 var cookie_ttl = 60*60; // seconds: 60*60*24 is one day
 
+var portnum = 80;
+var arguments = process.argv.slice(2);
+
+if (arguments.length > 1) {
+   console.error("Maximum argument count 1: port for server to listen");
+   return;
+} else if (arguments.length == 1 ) {
+   var portnum = Number(arguments[0]);
+   if (isNaN(portnum)) {
+      console.error("Expecting a numerical argument.");
+      return;
+   }
+}
+console.log("Server listening on port " + portnum);
+
 function return_css(response) {
 
    var fileContents = fs.readFileSync("./css/style.css", {encoding: "utf8"});
@@ -384,4 +399,4 @@ function on_request(request, response) {
    }
 }
 
-http.createServer(on_request).listen(8000);
+http.createServer(on_request).listen(portnum);
