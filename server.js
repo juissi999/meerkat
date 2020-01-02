@@ -239,17 +239,23 @@ function parseCookies (request) {
 function find_hashtags(notestr) {
    let hashtags = [];
 
+   // remove all control characters (line endings etc)
+   notestr = notestr.replace(/[^\x20-\x7E]/gmi, " ");
+
    notestr.split(" ").forEach( (element) => {
       if (element[0] == "#" && element.length > 1) {
          // trim all whitespaces and newlines from the hashtag string
-         hashtags.push(element.trim());
+         trimmed_el = element.trim()
+
+         // if hashtag not present yet, add it
+         if (hashtags.indexOf(trimmed_el) < 0) {
+            hashtags.push(trimmed_el);
+         }
       }
    });
 
-   // get unique hashtags
-   var unique_hashtags = Array.from(new Set(hashtags))
 
-   return unique_hashtags;
+   return hashtags;
 }
 
 function process_post_request(request, response, session_found, session_id, username) {
