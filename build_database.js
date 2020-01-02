@@ -1,5 +1,5 @@
 // build script to set up database.
-// run: node build
+// run: node build_database
 
 const sqlite = require("sqlite3").verbose();
 const fs = require("fs");
