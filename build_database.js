@@ -2,8 +2,16 @@
 // run: node build
 
 const sqlite = require("sqlite3").verbose();
+const fs = require("fs");
+const path = require("path");
 
-let db = new sqlite.Database("./db/meerkat.db", (err) => {
+var dbdir = "./db";
+
+if (!fs.existsSync(dbdir)){
+    fs.mkdirSync(dbdir);
+}
+
+let db = new sqlite.Database(path.join(dbdir, "meerkat.db"), (err) => {
    if (err) {
      console.error(err.message);
    } else {
