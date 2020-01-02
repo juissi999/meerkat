@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/juissi999/meerkat/issues"
   },
-  "homepage": "https://github.com/juissi999/meerkat#readme"
+  "homepage": "https://github.com/juissi999/meerkat#readme",
+  "dependencies": {
+    "ejs": "^3.0.1",
+    "sqlite3": "^4.1.1"
+  }
 }
