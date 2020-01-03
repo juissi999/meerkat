@@ -118,7 +118,7 @@ function add_note(response, username, note, hashtags) {
    // make insertion to table
    db.run("INSERT INTO notes (noteid, note, user, posttime) VALUES (?, ?,?, datetime(\"now\", \"localtime\"))", [noteid, note, username], (err) => {
       if (err) {
-         console.log("something went wrong.");
+         console.log(err.message);
          return;
       }
       // add each hashtag
@@ -130,8 +130,7 @@ function add_note(response, username, note, hashtags) {
          hashtags.forEach( element => { 
             db.run("INSERT INTO hashtags (noteid, hashtag) VALUES (?,?)", [noteid, element], (err) => { 
                if (err) {
-                  console.log("something went wrong.");
-                  return;
+                  return console.log(err.message);
                }
                queries_left--;
 
@@ -176,8 +175,7 @@ function login(response, username, pwd) {
    // check if password is correct
    db.get("SELECT * FROM users WHERE user=? AND password=?", [username, hashed_pwd], (err, row) => {
       if (err) {
-         console.log("something went wrong.");
-         return;
+         return console.log(err.message);
       }
 
       if (typeof row === "undefined") {
@@ -193,8 +191,7 @@ function login(response, username, pwd) {
                // insert session id to database
          db.run("INSERT INTO sessions (session_id, user) VALUES (?,?)", [session_id, username], (err) => {
             if (err) {
-               console.log("something went wrong.");
-               return;
+               return console.log(err.message);
             }
 
             render_index_page(response, username, []);
@@ -206,8 +203,7 @@ function login(response, username, pwd) {
 function logout(response, session_id) {
    db.run("DELETE FROM sessions WHERE session_id = ?", session_id, (err) => {
       if (err) {
-         console.log("something went wrong.");
-         return;
+         return console.log(err.message);
       }
       render_login_page(response);
    });
@@ -253,7 +249,6 @@ function find_hashtags(notestr) {
          }
       }
    });
-
 
    return hashtags;
 }
