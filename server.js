@@ -52,6 +52,9 @@ function render_index_page(response, username, selected_hashtags) {
       db.each("SELECT * FROM notes WHERE user=? ORDER BY datetime(posttime) DESC", (username), function (err, row) {
          notes.push({"text":row.note, "date":row.posttime});
       }, function (err, cntx) {
+         if (err) {
+            return console.log(err.message);
+         }
          // here we know query is done, I guess
          notes_retrieved_callback(response, username, notes, selected_hashtags)
       });
@@ -68,13 +71,13 @@ function render_index_page(response, username, selected_hashtags) {
       
       db.each(q, function (err, row) {
          if (err) {
-            return console.error(err.message);
+            return console.log(err.message);
          }
 
          notes.push({"text":row.note, "date":row.posttime});
       }, function (err, cntx) {
          if (err) {
-            return console.log(err.message)
+            return console.log(err.message);
          }
          // here we know query is done, I guess
          notes_retrieved_callback(response, username, notes, selected_hashtags)
@@ -88,6 +91,10 @@ function notes_retrieved_callback(response, username, notes, selected_hashtags) 
    var hashtags = [];
    db.each("SELECT DISTINCT hashtags.hashtag FROM hashtags, notes WHERE notes.user=? AND " + 
            "hashtags.noteid=notes.noteid ORDER BY (hashtags.hashtag) ASC", (username), function (err, row) {
+      if (err) {
+         return console.log(err.message);
+      }
+
       // retrieve all hashtags
       let ht = {};
       // can we find the hashtag retrieved from selected hashtags
@@ -100,7 +107,7 @@ function notes_retrieved_callback(response, username, notes, selected_hashtags) 
       hashtags.push(ht);
    }, function (err, cntx) {
       if (err) {
-         console.log(err.message);
+         return console.log(err.message);
       }
 
       response.write(ejs.render(index_view, {"notes":notes, "loginpage":false, "username":username, "hashtags":hashtags}));
@@ -118,8 +125,7 @@ function add_note(response, username, note, hashtags) {
    // make insertion to table
    db.run("INSERT INTO notes (noteid, note, user, posttime) VALUES (?, ?,?, datetime(\"now\", \"localtime\"))", [noteid, note, username], (err) => {
       if (err) {
-         console.log(err.message);
-         return;
+         return console.log(err.message);
       }
       // add each hashtag
       if (hashtags.length == 0) {
@@ -338,6 +344,10 @@ function on_request(request, response) {
 
       var session_found = false;
       db.each("SELECT * FROM sessions WHERE session_id=?", (session_id), function (err, row) {
+         if (err) {
+            return console.log(err.message);
+         }
+
          // TODO: make this better, add timeout etc
          username = row.user;
          session_found = true;
