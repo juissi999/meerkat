@@ -8,30 +8,38 @@ const path = require("path");
 var dbdir = "./db";
 
 if (!fs.existsSync(dbdir)){
-    fs.mkdirSync(dbdir);
+  fs.mkdirSync(dbdir);
 }
+
+// define our sql-queries
+var queries = [
+"CREATE TABLE users(user TEXT PRIMARY KEY, password TEXT)",
+"CREATE TABLE notes(note TEXT, user TEXT, posttime TEXT, noteid INT PRIMARY KEY)",
+"CREATE TABLE sessions(session_id TEXT, user TEXT)",
+"CREATE TABLE hashtags(noteid INT, hashtag TEXT, PRIMARY KEY (noteid, hashtag))"]
+
+var queries_left = queries.length;
 
 let db = new sqlite.Database(path.join(dbdir, "meerkat.db"), (err) => {
    if (err) {
-     console.error(err.message);
-   } else {
-      console.log("Database created.");
-
-      // add tables
-      db.run("CREATE TABLE users(user TEXT PRIMARY KEY, password TEXT)", create_table_callback);
-      db.run("CREATE TABLE notes(note TEXT, user TEXT, posttime TEXT, noteid INT PRIMARY KEY)", create_table_callback);
-      db.run("CREATE TABLE sessions(session_id TEXT, user TEXT)", create_table_callback);
-      db.run("CREATE TABLE hashtags(noteid INT, hashtag TEXT, PRIMARY KEY (noteid, hashtag))", create_table_callback);
+    return console.error(err.message);
    }
-   db.close();
- });
+    console.log("Database created.");
 
- console.log(db)
+    // add tables
+    for (let i=0;i<queries.length;i++) {
+      db.run(queries[i], create_table_callback);
+    }
+});
 
 function create_table_callback (err) {
   if (err) {
     return console.log(err.message);
   } else {
-    console.log("Table created")
+    console.log("Table created.")
   }
+  queries_left--;
+  if (queries_left==0) {
+    console.log("All tables created succesfully. Closing database.");
+    db.close();  }
 }

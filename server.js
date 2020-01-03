@@ -12,7 +12,7 @@ const path = require("path");
 // load the base-page template to RAM
 var indexfile = "views/index.ejs";
 var index_view = fs.readFileSync(indexfile, "utf-8");
-var dbname = path.join("./db", "meerkat.db");
+var dbpath = path.join("./db", "meerkat.db");
 var cookie_ttl = 60*60; // seconds: 60*60*24 is one day
 
 // accept cli arguments and remove unnecessary
@@ -387,7 +387,8 @@ function on_request(request, response) {
    }
 }
 
-var db =  new sqlite3.Database(dbname, (err) => {
+var db =  new sqlite3.Database(dbpath, (err) => {
+   // connect to database and start server
    if (err) {
       return console.error(err.message);
    }

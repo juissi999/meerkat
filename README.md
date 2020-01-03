@@ -19,7 +19,7 @@ Build database by typing:
 
 Start server by typing:
 
-`node server [portnum]`
+`npm run start [portnum]`
 
 where [portnum] is a port number where the server will start listening. If you do not provide a portnumber, the server will listen on port 80.
 
