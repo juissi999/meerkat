@@ -9,13 +9,17 @@ A quick animal who probably forgots a lot quickly too. Also meerkat resembles th
 
 Start a command line and go to the app directory.
 
+Download by typing:
+
+`git clone https://github.com/juissi999/meerkat.git`
+
 Install dependencies by typing:
 
 `npm install`
 
 Build database by typing:
 
-`node build_database`
+`npm run build`
 
 Start server by typing:
 
