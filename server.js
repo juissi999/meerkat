@@ -25,7 +25,7 @@ if (arguments.length > 1) {
   }
 }
 
-const notes = []
+let notes = []
 
 // start node express
 const app = express()
@@ -43,7 +43,7 @@ app.post('/notes', (request, response) => {
     })
   }
 
-  notes.concat(note)
+  notes = notes.concat(note)
   response.json(note)
 })
 
