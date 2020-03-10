@@ -2,6 +2,7 @@
 // run: "node ./server"
 
 const express = require('express')
+const bodyParser = require('body-parser')
 
 var cookie_ttl = 60*60; // seconds: 60*60*24 is one day
 
@@ -24,10 +25,27 @@ if (arguments.length > 1) {
   }
 }
 
+const notes = []
+
 // start node express
 const app = express()
-
+app.use(bodyParser.json())
 app.use(express.static('build'))
+
+app.get('/notes', (request, response) => response.json(notes))
+
+app.post('/notes', (request, response) => {
+  const note = request.body
+
+  if (!note.text) {
+    return response.status(400).json({ 
+      error: 'content missing' 
+    })
+  }
+
+  notes.concat(note)
+  response.json(note)
+})
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
