@@ -8,6 +8,7 @@ const sqlite3 = require("sqlite3").verbose()
 const qs = require("querystring")
 const crypto = require("crypto")
 const dbpath = require("./dbpath")
+const express = require('express')
 
 // load the base-page template to RAM
 var indexfile = "views/index.ejs";
@@ -18,7 +19,7 @@ var cookie_ttl = 60*60; // seconds: 60*60*24 is one day
 var arguments = process.argv.slice(2);
 
 // use cli arguments to decide listening port
-var portnum = 80;
+const PORT = 80;
 if (arguments.length > 1) {
    // too much arguments
    console.error("Maximum argument count 1: port for server to listen");
@@ -26,13 +27,14 @@ if (arguments.length > 1) {
 } else if (arguments.length == 1 ) {
    // right amount of arguments
    var portnum = Number(arguments[0]);
-   if (isNaN(portnum)) {
+   if (isNaN(PORT)) {
       // make sure argument was a proper number
       console.error("Expecting a numerical argument.");
       return;
    }
 }
-console.log("Server listening on port " + portnum);
+console.log("Server listening on port " + PORT);
+
 
 function return_css(response) {
 
@@ -392,5 +394,5 @@ var db =  new sqlite3.Database(dbpath, (err) => {
       return console.error(err.message);
    }
 
-   http.createServer(on_request).listen(portnum);
+   http.createServer(on_request).listen(PORT);
 });
