@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "watch": "nodemon server.js",
-    "build": "node build_database.js"
+    "build": "webpack --mode production"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,12 @@
     "sqlite3": "^4.1.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
+    "@babel/preset-react": "^7.8.3",
+    "babel-loader": "^8.0.6",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
     "nodemon": "^2.0.2",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
