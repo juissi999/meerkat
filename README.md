@@ -1,7 +1,7 @@
 # meerkat
 A quick on the go web app for making notes.
 
-### Meerkat?
+### meerkat?
 
 A quick animal who probably forgots a lot quickly too. Also meerkat resembles the word "memory" a bit and the purpose of this app is to be a help for memory.
 
@@ -31,11 +31,10 @@ where [portnum] is a port number where the server will start listening. If you d
 
 * html
 * CSS
-
 * javascript
 * node.js
+* npm
 * SQL on sqlite3
 * ejs templating system
-
 * simple XSS protection on ejs
 

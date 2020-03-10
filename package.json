@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
+    "watch": "nodemon server.js",
     "build": "node build_database.js"
   },
   "repository": {
@@ -23,6 +24,7 @@
     "sqlite3": "^4.1.1"
   },
   "devDependencies": {
+    "nodemon": "^2.0.2",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
   }
