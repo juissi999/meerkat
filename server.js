@@ -38,14 +38,24 @@ app.post('/notes', (request, response) => {
   const note = request.body
 
   if (!note.text) {
-    return response.status(400).json({ 
+    return response.status(400).json({
       error: 'content missing' 
     })
   }
 
+  note['date'] = Date.now()
+  note['id'] = notes.reduce((accumulator, currentvalue) => {
+    if (currentvalue.id >= accumulator) {
+      return currentvalue.id
+    } else {
+      return accumulator
+    }
+  }, 0) + 1
+
   notes = notes.concat(note)
   response.json(note)
 })
+
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)

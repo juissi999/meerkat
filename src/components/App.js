@@ -1,36 +1,48 @@
 import React, {useEffect, useState} from 'react'
-import axios from 'axios'
+import noteservice from './noteservice'
 
-const baseUrl = '/notes'
+const Memory = ({id, date, text}) => {
+  const datestr = Date(date)
+
+  const onClick = () => {
+    console.log(id)
+  }
+
+  return (
+    <div className={'memory'}>
+      <div className={'date'}>
+        {datestr}
+      </div>
+      {text}
+      <br/>
+      <button onClick={onClick}>delete</button>
+    </div>)
+}
 
 const Memories = ({notes}) => {
   return (<div className={'memory_container'}>
-  {notes.map((note)=> {
-    return (
-    <div className={'memory'}>
-      <div className={'date'}>
-        {note.date}
-      </div>
-      {note.text}
-    </div>)})}
+  {notes.map((note)=> {return <Memory key={notes.id} date={note.date} text={note.text} id={note.id}/>})}
   </div>
   )
 }
 
+const Hahstagbutton = ({name, selected}) => {
+  if (selected) {
+    return (<button name='selected_hashtag' value={name} type='submit' className='selected'>{name}</button>)
+  } else {
+    return (<button name='selected_hashtag' value={name} type='submit' className='hashtag'>{name}</button>)
+ }
+}
 
 const Hashtags = ({hashtags}) => {
-  return (<div class='hashtags_container'>
+  return (<div className='hashtags_container'>
   <form name = 'hashtagsform' action='/' method='POST'>
     <button name='selected_hashtag' value='all' type='submit' className='hashtag'>Show all</button>
-    {hashtags.map((ht) => {
-      if (ht.selected) {
-        return (<button name='selected_hashtag' value={ht.name} type='submit' className='selected'>{ht.name}</button>)
-      } else {
-        return (<button name='selected_hashtag' value={ht.name} type='submit' className='hashtag'>{ht.name}</button>)
-     }})}     
+    {hashtags.map((ht, i) => {
+      <Hahstagbutton key={i} name={ht.name} selected={ht.selected}/>
+    })}
   </form>
-  </div>
-  )
+  </div>)
 }
 
 const Logoutform = ({username}) => {
@@ -42,15 +54,16 @@ const Logoutform = ({username}) => {
 
 const Pushform = ({memo, setMemo, notes, setNotes}) => {
 
-  const newentry = {'text':memo, 'date':'nan'}
+  const newentry = {'text':memo}
 
   const on_submit = (event) => {
     event.preventDefault()
 
-    const promise = axios.post(baseUrl, newentry)
-    promise.then((response)=> {
-      setNotes(notes.concat(response.data))
-      setMemo('')
+    noteservice
+      .post(newentry)
+      .then(addedentry => {
+        setNotes(notes.concat(addedentry))
+        setMemo('')
     })
   }
 
@@ -71,8 +84,8 @@ const App = () => {
   const [memo, setMemo] = useState('')
   
   const getAll = () => {
-    const promise = axios.get(baseUrl)
-    promise.then(response => setNotes(response.data))
+    noteservice.getAll()
+      .then(data => setNotes(data))
   }
   
   useEffect(getAll, [])
