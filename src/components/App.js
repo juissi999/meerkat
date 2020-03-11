@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react'
 import noteservice from './noteservice'
 
 const Memory = ({id, date, text, notes, setNotes}) => {
-  const datestr = Date(date)
+  
+  const datestr = new Date(date).toString()
 
   const onClickDelete = () => {
     noteservice.del(id)
