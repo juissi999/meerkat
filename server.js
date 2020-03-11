@@ -56,8 +56,18 @@ app.post('/notes', (request, response) => {
   response.json(note)
 })
 
+app.delete('/notes/:id', (request, response) => {
+  const id = Number(request.params.id)
+
+  notes = notes.filter(note => {
+    if (note.id !== id) {
+      return note
+    }
+  })
+  console.log(notes)
+  response.status(204).end()
+})
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
-
