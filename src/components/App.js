@@ -1,11 +1,16 @@
 import React, {useEffect, useState} from 'react'
 import noteservice from './noteservice'
 
-const Memory = ({id, date, text}) => {
+const Memory = ({id, date, text, notes, setNotes}) => {
   const datestr = Date(date)
 
-  const onClick = () => {
-    console.log(id)
+  const onClickDelete = () => {
+    noteservice.del(id)
+      .then(setNotes(notes.filter(note => {
+        if (note.id !== id) {
+          return note
+        }
+      })))
   }
 
   return (
@@ -15,13 +20,13 @@ const Memory = ({id, date, text}) => {
       </div>
       {text}
       <br/>
-      <button onClick={onClick}>delete</button>
+      <button onClick={onClickDelete}>delete</button>
     </div>)
 }
 
-const Memories = ({notes}) => {
+const Memories = ({notes, setNotes}) => {
   return (<div className={'memory_container'}>
-  {notes.map((note)=> {return <Memory key={notes.id} date={note.date} text={note.text} id={note.id}/>})}
+  {notes.map((note)=> {return <Memory key={notes.id} date={note.date} text={note.text} id={note.id} notes={notes} setNotes={setNotes}/>})}
   </div>
   )
 }
@@ -94,7 +99,7 @@ const App = () => {
           <Logoutform username={'test'}/>
           <Pushform notes={notes} setNotes={setNotes} memo={memo} setMemo={setMemo}/>
           <Hashtags hashtags={[{name:'test', selected:true}]}/>
-          <Memories notes={notes} />
+          <Memories notes={notes} setNotes={setNotes} />
           </>)
 }
 
