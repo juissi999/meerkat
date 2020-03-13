@@ -1,7 +1,24 @@
 import React, {useEffect, useState} from 'react'
 import noteservice from './noteservice'
 
-const Memory = ({note, notes, setNotes}) => {
+let notificationTimer = null
+
+const Notification = ({msg, setNotification}) => {
+
+  clearTimeout(notificationTimer)
+  notificationTimer = setTimeout(()=>{
+    setNotification(null)
+  }, 3000)
+
+  // render only if there is something to render
+  if (msg === null) {
+    return null
+  }
+
+  return (<div className='notification'>{msg}</div>)
+}
+
+const Memory = ({note, notes, setNotes, setNotification}) => {
   
   const datestr = new Date(note.date).toString()
 
@@ -11,6 +28,7 @@ const Memory = ({note, notes, setNotes}) => {
         if (n.noteid !== note.noteid) {
           return n
         }
+        setNotification(`Note deleted.`)
       })))
   }
 
@@ -25,9 +43,9 @@ const Memory = ({note, notes, setNotes}) => {
     </div>)
 }
 
-const Memories = ({notes, setNotes}) => {
+const Memories = ({notes, setNotes, setNotification}) => {
   return (<div className={'memory_container'}>
-  {notes.map((note)=> {return <Memory key={notes.noteid} note={note} notes={notes} setNotes={setNotes}/>})}
+  {notes.map((note)=> {return <Memory key={notes.noteid} note={note} notes={notes} setNotes={setNotes} setNotification={setNotification}/>})}
   </div>
   )
 }
@@ -58,7 +76,7 @@ const Logoutform = ({username}) => {
   </form>)
 } 
 
-const Pushform = ({memo, setMemo, notes, setNotes}) => {
+const Pushform = ({memo, setMemo, notes, setNotes, setNotification}) => {
 
   const newentry = {'text':memo}
 
@@ -70,6 +88,7 @@ const Pushform = ({memo, setMemo, notes, setNotes}) => {
       .then(addedentry => {
         setNotes(notes.concat(addedentry))
         setMemo('')
+        setNotification('New entry added!')
     })
   }
 
@@ -88,6 +107,7 @@ const App = () => {
 
   const [notes, setNotes] = useState([])
   const [memo, setMemo] = useState('')
+  const [notification, setNotification] = useState(null)
   
   const getAll = () => {
     noteservice.getAll()
@@ -97,10 +117,11 @@ const App = () => {
   useEffect(getAll, [])
  
   return (<><h1>Meerkat</h1>
+          <Notification msg={notification} setNotification={setNotification}/>
           <Logoutform username={'test'}/>
-          <Pushform notes={notes} setNotes={setNotes} memo={memo} setMemo={setMemo}/>
+          <Pushform notes={notes} setNotes={setNotes} memo={memo} setMemo={setMemo} setNotification={setNotification}/>
           <Hashtags hashtags={[{name:'test', selected:true}]}/>
-          <Memories notes={notes} setNotes={setNotes} />
+          <Memories notes={notes} setNotes={setNotes} setNotification={setNotification}/>
           </>)
 }
 

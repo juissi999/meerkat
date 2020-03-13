@@ -59,6 +59,16 @@ textarea {
  /*  border: 1px solid #8FBC8F; */
 }
 
+.notification {
+   display: inline-block;
+   padding: 8px;
+   /*margin: 10px;*/
+   margin-bottom:5px;
+   color: green;
+   border: 1px solid green;
+   border-radius: 5px;
+}
+
 @media screen and (min-width:800px) {
    /*  min-width:468px */
    body {
