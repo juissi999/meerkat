@@ -1,0 +1,4 @@
+POST http://localhost/notes/
+Content-Type: Application/json
+
+{"text":"test"}
