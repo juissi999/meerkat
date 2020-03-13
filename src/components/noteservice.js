@@ -8,7 +8,7 @@ const getAll = () => {
 
 const post = (newentry) => {
   const promise = axios.post(baseUrl, newentry)
-  return promise.then((response)=> response.data)
+  return promise.then((response) => response.data)
 }
 
 const del = (id) => {

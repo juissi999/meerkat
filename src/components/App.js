@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react'
 import noteservice from './noteservice'
 
-const Memory = ({id, date, text, notes, setNotes}) => {
+const Memory = ({note, notes, setNotes}) => {
   
-  const datestr = new Date(date).toString()
+  const datestr = new Date(note.date).toString()
 
   const onClickDelete = () => {
-    noteservice.del(id)
-      .then(setNotes(notes.filter(note => {
-        if (note.id !== id) {
-          return note
+    noteservice.del(note.noteid)
+      .then(setNotes(notes.filter(n => {
+        if (n.noteid !== note.noteid) {
+          return n
         }
       })))
   }
@@ -19,7 +19,7 @@ const Memory = ({id, date, text, notes, setNotes}) => {
       <div className={'date'}>
         {datestr}
       </div>
-      {text}
+      {note.text}
       <br/>
       <button onClick={onClickDelete}>delete</button>
     </div>)
@@ -27,7 +27,7 @@ const Memory = ({id, date, text, notes, setNotes}) => {
 
 const Memories = ({notes, setNotes}) => {
   return (<div className={'memory_container'}>
-  {notes.map((note)=> {return <Memory key={notes.id} date={note.date} text={note.text} id={note.id} notes={notes} setNotes={setNotes}/>})}
+  {notes.map((note)=> {return <Memory key={notes.noteid} note={note} notes={notes} setNotes={setNotes}/>})}
   </div>
   )
 }
