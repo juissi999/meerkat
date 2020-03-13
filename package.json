@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "watch": "nodemon server.js",
+    "start": "node server/server.js",
+    "watch": "nodemon server/server.js",
     "watchreact": "webpack -d --watch",
     "build": "webpack --mode production"
   },
