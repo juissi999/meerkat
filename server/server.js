@@ -32,7 +32,6 @@ app.use(bodyParser.json())
 app.use(express.static('build'))
 
 app.get('/notes', (request, response) => {
-  //response.json(notes)
   dbservice.getAllNotes((err, notes)=>{
     if (err) {
       return console.log(err)
@@ -52,16 +51,6 @@ app.post('/notes', (request, response) => {
     })
   }
 
-  // noteid = notes.reduce((accumulator, currentvalue) => {
-  //   if (currentvalue.id >= accumulator) {
-  //     return currentvalue.id
-  //   } else {
-  //     return accumulator
-  //   }
-  // }, 0) + 1
-
-
-  //notes = notes.concat(note)
   dbservice.putNote(noteid, note.text, posttime, (err) =>{
     if (err) {
       return console.log(err)
@@ -79,12 +68,6 @@ app.delete('/notes/:id', (request, response) => {
     }
     response.status(204).end()
   })
-
-  // notes = notes.filter(note => {
-  //   if (note.id !== id) {
-  //     return note
-  //   }
-  // })
 })
 
 app.listen(PORT, () => {
