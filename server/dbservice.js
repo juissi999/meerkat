@@ -33,7 +33,7 @@ exports.getAllNotes = (cb) => {
   }, ()=>{return cb(null, allNotes)})
 }
 
-exports.putNote = (noteid, notestr, posttime, cb) => {
+exports.postNote = (noteid, notestr, posttime, cb) => {
   querystr = 'INSERT INTO notes (noteid, text, date) VALUES (?, ?, ?)'
   db.run(querystr, [noteid, notestr, posttime], (err) => {
     if (err) {
@@ -46,6 +46,16 @@ exports.putNote = (noteid, notestr, posttime, cb) => {
 exports.deleteNote = (noteid, cb) => {
   querystr = 'DELETE FROM notes WHERE noteid = ?'
   db.run(querystr, [noteid], (err) => {
+    if (err) {
+      return cb(err)
+    }
+    cb()
+  })
+}
+
+exports.putNote = (noteid, notestr, cb) => {
+  querystr = 'UPDATE notes SET text=? WHERE noteid=?'
+  db.run(querystr, [notestr, noteid], (err) => {
     if (err) {
       return cb(err)
     }

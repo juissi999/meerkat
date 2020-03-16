@@ -51,7 +51,7 @@ app.post('/notes', (request, response) => {
     })
   }
 
-  dbservice.putNote(noteid, note.text, posttime, (err) =>{
+  dbservice.postNote(noteid, note.text, posttime, (err) =>{
     if (err) {
       return console.log(err)
     }
@@ -62,11 +62,24 @@ app.post('/notes', (request, response) => {
 app.delete('/notes/:id', (request, response) => {
   const id = Number(request.params.id)
 
-  dbservice.deleteNote(id, (err) =>{
+  dbservice.deleteNote(id, (err) => {
     if (err) {
       return console.log(err)
     }
     response.status(204).end()
+  })
+})
+
+app.put('/notes/:id', (request, response) => {
+  const id = Number(request.params.id)
+  const notestr = request.body.text
+  //const posttime = Date.now()
+
+  dbservice.putNote(id, notestr, (err) =>{
+    if (err) {
+      return console.log(err)
+    }
+    response.status(200).end()
   })
 })
 
