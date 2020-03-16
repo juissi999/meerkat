@@ -88,31 +88,40 @@ const Memories = ({notes, setNotes, setNotification, setHashtags}) => {
   )
 }
 
-const Hahstagbutton = ({name, selected}) => {
+const Hahstagbutton = ({name, selectedHts, setSelectedHts}) => {
+  const isselected = selectedHts.includes(name)
+
+  // check if hashtag is on selectedHts hook array and remove it
+  // if it is or append it if it's not
   const onClick = () => {
-    event.preventDefault()
-    
+    if (isselected) {
+      setSelectedHts(selectedHts.filter(htname=>{
+        if (htname!==name){
+          return htname
+        }
+      }))
+    } else {
+      // add hashtag to selected
+      setSelectedHts(selectedHts.concat(name))
+    }
   }
 
-  if (selected) {
+  if (isselected) {
     return (<button value={name} className='selected' onClick={onClick}>{name}</button>)
   } else {
     return (<button value={name} className='hashtag' onClick={onClick}>{name}</button>)
  }
 }
 
-const Hashtags = ({hashtags, selected}) => {
+const Hashtags = ({hashtags, selectedHts, setSelectedHts}) => {
 
   // find only the unique hashtags
   const uniquehts = [...new Set(hashtags.map(ht=>ht.name))]
 
   return (<div className='hashtags_container'>
-  <form name = 'hashtagsform' action='/' method='POST'>
-    <button name='selected_hashtag' value='all' type='submit' className='hashtag'>Show all</button>
     {uniquehts.map((ht, i) => {
-      return (<Hahstagbutton key={i} name={ht} selected={selected}/>)
+      return (<Hahstagbutton key={i} name={ht} selectedHts={selectedHts} setSelectedHts={setSelectedHts}/>) //selectedHts.includes(ht)
     })}
-  </form>
   </div>)
 }
 
@@ -158,6 +167,7 @@ const App = () => {
   const [memo, setMemo] = useState('')
   const [notification, setNotification] = useState(null)
   const [hashtags, setHashtags] = useState([])
+  const [selectedHts, setSelectedHts] = useState([])
   
   const getAll = () => {
     noteservice.getAll()
@@ -174,7 +184,7 @@ const App = () => {
           <Notification msg={notification} setNotification={setNotification}/>
           <Logoutform username={'test'}/>
           <Pushform notes={notes} setNotes={setNotes} memo={memo} setMemo={setMemo} setNotification={setNotification} setHashtags={setHashtags}/>
-          <Hashtags hashtags={hashtags} selected={false}/>
+          <Hashtags hashtags={hashtags} selectedHts={selectedHts} setSelectedHts={setSelectedHts}/>
           <Memories notes={notes} setNotes={setNotes} setNotification={setNotification} setHashtags={setHashtags}/>
           </>)
 }
