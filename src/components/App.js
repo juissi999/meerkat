@@ -18,7 +18,6 @@ const findHashtags = (notestr) => {
         if (hashtags.indexOf(trimmed_el) < 0) {
            hashtags.push(trimmed_el)
         }
-
      }
   })
 
@@ -34,7 +33,6 @@ const updateHashtags = (data, setHashtags) => {
 
     return accumulator.concat(htmap)
   }, [])
-  console.log(htarray)
 
   setHashtags(htarray)
 }
@@ -91,19 +89,28 @@ const Memories = ({notes, setNotes, setNotification, setHashtags}) => {
 }
 
 const Hahstagbutton = ({name, selected}) => {
+  const onClick = () => {
+    event.preventDefault()
+    
+  }
+
   if (selected) {
-    return (<button name='selected_hashtag' value={name} type='submit' className='selected'>{name}</button>)
+    return (<button value={name} className='selected' onClick={onClick}>{name}</button>)
   } else {
-    return (<button name='selected_hashtag' value={name} type='submit' className='hashtag'>{name}</button>)
+    return (<button value={name} className='hashtag' onClick={onClick}>{name}</button>)
  }
 }
 
 const Hashtags = ({hashtags, selected}) => {
+
+  // find only the unique hashtags
+  const uniquehts = [...new Set(hashtags.map(ht=>ht.name))]
+
   return (<div className='hashtags_container'>
   <form name = 'hashtagsform' action='/' method='POST'>
     <button name='selected_hashtag' value='all' type='submit' className='hashtag'>Show all</button>
-    {hashtags.map((ht, i) => {
-      return (<Hahstagbutton key={i} name={ht.name} selected={selected}/>)
+    {uniquehts.map((ht, i) => {
+      return (<Hahstagbutton key={i} name={ht} selected={selected}/>)
     })}
   </form>
   </div>)
