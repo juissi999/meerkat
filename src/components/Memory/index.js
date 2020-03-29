@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import noteservice from '../noteservice'
-import DateStr from './DateStr'
-import MemoryStr from './MemoryStr'
+import noteservice from '../../noteservice'
+import DateStr from '../DateStr'
+import MemoryStr from './Str'
 
 const Memory = ({note, notes, setNotes, setNotification}) => {
 
@@ -22,6 +22,7 @@ const Memory = ({note, notes, setNotes, setNotification}) => {
         const newNotes = notes.filter(n => {
           return n.noteid !== note.noteid
         })
+        setNotes(newNotes)
         setNotification(`Note deleted.`)
       })
   }

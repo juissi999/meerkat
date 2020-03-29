@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react'
 
-import Memories from './Memories'
+import MemoryList from './Memory/List'
 import Pushform from './Pushform'
-import Hashtags from './Hashtags'
+import HashtagList from './Hashtag/List'
 import Notification from './Notification'
 
 import {updateHashtags} from '../utils'
@@ -32,8 +32,8 @@ const App = () => {
               <Notification msg={notification} setNotification={setNotification}/>
             </div>
             <Pushform notes={notes} setNotes={setNotes} setNotification={setNotification}/>
-            <Hashtags hashtags={hashtags} selectedHts={selectedHts} setSelectedHts={setSelectedHts}/>
-            <Memories notes={notes} setNotes={setNotes} setNotification={setNotification}/>
+            <HashtagList hashtags={hashtags} selectedHts={selectedHts} setSelectedHts={setSelectedHts}/>
+            <MemoryList notes={notes} setNotes={setNotes} setNotification={setNotification}/>
           </>)
 }
 

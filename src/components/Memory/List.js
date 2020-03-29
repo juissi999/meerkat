@@ -1,7 +1,7 @@
 import React from 'react'
-import Memory from './Memory.js'
+import Memory from './index.js'
 
-const Memories = ({notes, setNotes, setNotification}) => {
+const MemoryList = ({notes, setNotes, setNotification}) => {
 
   const mapMemories = () => {
     return notes.map((note, i) => <Memory key={i} note={note} notes={notes} setNotes={setNotes} setNotification={setNotification}/>)
@@ -12,4 +12,4 @@ const Memories = ({notes, setNotes, setNotification}) => {
           </div>)
 }
 
-export default Memories
+export default MemoryList

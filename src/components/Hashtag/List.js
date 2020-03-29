@@ -1,7 +1,7 @@
 import React from 'react'
-import HashtagButton from './HashtagButton'
+import HashtagButton from './Button'
 
-const Hashtags = ({hashtags, selectedHts, setSelectedHts}) => {
+const HashtagList = ({hashtags, selectedHts, setSelectedHts}) => {
 
   // find only the unique hashtags
   const uniquehts = [...new Set(hashtags.map(ht=>ht.name))]
@@ -16,4 +16,4 @@ const Hashtags = ({hashtags, selectedHts, setSelectedHts}) => {
           </div>)
 }
 
-export default Hashtags
+export default HashtagList
