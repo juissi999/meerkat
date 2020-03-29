@@ -1,12 +1,15 @@
 import React from 'react'
 import Memory from './Memory.js'
 
-const Memories = ({notes, setNotes, setNotification, setHashtags}) => {
+const Memories = ({notes, setNotes, setNotification}) => {
+
+  const mapMemories = () => {
+    return notes.map((note, i) => <Memory key={i} note={note} notes={notes} setNotes={setNotes} setNotification={setNotification}/>)
+  }
 
   return (<div className={'memory_container'}>
-  {notes.map((note, i)=> {return <Memory key={i} note={note} notes={notes} setNotes={setNotes} setNotification={setNotification} setHashtags={setHashtags}/>})}
-  </div>
-  )
+            {mapMemories()}
+          </div>)
 }
 
 export default Memories

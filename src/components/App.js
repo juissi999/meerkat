@@ -33,7 +33,7 @@ const App = () => {
             </div>
             <Pushform notes={notes} setNotes={setNotes} setNotification={setNotification}/>
             <Hashtags hashtags={hashtags} selectedHts={selectedHts} setSelectedHts={setSelectedHts}/>
-            <Memories notes={notes} setNotes={setNotes} setNotification={setNotification} setHashtags={setHashtags}/>
+            <Memories notes={notes} setNotes={setNotes} setNotification={setNotification}/>
           </>)
 }
 

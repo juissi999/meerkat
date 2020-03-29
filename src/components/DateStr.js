@@ -1,8 +1,8 @@
 import React from 'react'
 
-const DateStr = ({datestr}) => {
+const DateStr = ({children}) => {
   return (<div className={'date'}>
-          {datestr}
+          {children}
           </div>)
 }
 

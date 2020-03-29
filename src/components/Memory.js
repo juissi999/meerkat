@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import noteservice from '../noteservice'
-import {updateHashtags} from '../utils'
 import DateStr from './DateStr'
+import MemoryStr from './MemoryStr'
 
-const Memory = ({note, notes, setNotes, setNotification, setHashtags}) => {
+const Memory = ({note, notes, setNotes, setNotification}) => {
 
   const [editable, setEditable] = useState(false)
   const [noteStr, setNoteStr] = useState('')
@@ -20,12 +20,8 @@ const Memory = ({note, notes, setNotes, setNotification, setHashtags}) => {
     noteservice.del(note.noteid)
       .then(() => {
         const newNotes = notes.filter(n => {
-          if (n.noteid !== note.noteid) {
-            return n
-          }  
+          return n.noteid !== note.noteid
         })
-        setNotes(newNotes)
-        updateHashtags(newNotes, setHashtags)
         setNotification(`Note deleted.`)
       })
   }
@@ -48,7 +44,6 @@ const Memory = ({note, notes, setNotes, setNotification, setHashtags}) => {
 
         // set it on notes hook
         setNotes(newNotes)
-        updateHashtags(newNotes, setHashtags)
 
         // set component state
         setEditable(!editable)
@@ -66,8 +61,8 @@ const Memory = ({note, notes, setNotes, setNotification, setHashtags}) => {
   } else {
     return (
       <div className={'memory'}>
-        <DateStr datestr = {datestr}/>
-        <div className={'memorytxt'}>{noteStr}</div>
+        <DateStr>{datestr}</DateStr>
+        <MemoryStr>{noteStr}</MemoryStr>
         <button onClick={onClickUpdate}>edit</button>
         <button onClick={onClickDelete}>delete</button>
       </div>)
