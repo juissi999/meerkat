@@ -6,11 +6,14 @@ const Hashtags = ({hashtags, selectedHts, setSelectedHts}) => {
   // find only the unique hashtags
   const uniquehts = [...new Set(hashtags.map(ht=>ht.name))]
 
+  const mapHts = () => {
+    
+    return uniquehts.map((ht, i) => <HashtagButton key={i} name={ht} selectedHts={selectedHts} setSelectedHts={setSelectedHts}/>)
+  }
+
   return (<div className='hashtags_container'>
-    {uniquehts.map((ht, i) => {
-      return (<HashtagButton key={i} name={ht} selectedHts={selectedHts} setSelectedHts={setSelectedHts}/>) //selectedHts.includes(ht)
-    })}
-  </div>)
+            {mapHts()}
+          </div>)
 }
 
 export default Hashtags
