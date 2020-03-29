@@ -17,4 +17,4 @@ const Notification = ({msg, setNotification}) => {
   return (<div className='notification'>{msg}</div>)
 }
 
-export {Notification}
+export default Notification

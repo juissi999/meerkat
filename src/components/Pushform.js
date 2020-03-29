@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react'
-import noteservice from './noteservice'
-import {updateHashtags} from './utils'
+import React from 'react'
+import noteservice from '../noteservice'
+import {updateHashtags} from '../utils'
 
 const Pushform = ({memo, setMemo, notes, setNotes, setNotification, setHashtags}) => {
 
@@ -31,4 +31,4 @@ const Pushform = ({memo, setMemo, notes, setNotes, setNotification, setHashtags}
           </form>)
 }
 
-export {Pushform}
+export default Pushform
