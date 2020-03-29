@@ -1,6 +1,7 @@
 import React from 'react'
 
 const HashtagButton = ({name, selectedHts, setSelectedHts}) => {
+
   const isselected = selectedHts.includes(name)
 
   // check if hashtag is on selectedHts hook array and remove it
@@ -18,11 +19,10 @@ const HashtagButton = ({name, selectedHts, setSelectedHts}) => {
     }
   }
 
-  if (isselected) {
-    return (<button value={name} className='selected' onClick={onClick}>{name}</button>)
-  } else {
-    return (<button value={name} className='hashtag' onClick={onClick}>{name}</button>)
- }
+  // decide which class is give to button
+  const buttonclass = isselected ? 'selected' : 'hashtag'
+
+  return (<button value={name} className={buttonclass} onClick={onClick}>{name}</button>)
 }
 
 export default HashtagButton
