@@ -11,7 +11,6 @@ import noteservice from '../noteservice'
 const App = () => {
 
   const [notes, setNotes] = useState([])
-  const [memo, setMemo] = useState('')
   const [notification, setNotification] = useState(null)
   const [hashtags, setHashtags] = useState([])
   const [selectedHts, setSelectedHts] = useState([])
@@ -19,18 +18,20 @@ const App = () => {
   const getAll = () => {
     noteservice.getAll()
       .then(data => {
-        updateHashtags(data, setHashtags)
         setNotes(data)
       })
   }
   
   useEffect(getAll, [])
   
+  // effect-hook updates hashtags every time notes change
+  useEffect(() => updateHashtags(notes, setHashtags), [notes])
+
   return (<>
             <div id={'headline'}><h1>Meerkat</h1>
               <Notification msg={notification} setNotification={setNotification}/>
             </div>
-            <Pushform notes={notes} setNotes={setNotes} memo={memo} setMemo={setMemo} setNotification={setNotification} setHashtags={setHashtags}/>
+            <Pushform notes={notes} setNotes={setNotes} setNotification={setNotification}/>
             <Hashtags hashtags={hashtags} selectedHts={selectedHts} setSelectedHts={setSelectedHts}/>
             <Memories notes={notes} setNotes={setNotes} setNotification={setNotification} setHashtags={setHashtags}/>
           </>)

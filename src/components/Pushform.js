@@ -1,20 +1,25 @@
-import React from 'react'
+import React, {useState} from 'react'
 import noteservice from '../noteservice'
-import {updateHashtags} from '../utils'
 
-const Pushform = ({memo, setMemo, notes, setNotes, setNotification, setHashtags}) => {
+const Pushform = ({notes, setNotes, setNotification}) => {
+
+  const [memo, setMemo] = useState('')
 
   const newentry = {'text':memo}
 
   const on_submit = (event) => {
     event.preventDefault()
 
+    // prevent empty input
+    if (memo === '') {
+      return
+    }
+
     noteservice
       .post(newentry)
       .then(addedentry => {
         const newNotes = notes.concat(addedentry)
         setNotes(newNotes)
-        updateHashtags(newNotes, setHashtags)
         setMemo('')
         setNotification('New entry added!')
     })
@@ -25,9 +30,9 @@ const Pushform = ({memo, setMemo, notes, setNotes, setNotification, setHashtags}
   }
 
   return (<form name='pushform' onSubmit={on_submit}>
-          <textarea name='note' value={memo} onChange={on_change}/>
-          <br/>
-          <button type='submit'>Remember</button>
+            <textarea name='note' value={memo} onChange={on_change}/>
+            <br/>
+            <button type='submit'>Remember</button>
           </form>)
 }
 
