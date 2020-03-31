@@ -9,10 +9,7 @@ const Memory = ({note, notes, setNotes, setNotification}) => {
   const [noteStr, setNoteStr] = useState('')
 
   // set note text to hook so that editing re-renders element
-  const hook = () => {
-    setNoteStr(note.text)
-  }
-  useEffect(hook, [])
+  useEffect(()=>setNoteStr(note.text), [note])
 
   const datestr = new Date(note.date).toString()
 
