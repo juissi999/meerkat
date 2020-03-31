@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 
 import MemoryList from './Memory/List'
-import Pushform from './Pushform'
+import MemoryPushForm from './Memory/PushForm'
 import HashtagList from './Hashtag/List'
 import Notification from './Notification'
 
@@ -31,7 +31,7 @@ const App = () => {
             <div id={'headline'}><h1>Meerkat</h1>
               <Notification msg={notification} setNotification={setNotification}/>
             </div>
-            <Pushform notes={notes} setNotes={setNotes} setNotification={setNotification}/>
+            <MemoryPushForm notes={notes} setNotes={setNotes} setNotification={setNotification}/>
             <HashtagList hashtags={hashtags} selectedHts={selectedHts} setSelectedHts={setSelectedHts}/>
             <MemoryList notes={notes} setNotes={setNotes} setNotification={setNotification}/>
           </>)

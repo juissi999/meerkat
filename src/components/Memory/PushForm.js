@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
-import noteservice from '../noteservice'
+import noteservice from '../../noteservice'
 
-const Pushform = ({notes, setNotes, setNotification}) => {
+const MemoryPushForm = ({notes, setNotes, setNotification}) => {
 
   const [memo, setMemo] = useState('')
 
@@ -36,4 +36,4 @@ const Pushform = ({notes, setNotes, setNotification}) => {
           </form>)
 }
 
-export default Pushform
+export default MemoryPushForm
