@@ -4,6 +4,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const dbservice = require('./dbservice')
+const path = require('path')
 
 var cookie_ttl = 60*60; // seconds: 60*60*24 is one day
 
@@ -81,6 +82,12 @@ app.put('/notes/:id', (request, response) => {
     }
     response.status(200).end()
   })
+})
+
+// return index for all the other routes which are not find so
+// that they will lead to mainpage
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../build', 'index.html'))
 })
 
 app.listen(PORT, () => {
