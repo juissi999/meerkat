@@ -31,10 +31,10 @@ where [portnum] is a port number where the server will start listening. If you d
 
 * html
 * CSS
-* javascript
-* node.js
+* JavaScript
+* React.js
+* Node.js
 * npm
 * SQL on sqlite3
-* ejs templating system
-* simple XSS protection on ejs
 
+* Webpack
