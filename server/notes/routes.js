@@ -1,0 +1,56 @@
+var router = require('express').Router()
+const dbservice = require('../dbservice')
+
+router.get('/', (request, response) => {
+  dbservice.getAllNotes((err, notes) => {
+    if (err) {
+      return console.log(err)
+    }
+    response.json(notes) 
+    })
+})
+
+router.post('/', (request, response) => {
+  const posttime = Date.now()
+  const noteid = Math.floor(Math.random()*1000000000);
+  const note = {text:request.body.text, noteid:noteid, date:posttime}
+
+  if (!note.text) {
+    return response.status(400).json({
+      error: 'content missing' 
+    })
+  }
+
+  dbservice.postNote(noteid, note.text, posttime, (err) =>{
+    if (err) {
+      return console.log(err)
+    }
+    response.json(note)
+  })
+})
+
+router.delete('/:id', (request, response) => {
+  const id = Number(request.params.id)
+
+  dbservice.deleteNote(id, (err) => {
+    if (err) {
+      return console.log(err)
+    }
+    response.status(204).end()
+  })
+})
+
+router.put('/:id', (request, response) => {
+  const id = Number(request.params.id)
+  const notestr = request.body.text
+  //const posttime = Date.now()
+
+  dbservice.putNote(id, notestr, (err) =>{
+    if (err) {
+      return console.log(err)
+    }
+    response.status(200).end()
+  })
+})
+
+module.exports = router

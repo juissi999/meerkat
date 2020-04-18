@@ -3,8 +3,9 @@
 
 const express = require('express')
 const bodyParser = require('body-parser')
-const dbservice = require('./dbservice')
+
 const path = require('path')
+const noteRouter = require('./notes/routes')
 
 var cookie_ttl = 60*60; // seconds: 60*60*24 is one day
 
@@ -32,57 +33,7 @@ const app = express()
 app.use(bodyParser.json())
 app.use(express.static('build'))
 
-app.get('/notes', (request, response) => {
-  dbservice.getAllNotes((err, notes)=>{
-    if (err) {
-      return console.log(err)
-    }
-    response.json(notes) 
-    })
-})
-
-app.post('/notes', (request, response) => {
-  const posttime = Date.now()
-  const noteid = Math.floor(Math.random()*1000000000);
-  const note = {text:request.body.text, noteid:noteid, date:posttime}
-
-  if (!note.text) {
-    return response.status(400).json({
-      error: 'content missing' 
-    })
-  }
-
-  dbservice.postNote(noteid, note.text, posttime, (err) =>{
-    if (err) {
-      return console.log(err)
-    }
-    response.json(note)
-  })
-})
-
-app.delete('/notes/:id', (request, response) => {
-  const id = Number(request.params.id)
-
-  dbservice.deleteNote(id, (err) => {
-    if (err) {
-      return console.log(err)
-    }
-    response.status(204).end()
-  })
-})
-
-app.put('/notes/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const notestr = request.body.text
-  //const posttime = Date.now()
-
-  dbservice.putNote(id, notestr, (err) =>{
-    if (err) {
-      return console.log(err)
-    }
-    response.status(200).end()
-  })
-})
+app.use('/notes', noteRouter)
 
 // return index for all the other routes which are not find so
 // that they will lead to mainpage
