@@ -1,56 +1,12 @@
-var router = require('express').Router()
-const dbservice = require('../dbservice')
+const router = require('express').Router()
+const handlers = require('./handlers')
 
-router.get('/', (request, response) => {
-  dbservice.getAllNotes((err, notes) => {
-    if (err) {
-      return console.log(err)
-    }
-    response.json(notes) 
-    })
-})
+router.get('/', handlers.getAll)
 
-router.post('/', (request, response) => {
-  const posttime = Date.now()
-  const noteid = Math.floor(Math.random()*1000000000);
-  const note = {text:request.body.text, noteid:noteid, date:posttime}
+router.post('/', handlers.post)
 
-  if (!note.text) {
-    return response.status(400).json({
-      error: 'content missing' 
-    })
-  }
+router.delete('/:id', handlers.delete)
 
-  dbservice.postNote(noteid, note.text, posttime, (err) =>{
-    if (err) {
-      return console.log(err)
-    }
-    response.json(note)
-  })
-})
-
-router.delete('/:id', (request, response) => {
-  const id = Number(request.params.id)
-
-  dbservice.deleteNote(id, (err) => {
-    if (err) {
-      return console.log(err)
-    }
-    response.status(204).end()
-  })
-})
-
-router.put('/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const notestr = request.body.text
-  //const posttime = Date.now()
-
-  dbservice.putNote(id, notestr, (err) =>{
-    if (err) {
-      return console.log(err)
-    }
-    response.status(200).end()
-  })
-})
+router.put('/:id', handlers.put)
 
 module.exports = router
