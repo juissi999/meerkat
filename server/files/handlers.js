@@ -1,11 +1,14 @@
 const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
+const status = require('http-status-codes')
 const dbservice = require('../dbservice')
 
 // use webpack config file to get build directory
 const wpconf = require('../../webpack.config')
 const builddir = wpconf.output.path
+
+const MAXSIZE = 5000000
 
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -29,12 +32,22 @@ exports.get = (request, response) => {
 
 exports.post = (request, response) => {
 
-  const upload = multer({storage:storage}).single('memFile')
+  const opts = {
+    storage:storage,
+    limits:{
+      fileSize:MAXSIZE
+    }
+  }
+
+  const upload = multer(opts).single('memFile')
 
   upload(request, response, (err)=> {
     if (err) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return response.sendStatus(status.REQUEST_TOO_LONG)
+      }
       return response.status(status.BAD_REQUEST)
-    } 
+    }
     response.status(200).end()
   })
 }
