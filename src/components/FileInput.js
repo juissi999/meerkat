@@ -1,23 +1,24 @@
-import React, {useState} from 'react'
-import fileservice from '../fileservice'
+import React from 'react'
 
-const FileInput = () => {
-
-  const [file, setFile] = useState(null)
-
-  const onSubmit = (event) => {
-    event.preventDefault()
-    fileservice.post(file)
-  }
+const FileInput = ({file, setFile}) => {
 
   const onChange = (event) => {
     setFile(event.target.files[0])
   }
 
-  return(<form onSubmit={onSubmit}>
-         <input type='file' onChange={onChange} />
-         <input type='submit'></input>
-         </form>)
+  if (file === null) {
+    return(<div>
+            <label className='custom-file-upload'>
+              + Add a file
+              <input type='file' onChange={onChange}/>
+            </label>
+           </div>)
+  } else {
+    return (<div>
+              {file.name}
+            </div>)
+
+  }
 }
 
 export default FileInput

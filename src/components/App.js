@@ -4,7 +4,6 @@ import MemoryList from './Memory/List'
 import MemoryPushForm from './Memory/PushForm'
 import HashtagList from './Hashtag/List'
 import Notification from './Notification'
-import FileInput from './FileInput'
 
 import {updateHashtags} from '../utils'
 import noteservice from '../noteservice'
@@ -56,7 +55,6 @@ const App = () => {
               <Notification msg={notification} setNotification={setNotification}/>
             </div>
             <MemoryPushForm notes={notes} setNotes={setNotes} setNotification={setNotification}/>
-            <FileInput/>
             <HashtagList hashtags={hashtags} selectedHts={selectedHts} setSelectedHts={setSelectedHts}/>
             <MemoryList notes={notesShow} setNotes={setNotes} setNotification={setNotification}/>
           </>)
