@@ -9,12 +9,13 @@ const wpconf = require('../../webpack.config')
 const builddir = wpconf.output.path
 
 const MAXSIZE = 5000000
+const UPLOADDIR = 'uploads/'
 
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
 
     // check if upload directory exists and if not, create it
-    const uploadpath = path.resolve(builddir, 'uploads/')
+    const uploadpath = path.resolve(builddir, UPLOADDIR)
     if (!fs.existsSync(uploadpath)) {
       fs.mkdirSync(uploadpath, { recursive: true })
     }
@@ -41,13 +42,18 @@ exports.post = (request, response) => {
 
   const upload = multer(opts).single('memFile')
 
-  upload(request, response, (err)=> {
+  upload(request, response, (err) => {
     if (err) {
       if (err.code === 'LIMIT_FILE_SIZE') {
         return response.sendStatus(status.REQUEST_TOO_LONG)
       }
       return response.status(status.BAD_REQUEST)
     }
+    
+    // response returns the filename and serverpath
+    // of the saved file
+    response.json({filename:request.file.filename,
+                   uploaddir:UPLOADDIR})
     response.status(200).end()
   })
 }
