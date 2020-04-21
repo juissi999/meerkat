@@ -39,6 +39,11 @@ textarea {
    margin: 0px 0px 0px 0px;
 }
 
+.memfilecontainer img {
+   width:50%;
+   height:auto;
+}
+
 .filearea {
    font-size: 17px;
    margin:10px 0px;
