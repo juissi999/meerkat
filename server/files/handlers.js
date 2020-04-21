@@ -49,14 +49,30 @@ exports.post = (request, response) => {
       }
       return response.status(status.BAD_REQUEST)
     }
-    
-    // response returns the filename and serverpath
-    // of the saved file
-    response.json({filename:request.file.filename,
-                   uploaddir:UPLOADDIR})
-    response.status(200).end()
+    // add to database linker information
+    const fname = request.file.filename
+    const noteid = request.body.noteid
+    dbservice.postFile(noteid, fname, (err) => {
+      if (err) {
+        console.log(err)
+        return response.status(status.CONFLICT)
+      }
+      response.json({filename:fname,
+                      noteid:noteid,
+                      uploaddir:UPLOADDIR})
+      response.status(200).end()
+    })
   })
 }
 
 exports.delete = (request, response) => {
+}
+
+exports.getAll = (request, response) => {
+  dbservice.getAllFiles((err, files) => {
+    if (err) {
+      return console.log(err)
+    }
+    response.json(files)
+    })
 }
