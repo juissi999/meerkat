@@ -7,14 +7,14 @@ const FileInput = ({file, setFile}) => {
   }
 
   if (file === null) {
-    return(<div>
-            <label className='custom-file-upload'>
-              + Add a file
+    return(<div className='filearea'>
+            <label className='fileupload'>
+              Add a file
               <input type='file' onChange={onChange}/>
             </label>
            </div>)
   } else {
-    return (<div>
+    return (<div className='filearea'>
               {file.name}
             </div>)
 

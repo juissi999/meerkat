@@ -9,6 +9,10 @@ input, button {
    padding-bottom: 1px;
 }
 
+input[type="file"] {
+   display: none;
+}
+
 h3 {
    margin:2px 2px 2px 2px;
 }
@@ -35,20 +39,26 @@ textarea {
    margin: 0px 0px 0px 0px;
 }
 
+.filearea {
+   font-size: 17px;
+   margin:10px 0px;
+}
+
 .hashtags_container {
    /* top | right | bottom | left */
    padding: 0px 0px 0px 0px;
    margin: 8px 0px 8px 2px;
 }
 
-.hashtag, .selected {
+.hashtag, .selected, .fileupload {
    font-size: 17px;
    border-radius: 5px;
    padding: 3px 3px 3px 3px;
    margin: 3px 0px 3px 2px;
+   cursor: pointer;
 }
 
-.hashtag {
+.hashtag, .fileupload {
    background-color:#E6E6FA;
    border: 1px solid #E6E6FA;
 }
