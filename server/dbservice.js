@@ -14,17 +14,21 @@ let db = new sqlite.Database(dbpath, (err) => {
    return console.error(err.message)
   }
 
-  const querystr = 'CREATE TABLE IF NOT EXISTS notes(text TEXT, date INT, noteid INT PRIMARY KEY)'
+  const queries = ['CREATE TABLE IF NOT EXISTS notes(text TEXT, date INT, noteid INT PRIMARY KEY)',
+                   'CREATE TABLE IF NOT EXISTS files (noteid INT, filename TEXT)']
 
-  db.run(querystr, (err) => {
-    if (err) {
-      return console.error(err.message)
-     }
-  })
+  for (let i=0;i<queries.length;i++){
+    db.run(queries[i], (err) => {
+      if (err) {
+        return console.error(err.message)
+      }
+    })
+  }
  })
 
 exports.getAllNotes = (cb) => {
   let allNotes = []
+
   db.each('SELECT * FROM notes', (err, row) => {
     if (err) {
       return cb(error)
@@ -61,4 +65,25 @@ exports.putNote = (noteid, notestr, cb) => {
     }
     cb()
   })
+}
+
+exports.postFile = (noteid, filename, cb) => {
+  querystr = 'INSERT INTO files (noteid, filename) VALUES (?, ?)'
+  db.run(querystr, [noteid, filename], (err) => {
+    if (err) {
+      return cb(err)
+    }
+    cb()
+  })
+}
+
+exports.getAllFiles = (cb) => {
+  let allFiles = []
+
+  db.each('SELECT * FROM files', (err, row) => {
+    if (err) {
+      return cb(error)
+    }
+    allFiles.push(row)
+  }, ()=>{return cb(null, allFiles)})
 }
