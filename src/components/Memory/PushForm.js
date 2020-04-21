@@ -21,25 +21,28 @@ const MemoryPushForm = ({notes, setNotes, setNotification}) => {
     noteservice
       .post(newentry)
       .then(addedentry => {
-        const newNotes = notes.concat(addedentry)
-        setNotes(newNotes)
         setMemo('')
         setNotification('New entry added!')
-        return addedentry.noteid
+        return addedentry
       })
-      .then(noteid => {
+      .then(addedentry => {
+        const noteid = addedentry.noteid
+
         // after note sent succesfully, send file
         if (file !== null) {
           fileservice
-            .post(file)
+            .post(file, noteid)
             .then((response)=>{
-              console.log(response, noteid)
-              //noteservice
-              //  .postFile(noteid)
-            })
-            .then(() => {
               setFile(null)
+              //console.log(response, noteid)
+              addedentry.files = [response.filename]
+              const newNotes = notes.concat(addedentry)
+              setNotes(newNotes)
             })
+        } else {
+          addedentry.files = []
+          const newNotes = notes.concat(addedentry)
+          setNotes(newNotes)
         }
       })
 
