@@ -5,7 +5,8 @@ const post = (filename) => {
   let data = new FormData()
   data.append('memFile', filename)
 
-  axios.post(baseUrl, data)
+  const request = axios.post(baseUrl, data)
+  return request.then(response => response.data)
 }
 
 const get = () => {
