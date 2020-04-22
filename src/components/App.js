@@ -7,6 +7,7 @@ import Notification from './Notification'
 
 import {updateHashtags} from '../utils'
 import noteservice from '../noteservice'
+import fileservice from '../fileservice'
 
 const App = () => {
 
@@ -18,8 +19,20 @@ const App = () => {
   
   const getAll = () => {
     noteservice.getAll()
-      .then(data => {
-        setNotes(data)
+      .then(notedata => {
+        //setNotes(data)
+        return notedata
+      })
+      .then(notedata=> {
+        fileservice.getAll()
+          .then(fdata=>{
+            const noteswithfiles = notedata.map(n => {
+              const foundfiles = fdata.filter(f => f.noteid===n.noteid)
+              n.files = foundfiles.map(f=>f.filename)
+              return n
+            })
+          setNotes(noteswithfiles)
+        })
       })
   }
   

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import noteservice from '../../noteservice'
 import DateStr from '../DateStr'
 import MemoryStr from './Str'
+import MemoryFile from './File'
 
 const Memory = ({note, notes, setNotes, setNotification}) => {
 
@@ -61,6 +62,7 @@ const Memory = ({note, notes, setNotes, setNotification}) => {
       <div className={'memory'}>
         <DateStr>{datestr}</DateStr>
         <MemoryStr>{noteStr}</MemoryStr>
+        <MemoryFile>{note.files}</MemoryFile>
         <button onClick={onClickUpdate}>edit</button>
         <button onClick={onClickDelete}>delete</button>
       </div>)
