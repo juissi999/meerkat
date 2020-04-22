@@ -7,6 +7,4 @@ router.get('/', handlers.getAll)
 
 router.get('/:id', handlers.get)
 
-router.delete('/:id', handlers.delete)
-
 module.exports = router

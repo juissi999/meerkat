@@ -22,6 +22,7 @@ exports.post = (request, response) => {
 
   dbservice.postNote(noteid, note.text, posttime, (err) =>{
     if (err) {
+      response.status(409).end()
       return console.log(err)
     }
     response.json(note)
@@ -33,9 +34,18 @@ exports.delete = (request, response) => {
 
   dbservice.deleteNote(id, (err) => {
     if (err) {
+      response.status(409).end()
       return console.log(err)
     }
-    response.status(204).end()
+    // after note deleted, delete all linked files
+    dbservice.deleteFiles(id, (err)=>{
+      if (err) {
+        response.status(409).end()
+        return console.log(err)
+      }
+      // note and possible files deleted, all ok
+      response.status(204).end()
+    })
   })
 }
 
@@ -46,6 +56,7 @@ exports.put = (request, response) => {
 
   dbservice.putNote(id, notestr, (err) =>{
     if (err) {
+      response.status(409).end()
       return console.log(err)
     }
     response.status(200).end()

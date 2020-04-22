@@ -77,6 +77,16 @@ exports.postFile = (noteid, filename, cb) => {
   })
 }
 
+exports.deleteFiles = (noteid, cb) => {
+  querystr = 'DELETE FROM files WHERE noteid = ?'
+  db.run(querystr, [noteid], (err) => {
+    if (err) {
+      return cb(err)
+    }
+    cb()
+  })
+}
+
 exports.getAllFiles = (cb) => {
   let allFiles = []
 

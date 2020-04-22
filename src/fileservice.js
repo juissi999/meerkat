@@ -11,16 +11,17 @@ const post = (filename, noteid) => {
 }
 
 const getAll = () => {
-  const promise = axios.get(baseUrl)
-  return promise.then(response => response.data)
+  const request = axios.get(baseUrl)
+  return request.then(response => response.data)
 }
 
 const get = () => {
 
 }
 
-const del = () => {
-
+const del = (filename) => {
+  const request = axios.delete(`${baseUrl}/${filename}`)
+  return request.then(response => response.data)
 }
 
 export default {post, get, del, getAll}

@@ -65,9 +65,6 @@ exports.post = (request, response) => {
   })
 }
 
-exports.delete = (request, response) => {
-}
-
 exports.getAll = (request, response) => {
   dbservice.getAllFiles((err, files) => {
     if (err) {
