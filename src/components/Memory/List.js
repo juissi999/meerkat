@@ -4,7 +4,8 @@ import Memory from './index.js'
 const MemoryList = ({notes, setNotes, setNotification}) => {
 
   const mapMemories = () => {
-    return notes.reverse().map((note, i) =>
+    // make a copy of the array to not reverse original
+    return notes.slice(0).reverse().map((note, i) =>
       <Memory key={i} note={note} notes={notes} setNotes={setNotes} setNotification={setNotification}/>)
   }
 
