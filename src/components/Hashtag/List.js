@@ -1,6 +1,5 @@
 import React from 'react'
 import HashtagButton from './Button'
-import ButtonGroup from 'react-bootstrap/ButtonGroup'
 
 const HashtagList = ({hashtags, selectedHts, setSelectedHts}) => {
 
@@ -8,7 +7,6 @@ const HashtagList = ({hashtags, selectedHts, setSelectedHts}) => {
   const uniquehts = [...new Set(hashtags.map(ht=>ht.name))]
 
   const mapHts = () => {
-    
     return uniquehts.map((ht, i) => <HashtagButton key={i} name={ht} selectedHts={selectedHts} setSelectedHts={setSelectedHts}/>)
   }
 

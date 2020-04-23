@@ -19,7 +19,7 @@ const App = () => {
   const [notification, setNotification] = useState(null)
   const [hashtags, setHashtags] = useState([])
   const [selectedHts, setSelectedHts] = useState([])
-  const [notesShow, setNotesShow] = useState([])
+  const [notesVisible, setNotesVisible] = useState([])
   
   const getAll = () => {
     noteservice.getAll()
@@ -43,10 +43,17 @@ const App = () => {
   useEffect(getAll, [])
   
   // effect-hook updates hashtags every time notes change
-  useEffect(() => updateHashtags(notes, setHashtags), [notes])
+  useEffect(() => {
+    updateHashtags(notes, setHashtags)
+  }, [notes])
+
+  // effect-hook updates selectedhashtags every time notes change, hashtags that
+  // disappeared will be removed from the selected hashtags list
+  useEffect(() => {
+    setSelectedHts(selectedHts.filter(sh=>hashtags.map((ht)=>ht.name).includes(sh)))
+  }, [hashtags])
 
   // effect-hook filters shown notes every time selected hashtags change
-  // or hashtags are updated (new note, modification etc)
   useEffect(() => {
     const sn = notes.filter((n) => {
 
@@ -64,8 +71,8 @@ const App = () => {
       return selectedHts.length === foundHts.length
     })
 
-    setNotesShow(sn)
-  }, [selectedHts, hashtags])
+    setNotesVisible(sn)
+  }, [selectedHts])
 
   return (<Container>
             <Row>
@@ -86,7 +93,7 @@ const App = () => {
             </Row>
             <Row className='mt-3'>
               <Col>
-                <MemoryList notes={notesShow} setNotes={setNotes} setNotification={setNotification}/>
+                <MemoryList notes={notes} setNotes={setNotes} notesVisible={notesVisible} setNotification={setNotification}/>
               </Col>
             </Row>
           </Container>)
