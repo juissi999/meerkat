@@ -1,4 +1,8 @@
 import React, {useEffect, useState} from 'react'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 import MemoryList from './Memory/List'
 import MemoryPushForm from './Memory/PushForm'
@@ -63,14 +67,18 @@ const App = () => {
     setNotesShow(sn)
   }, [selectedHts, hashtags])
 
-  return (<>
-            <div id={'headline'}><h1>Meerkat</h1>
-              <Notification msg={notification} setNotification={setNotification}/>
-            </div>
-            <MemoryPushForm notes={notes} setNotes={setNotes} setNotification={setNotification}/>
-            <HashtagList hashtags={hashtags} selectedHts={selectedHts} setSelectedHts={setSelectedHts}/>
-            <MemoryList notes={notesShow} setNotes={setNotes} setNotification={setNotification}/>
-          </>)
+  return (<Container>
+            <Row>
+              <Col>
+                <div id={'headline'}><h1>Meerkat</h1>
+                  <Notification msg={notification} setNotification={setNotification}/>
+                </div>
+                <MemoryPushForm notes={notes} setNotes={setNotes} setNotification={setNotification}/>
+                <HashtagList hashtags={hashtags} selectedHts={selectedHts} setSelectedHts={setSelectedHts}/>
+                <MemoryList notes={notesShow} setNotes={setNotes} setNotification={setNotification}/>
+              </Col>
+            </Row>
+          </Container>)
 }
 
 export default App
