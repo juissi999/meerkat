@@ -1,4 +1,6 @@
 import React from 'react'
+import ToggleButton from 'react-bootstrap/ToggleButton'
+
 
 const HashtagButton = ({name, selectedHts, setSelectedHts}) => {
 
@@ -19,10 +21,7 @@ const HashtagButton = ({name, selectedHts, setSelectedHts}) => {
     }
   }
 
-  // decide which class is give to button
-  const buttonclass = isselected ? 'selected' : 'hashtag'
-
-  return (<button value={name} className={buttonclass} onClick={onClick}>{name}</button>)
+  return (<ToggleButton variant="outline-info" type="checkbox" checked={isselected} value={name} onChange={onClick}>{name}</ToggleButton>)
 }
 
 export default HashtagButton

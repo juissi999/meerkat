@@ -70,11 +70,22 @@ const App = () => {
   return (<Container>
             <Row>
               <Col>
-                <div id={'headline'}><h1>Meerkat</h1>
-                  <Notification msg={notification} setNotification={setNotification}/>
-                </div>
-                <MemoryPushForm notes={notes} setNotes={setNotes} setNotification={setNotification}/>
+                <h1>Meerkat</h1>
+                <Notification msg={notification} setNotification={setNotification}/>
+              </Col>
+            </Row>
+            <Row className='mt-3'>
+              <Col>
+                  <MemoryPushForm notes={notes} setNotes={setNotes} setNotification={setNotification}/>
+              </Col>
+            </Row>
+            <Row className='mt-3'>
+              <Col>
                 <HashtagList hashtags={hashtags} selectedHts={selectedHts} setSelectedHts={setSelectedHts}/>
+              </Col>
+            </Row>
+            <Row className='mt-3'>
+              <Col>
                 <MemoryList notes={notesShow} setNotes={setNotes} setNotification={setNotification}/>
               </Col>
             </Row>

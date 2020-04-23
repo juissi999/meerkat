@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react'
+import Button from 'react-bootstrap/Button'
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
+import Card from 'react-bootstrap/Card'
+
 import noteservice from '../../noteservice'
-import DateStr from '../DateStr'
-import MemoryStr from './Str'
 import MemoryFile from './File'
 
 const Memory = ({note, notes, setNotes, setNotification}) => {
@@ -59,13 +61,17 @@ const Memory = ({note, notes, setNotes, setNotification}) => {
     </div>)
   } else {
     return (
-      <div className={'memory'}>
-        <DateStr>{datestr}</DateStr>
-        <MemoryStr>{noteStr}</MemoryStr>
-        <MemoryFile>{note.files}</MemoryFile>
-        <button onClick={onClickUpdate}>edit</button>
-        <button onClick={onClickDelete}>delete</button>
-      </div>)
+      <Card className='mt-2'>
+        <Card.Body>
+          <Card.Subtitle className="mb-2 text-muted">{datestr}</Card.Subtitle>
+          <Card.Text>{noteStr}</Card.Text>
+          <MemoryFile>{note.files}</MemoryFile>
+          <ButtonGroup aria-label="Memory controls" size="sm">
+            <Button variant="secondary" onClick={onClickUpdate}>edit</Button>
+            <Button variant="secondary" onClick={onClickDelete}>delete</Button>
+          </ButtonGroup>
+        </Card.Body>
+      </Card>)
     }
 }
 

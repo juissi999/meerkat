@@ -1,5 +1,6 @@
 import React from 'react'
 import HashtagButton from './Button'
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
 
 const HashtagList = ({hashtags, selectedHts, setSelectedHts}) => {
 
@@ -11,9 +12,9 @@ const HashtagList = ({hashtags, selectedHts, setSelectedHts}) => {
     return uniquehts.map((ht, i) => <HashtagButton key={i} name={ht} selectedHts={selectedHts} setSelectedHts={setSelectedHts}/>)
   }
 
-  return (<div className='hashtags_container'>
+  return (<ButtonGroup toggle className="mb-2">
             {mapHts()}
-          </div>)
+            </ButtonGroup>)
 }
 
 export default HashtagList

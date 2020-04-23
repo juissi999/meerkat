@@ -8,9 +8,9 @@ const MemoryList = ({notes, setNotes, setNotification}) => {
       <Memory key={i} note={note} notes={notes} setNotes={setNotes} setNotification={setNotification}/>)
   }
 
-  return (<div className={'memory_container'}>
+  return (<>
             {mapMemories()}
-          </div>)
+          </>)
 }
 
 export default MemoryList

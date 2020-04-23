@@ -1,4 +1,5 @@
 import React from 'react'
+import Form from 'react-bootstrap/Form'
 
 const FileInput = ({file, setFile}) => {
 
@@ -6,19 +7,18 @@ const FileInput = ({file, setFile}) => {
     setFile(event.target.files[0])
   }
 
-  if (file === null) {
-    return(<div className='filearea'>
-            <label className='fileupload'>
-              Add a file
-              <input type='file' onChange={onChange}/>
-            </label>
-           </div>)
-  } else {
-    return (<div className='filearea'>
-              {file.name}
-            </div>)
-
+  let l = "Add file"
+  if (file !== null ) {
+    l = file.name
   }
+
+  return(<Form.File
+            id="custom-file"
+            label= {l}
+            onChange={onChange}
+            custom
+          />)
+  
 }
 
 export default FileInput
