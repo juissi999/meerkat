@@ -1,20 +1,32 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import Form from 'react-bootstrap/Form'
 
 const FileInput = ({file, setFile}) => {
 
-  const onChange = (event) => {
-    setFile(event.target.files[0])
-  }
+  const zerolabel = 'Add file'
 
-  let l = "Add file"
-  if (file !== null ) {
-    l = file.name
+  const [label, setLabel] = useState(zerolabel)
+
+  useEffect(() => {
+    if (file === null) {
+      setLabel(zerolabel)
+    } else {
+      setLabel(file.name)
+    }
+  }, [file])
+
+  const onChange = (event) => {
+    const newfile = event.target.files[0]
+    // is this next line fix okay?
+    event.target.value = null
+    if (newfile !== undefined) {
+      setFile(newfile)
+    }
   }
 
   return(<Form.File
             id="custom-file"
-            label= {l}
+            label= {label}
             onChange={onChange}
             custom
           />)

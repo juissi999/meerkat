@@ -11,7 +11,6 @@ const MemoryFile = ({children}) => {
     const splitted = filepath.split('.')
     const extension = splitted[splitted.length-1].toLowerCase()
 
-
     if (previewImageExtensions.includes(extension)) {
       return (<a href={filepath} key={i}><Image src={filepath} fluid /></a>)
     }
