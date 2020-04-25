@@ -75,10 +75,10 @@ const App = () => {
   }, [selectedHts])
 
   return (<Container>
+            <Notification setNotification={setNotification}>{notification}</Notification>
             <Row>
               <Col>
                 <h1>Meerkat</h1>
-                <Notification setNotification={setNotification}>{notification}</Notification>
               </Col>
             </Row>
             <Row className='mt-3'>
