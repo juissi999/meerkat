@@ -78,7 +78,7 @@ const App = () => {
             <Row>
               <Col>
                 <h1>Meerkat</h1>
-                <Notification msg={notification} setNotification={setNotification}/>
+                <Notification setNotification={setNotification}>{notification}</Notification>
               </Col>
             </Row>
             <Row className='mt-3'>
