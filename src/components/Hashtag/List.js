@@ -10,9 +10,13 @@ const HashtagList = ({hashtags, selectedHts, setSelectedHts}) => {
     return uniquehts.map((ht, i) => <HashtagButton key={i} name={ht} selectedHts={selectedHts} setSelectedHts={setSelectedHts}/>)
   }
 
-  return (<>
-            {mapHts()}
-          </>)
+  if (uniquehts.length===0) {
+    return (<>Add hashtags to your notes.</>)
+  } else {
+    return (<>
+      {mapHts()}
+    </>)
+  }
 }
 
 export default HashtagList
