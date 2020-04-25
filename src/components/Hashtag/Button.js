@@ -1,4 +1,6 @@
 import React from 'react'
+import Button from 'react-bootstrap/Button'
+
 
 const HashtagButton = ({name, selectedHts, setSelectedHts}) => {
 
@@ -19,10 +21,11 @@ const HashtagButton = ({name, selectedHts, setSelectedHts}) => {
     }
   }
 
-  // decide which class is give to button
-  const buttonclass = isselected ? 'selected' : 'hashtag'
-
-  return (<button value={name} className={buttonclass} onClick={onClick}>{name}</button>)
+  let variant = 'outline-info'
+  if (isselected) {
+    variant = 'info'
+  }
+  return (<><Button variant={variant} value={name} onClick={onClick}>{name}</Button>{' '}</>)
 }
 
 export default HashtagButton

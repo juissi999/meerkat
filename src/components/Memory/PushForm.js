@@ -2,6 +2,8 @@ import React, {useState} from 'react'
 import noteservice from '../../noteservice'
 import fileservice from '../../fileservice'
 import FileInput from '../FileInput'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 const MemoryPushForm = ({notes, setNotes, setNotification}) => {
 
@@ -51,12 +53,19 @@ const MemoryPushForm = ({notes, setNotes, setNotification}) => {
   const on_change = (event) => {
     setMemo(event.target.value)
   }
+  //<textarea name='note' value={memo} onChange={on_change}/>
 
-  return (<form name='pushform' onSubmit={on_submit}>
-            <textarea name='note' value={memo} onChange={on_change}/>
-            <FileInput file={file} setFile={setFile}/>
-            <button type='submit'>Remember</button>
-          </form>)
+  return (<Form name='pushform' onSubmit={on_submit}>
+            <Form.Group controlId="formMemory">
+              <Form.Control as='textarea' rows='3' value={memo} onChange={on_change} />
+            </Form.Group>
+            <Form.Group controlId="formFile">
+              <FileInput file={file} setFile={setFile}/>
+            </Form.Group>
+            <Form.Group controlId="formSubmit">
+              <Button size='lg' type='submit' >Remember</Button>
+            </Form.Group>
+          </Form>)
 }
 
 export default MemoryPushForm

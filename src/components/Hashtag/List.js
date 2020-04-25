@@ -7,13 +7,16 @@ const HashtagList = ({hashtags, selectedHts, setSelectedHts}) => {
   const uniquehts = [...new Set(hashtags.map(ht=>ht.name))]
 
   const mapHts = () => {
-    
     return uniquehts.map((ht, i) => <HashtagButton key={i} name={ht} selectedHts={selectedHts} setSelectedHts={setSelectedHts}/>)
   }
 
-  return (<div className='hashtags_container'>
-            {mapHts()}
-          </div>)
+  if (uniquehts.length===0) {
+    return (<>Add hashtags to your notes.</>)
+  } else {
+    return (<>
+      {mapHts()}
+    </>)
+  }
 }
 
 export default HashtagList

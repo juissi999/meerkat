@@ -1,4 +1,8 @@
 import React, {useEffect, useState} from 'react'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 import MemoryList from './Memory/List'
 import MemoryPushForm from './Memory/PushForm'
@@ -15,7 +19,7 @@ const App = () => {
   const [notification, setNotification] = useState(null)
   const [hashtags, setHashtags] = useState([])
   const [selectedHts, setSelectedHts] = useState([])
-  const [notesShow, setNotesShow] = useState([])
+  const [notesVisible, setNotesVisible] = useState([])
   
   const getAll = () => {
     noteservice.getAll()
@@ -39,10 +43,17 @@ const App = () => {
   useEffect(getAll, [])
   
   // effect-hook updates hashtags every time notes change
-  useEffect(() => updateHashtags(notes, setHashtags), [notes])
+  useEffect(() => {
+    updateHashtags(notes, setHashtags)
+  }, [notes])
+
+  // effect-hook updates selectedhashtags every time notes change, hashtags that
+  // disappeared will be removed from the selected hashtags list
+  useEffect(() => {
+    setSelectedHts(selectedHts.filter(sh=>hashtags.map((ht)=>ht.name).includes(sh)))
+  }, [hashtags])
 
   // effect-hook filters shown notes every time selected hashtags change
-  // or hashtags are updated (new note, modification etc)
   useEffect(() => {
     const sn = notes.filter((n) => {
 
@@ -60,17 +71,32 @@ const App = () => {
       return selectedHts.length === foundHts.length
     })
 
-    setNotesShow(sn)
-  }, [selectedHts, hashtags])
+    setNotesVisible(sn)
+  }, [selectedHts])
 
-  return (<>
-            <div id={'headline'}><h1>Meerkat</h1>
-              <Notification msg={notification} setNotification={setNotification}/>
-            </div>
-            <MemoryPushForm notes={notes} setNotes={setNotes} setNotification={setNotification}/>
-            <HashtagList hashtags={hashtags} selectedHts={selectedHts} setSelectedHts={setSelectedHts}/>
-            <MemoryList notes={notesShow} setNotes={setNotes} setNotification={setNotification}/>
-          </>)
+  return (<Container>
+            <Notification setNotification={setNotification}>{notification}</Notification>
+            <Row>
+              <Col>
+                <h1>Meerkat</h1>
+              </Col>
+            </Row>
+            <Row className='mt-3'>
+              <Col>
+                  <MemoryPushForm notes={notes} setNotes={setNotes} setNotification={setNotification}/>
+              </Col>
+            </Row>
+            <Row className='mt-3'>
+              <Col>
+                <HashtagList hashtags={hashtags} selectedHts={selectedHts} setSelectedHts={setSelectedHts}/>
+              </Col>
+            </Row>
+            <Row className='mt-3'>
+              <Col>
+                <MemoryList notes={notes} setNotes={setNotes} notesVisible={notesVisible} setNotification={setNotification}/>
+              </Col>
+            </Row>
+          </Container>)
 }
 
 export default App

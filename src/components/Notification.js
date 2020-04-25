@@ -1,8 +1,12 @@
 import React from 'react'
+import Alert from 'react-bootstrap/Alert'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Container from 'react-bootstrap/Container'
 
 let notificationTimer = null
 
-const Notification = ({msg, setNotification}) => {
+const Notification = ({children, setNotification}) => {
 
   clearTimeout(notificationTimer)
   notificationTimer = setTimeout(()=>{
@@ -10,11 +14,17 @@ const Notification = ({msg, setNotification}) => {
   }, 3000)
 
   // render only if there is something to render
-  if (msg === null) {
+  if (children === null) {
     return null
   }
 
-  return (<div className='notification'>{msg}</div>)
+  return (<Container className='fixed-top'>
+            <Row>
+              <Col>
+                <Alert variant={'success'}>{children}</Alert>
+              </Col>
+            </Row>
+          </Container>)
 }
 
 export default Notification

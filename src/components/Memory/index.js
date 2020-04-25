@@ -1,7 +1,10 @@
 import React, {useEffect, useState} from 'react'
+import Button from 'react-bootstrap/Button'
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
+import Card from 'react-bootstrap/Card'
+import Form from 'react-bootstrap/Form'
+
 import noteservice from '../../noteservice'
-import DateStr from '../DateStr'
-import MemoryStr from './Str'
 import MemoryFile from './File'
 
 const Memory = ({note, notes, setNotes, setNotification}) => {
@@ -33,7 +36,9 @@ const Memory = ({note, notes, setNotes, setNotification}) => {
     setNoteStr(event.target.value)
   }
 
-  const onPut = () => {
+  const onPut = (event) => {
+    event.preventDefault()
+
     noteservice
       .update(note.noteid, {text:noteStr})
       .then(() => {
@@ -51,21 +56,32 @@ const Memory = ({note, notes, setNotes, setNotification}) => {
   }
 
   if (editable) {
-    return(<div className={'memory'}>
-      <form name='pushform' onSubmit={onPut}>
-          <textarea name='note' value={noteStr} onChange={onChange}/>
-      </form>
-      <button onClick={onPut}>ok</button>
-    </div>)
+    return(<Card className='mt-2'>
+    <Card.Body>
+      <Card.Subtitle className="mb-2 text-muted">{datestr}</Card.Subtitle>
+      <Form name='pushform' onSubmit={onPut}>
+        <Form.Group controlId="formNote">
+          <Form.Control as='textarea' name='note' rows='3' value={noteStr} onChange={onChange} />
+          </Form.Group>
+          <Form.Group controlId="formSubmit">
+            <Button type='submit'>Ok</Button>
+          </Form.Group>
+        </Form>
+      </Card.Body>
+      </Card>)
   } else {
     return (
-      <div className={'memory'}>
-        <DateStr>{datestr}</DateStr>
-        <MemoryStr>{noteStr}</MemoryStr>
-        <MemoryFile>{note.files}</MemoryFile>
-        <button onClick={onClickUpdate}>edit</button>
-        <button onClick={onClickDelete}>delete</button>
-      </div>)
+      <Card className='mt-2'>
+        <Card.Body>
+          <Card.Subtitle className="mb-2 text-muted">{datestr}</Card.Subtitle>
+          <Card.Text>{noteStr}</Card.Text>
+          <MemoryFile>{note.files}</MemoryFile>
+          <ButtonGroup aria-label="Memory controls" size="sm" className='mt-1'>
+            <Button variant="secondary" onClick={onClickUpdate}>edit</Button>
+            <Button variant="secondary" onClick={onClickDelete}>delete</Button>
+          </ButtonGroup>
+        </Card.Body>
+      </Card>)
     }
 }
 
