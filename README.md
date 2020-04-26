@@ -5,6 +5,10 @@ A quick on the go web app for making notes.
 
 A quick animal who probably forgots a lot quickly too. Also meerkat resembles the word "memory" a bit and the purpose of this app is to be a help for memory.
 
+### features
+
+Store memos by writing a note. Add file to note if you want. Add hashtags to note. Filter notes in the database by using hashtags inside notes. Edit or delete existing notes.
+
 ### Usage
 
 Start a command line and go to the app directory.
@@ -17,7 +21,7 @@ Install dependencies by typing:
 
 `npm install`
 
-Build database by typing:
+Build front-end by typing:
 
 `npm run build`
 
@@ -32,9 +36,12 @@ where [portnum] is a port number where the server will start listening. If you d
 * html
 * CSS
 * JavaScript
+* Single Page App design
 * React.js
+* React bootstrap
+* REST API
 * Node.js
+* Webpack
+* File upload with forms and multer
 * npm
 * SQL on sqlite3
-
-* Webpack
