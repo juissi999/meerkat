@@ -5,7 +5,7 @@ A quick on the go web app for making notes.
 
 A quick animal who probably forgots a lot quickly too. Also meerkat resembles the word "memory" a bit and the purpose of this app is to be a help for memory.
 
-### features
+### Features
 
 Store memos by writing a note. Add file to note if you want. Add hashtags to note. Filter notes in the database by using hashtags inside notes. Edit or delete existing notes.
 

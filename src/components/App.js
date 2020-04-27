@@ -8,6 +8,7 @@ import MemoryList from './Memory/List'
 import MemoryPushForm from './Memory/PushForm'
 import HashtagList from './Hashtag/List'
 import Notification from './Notification'
+import Refresher from './Refresher'
 
 import {updateHashtags} from '../utils'
 import noteservice from '../noteservice'
@@ -79,6 +80,11 @@ const App = () => {
             <Row>
               <Col>
                 <h1>Meerkat</h1>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Refresher getterFcn={getAll}/>
               </Col>
             </Row>
             <Row className='mt-3'>
