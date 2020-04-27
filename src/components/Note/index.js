@@ -76,7 +76,7 @@ const Note = ({note, notes, setNotes, setNotification}) => {
           <Card.Subtitle className="mb-2 text-muted">{datestr}</Card.Subtitle>
           <Card.Text>{noteStr}</Card.Text>
           <NoteFile>{note.files}</NoteFile>
-          <ButtonGroup aria-label="Memory controls" size="sm" className='mt-1'>
+          <ButtonGroup aria-label="Memory controls" size="sm">
             <Button variant="secondary" onClick={onClickUpdate}>edit</Button>
             <Button variant="secondary" onClick={onClickDelete}>delete</Button>
           </ButtonGroup>
