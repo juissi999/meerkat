@@ -5,7 +5,7 @@ import FileInput from '../FileInput'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
-const MemoryPushForm = ({notes, setNotes, setNotification}) => {
+const NotePushForm = ({notes, setNotes, setNotification}) => {
 
   const [memo, setMemo] = useState('')
   const [file, setFile] = useState(null)
@@ -68,4 +68,4 @@ const MemoryPushForm = ({notes, setNotes, setNotification}) => {
           </Form>)
 }
 
-export default MemoryPushForm
+export default NotePushForm

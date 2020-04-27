@@ -4,7 +4,7 @@ import Image from 'react-bootstrap/Image'
 const uploaddir = 'uploads'
 const previewImageExtensions = ['jpg', 'png', 'jpeg', 'gif']
 
-const MemoryFile = ({children}) => {
+const NoteFile = ({children}) => {
 
   const filedisplay = (c,i) => {
     const filepath = `${uploaddir}/${c}`
@@ -17,9 +17,9 @@ const MemoryFile = ({children}) => {
     return (<a href={filepath} key={i}>{c}</a>)
   }
 
-  return (<div className='memfilecontainer'>
+  return (<div className='notefilecontainer'>
             {children.map(filedisplay)}
           </div>)
 }
 
-export default MemoryFile
+export default NoteFile

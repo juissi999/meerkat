@@ -5,9 +5,9 @@ import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
 
 import noteservice from '../../noteservice'
-import MemoryFile from './File'
+import NoteFile from './File'
 
-const Memory = ({note, notes, setNotes, setNotification}) => {
+const Note = ({note, notes, setNotes, setNotification}) => {
 
   const [editable, setEditable] = useState(false)
   const [noteStr, setNoteStr] = useState('')
@@ -75,7 +75,7 @@ const Memory = ({note, notes, setNotes, setNotification}) => {
         <Card.Body>
           <Card.Subtitle className="mb-2 text-muted">{datestr}</Card.Subtitle>
           <Card.Text>{noteStr}</Card.Text>
-          <MemoryFile>{note.files}</MemoryFile>
+          <NoteFile>{note.files}</NoteFile>
           <ButtonGroup aria-label="Memory controls" size="sm" className='mt-1'>
             <Button variant="secondary" onClick={onClickUpdate}>edit</Button>
             <Button variant="secondary" onClick={onClickDelete}>delete</Button>
@@ -85,4 +85,4 @@ const Memory = ({note, notes, setNotes, setNotification}) => {
     }
 }
 
-export default Memory
+export default Note

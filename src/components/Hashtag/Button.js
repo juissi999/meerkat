@@ -1,7 +1,6 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button'
 
-
 const HashtagButton = ({name, selectedHts, setSelectedHts}) => {
 
   const isselected = selectedHts.includes(name)

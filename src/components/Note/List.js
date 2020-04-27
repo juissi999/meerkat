@@ -1,12 +1,12 @@
 import React from 'react'
-import Memory from './index.js'
+import Note from './index'
 
-const MemoryList = ({notes, setNotes, notesVisible, setNotification}) => {
+const NoteList = ({notes, setNotes, notesVisible, setNotification}) => {
 
   const mapMemories = () => {
     // make a copy of the array to not reverse original
     return notesVisible.slice(0).reverse().map((note, i) =>
-      <Memory key={i} note={note} notes={notes} setNotes={setNotes} setNotification={setNotification}/>)
+      <Note key={i} note={note} notes={notes} setNotes={setNotes} setNotification={setNotification}/>)
   }
 
   return (<>
@@ -14,4 +14,4 @@ const MemoryList = ({notes, setNotes, notesVisible, setNotification}) => {
           </>)
 }
 
-export default MemoryList
+export default NoteList

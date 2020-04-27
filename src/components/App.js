@@ -4,8 +4,8 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-import MemoryList from './Memory/List'
-import MemoryPushForm from './Memory/PushForm'
+import NoteList from './Note/List'
+import NotePushForm from './Note/PushForm'
 import HashtagList from './Hashtag/List'
 import Notification from './Notification'
 import Refresher from './Refresher'
@@ -89,7 +89,7 @@ const App = () => {
             </Row>
             <Row className='mt-3'>
               <Col>
-                  <MemoryPushForm notes={notes} setNotes={setNotes} setNotification={setNotification}/>
+                  <NotePushForm notes={notes} setNotes={setNotes} setNotification={setNotification}/>
               </Col>
             </Row>
             <Row className='mt-3'>
@@ -99,7 +99,7 @@ const App = () => {
             </Row>
             <Row className='mt-3'>
               <Col>
-                <MemoryList notes={notes} setNotes={setNotes} notesVisible={notesVisible} setNotification={setNotification}/>
+                <NoteList notes={notes} setNotes={setNotes} notesVisible={notesVisible} setNotification={setNotification}/>
               </Col>
             </Row>
           </Container>)
