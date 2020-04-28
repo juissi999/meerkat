@@ -9,6 +9,17 @@ exports.getAll = (request, response) => {
     })
 }
 
+exports.getOne = (request, response) => {
+  const noteid = Number(request.params.id)
+  dbservice.getOneNote(noteid, (err, note)=>{
+    if (err) {
+      response.status(409).end()
+      return console.log(err)
+    }
+    response.json(note)
+  })
+}
+
 exports.post = (request, response) => {
   const posttime = Date.now()
   const noteid = Math.floor(Math.random()*1000000000);
@@ -16,7 +27,7 @@ exports.post = (request, response) => {
 
   if (!note.text) {
     return response.status(400).json({
-      error: 'content missing' 
+      error: 'Content missing.' 
     })
   }
 

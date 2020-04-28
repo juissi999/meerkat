@@ -24,7 +24,7 @@ let db = new sqlite.Database(dbpath, (err) => {
       }
     })
   }
- })
+})
 
 exports.getAllNotes = (cb) => {
   let allNotes = []
@@ -37,8 +37,24 @@ exports.getAllNotes = (cb) => {
   }, ()=>{return cb(null, allNotes)})
 }
 
+exports.getOneNote = (noteid, cb) => {
+  const querystr = 'SELECT * FROM notes WHERE noteid=?'
+  db.get(querystr, [noteid], (err, row)=>{
+    if (err) {
+      return cb(err)
+    }
+    
+    // if note does not exist, return empty JSON
+    if (row === undefined) {
+      return cb(null, {})
+    }
+
+    return cb(null, row)
+  })
+}
+
 exports.postNote = (noteid, notestr, posttime, cb) => {
-  querystr = 'INSERT INTO notes (noteid, text, date) VALUES (?, ?, ?)'
+  const querystr = 'INSERT INTO notes (noteid, text, date) VALUES (?, ?, ?)'
   db.run(querystr, [noteid, notestr, posttime], (err) => {
     if (err) {
       return cb(err)
@@ -48,7 +64,7 @@ exports.postNote = (noteid, notestr, posttime, cb) => {
 }
 
 exports.deleteNote = (noteid, cb) => {
-  querystr = 'DELETE FROM notes WHERE noteid = ?'
+  const querystr = 'DELETE FROM notes WHERE noteid = ?'
   db.run(querystr, [noteid], (err) => {
     if (err) {
       return cb(err)
@@ -58,7 +74,7 @@ exports.deleteNote = (noteid, cb) => {
 }
 
 exports.putNote = (noteid, notestr, cb) => {
-  querystr = 'UPDATE notes SET text=? WHERE noteid=?'
+  const querystr = 'UPDATE notes SET text=? WHERE noteid=?'
   db.run(querystr, [notestr, noteid], (err) => {
     if (err) {
       return cb(err)
@@ -68,7 +84,7 @@ exports.putNote = (noteid, notestr, cb) => {
 }
 
 exports.postFile = (noteid, filename, cb) => {
-  querystr = 'INSERT INTO files (noteid, filename) VALUES (?, ?)'
+  const querystr = 'INSERT INTO files (noteid, filename) VALUES (?, ?)'
   db.run(querystr, [noteid, filename], (err) => {
     if (err) {
       return cb(err)
@@ -78,7 +94,7 @@ exports.postFile = (noteid, filename, cb) => {
 }
 
 exports.deleteFiles = (noteid, cb) => {
-  querystr = 'DELETE FROM files WHERE noteid = ?'
+  const querystr = 'DELETE FROM files WHERE noteid = ?'
   db.run(querystr, [noteid], (err) => {
     if (err) {
       return cb(err)

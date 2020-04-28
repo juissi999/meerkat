@@ -5,6 +5,8 @@ router.get('/', handlers.getAll)
 
 router.post('/', handlers.post)
 
+router.get('/:id', handlers.getOne)
+
 router.delete('/:id', handlers.delete)
 
 router.put('/:id', handlers.put)
