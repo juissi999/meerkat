@@ -26,10 +26,22 @@ const Note = ({note, notes, setNotes, setNotification}) => {
         setNotes(newNotes)
         setNotification(`Note deleted.`)
       })
+      .catch(err =>setNotification(err.message))
   }
 
   const onClickUpdate = () => {
-    setEditable(!editable)
+    noteservice
+      .getOne(note.noteid)
+      .then((receivedNote)=>{
+        if (Object.keys(receivedNote).length === 0) {
+          setNotification('Note does not exist.')
+          setNotes(notes.filter(n =>n.noteid !== note.noteid))
+        } else {
+          setNoteStr(receivedNote.text)
+          setEditable(!editable)
+        }
+      })
+      .catch(err=>setNotification(err.message))
   }
 
   const onChange = (event) => {
@@ -53,6 +65,7 @@ const Note = ({note, notes, setNotes, setNotification}) => {
         setEditable(!editable)
         setNotification(`Note updated.`)
       })
+      .catch(err=>setNotification(err.message))
   }
 
   if (editable) {
