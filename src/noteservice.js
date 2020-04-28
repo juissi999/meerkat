@@ -2,18 +2,18 @@ import axios from 'axios'
 const baseUrl = '/notes'
 
 const getAll = () => {
-  const promise = axios.get(baseUrl)
-  return promise.then(response => response.data)
+  const request = axios.get(baseUrl)
+  return request.then(response => response.data)
 }
 
 const post = (newentry) => {
-  const promise = axios.post(baseUrl, newentry)
-  return promise.then((response) => response.data)
+  const request = axios.post(baseUrl, newentry)
+  return request.then((response) => response.data)
 }
 
 const del = (id) => {
-  const promise = axios.delete(`${baseUrl}/${id}`)
-  return promise.then((response) => {
+  const request = axios.delete(`${baseUrl}/${id}`)
+  return request.then((response) => {
     return response.data
   }) 
 }
