@@ -11,7 +11,7 @@ const NoteList = ({notes, setNotes, notesVisible, setNotification}) => {
     })
 
     return sortedNotes.map((note, i) =>
-      <Note key={i} note={note} notes={notes} setNotes={setNotes} setNotification={setNotification}/>)
+      <Note key={note.noteid} note={note} notes={notes} setNotes={setNotes} setNotification={setNotification}/>)
   }
 
   return (<>

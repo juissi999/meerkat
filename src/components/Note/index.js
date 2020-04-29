@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Card from 'react-bootstrap/Card'
@@ -12,10 +12,9 @@ const Note = ({note, notes, setNotes, setNotification}) => {
   const [editable, setEditable] = useState(false)
   const [noteStr, setNoteStr] = useState('')
 
-  // set note text to hook so that editing re-renders element
-  useEffect(()=>setNoteStr(note.text), [note])
-
-  const datestr = new Date(note.date).toString()
+  const datetxt = (dstring) => {
+    return new Date(dstring).toString()
+  } 
 
   const onClickDelete = () => {
     noteservice.del(note.noteid)
@@ -26,13 +25,13 @@ const Note = ({note, notes, setNotes, setNotification}) => {
         setNotes(newNotes)
         setNotification(`Note deleted.`)
       })
-      .catch(err =>setNotification(err.message))
+      .catch(err => setNotification(err.message))
   }
 
-  const onClickUpdate = () => {
+  const onClickEdit = () => {
     noteservice
       .getOne(note.noteid)
-      .then((receivedNote)=>{
+      .then((receivedNote) => {
         if (Object.keys(receivedNote).length === 0) {
           setNotification('Note does not exist.')
           setNotes(notes.filter(n =>n.noteid !== note.noteid))
@@ -41,7 +40,7 @@ const Note = ({note, notes, setNotes, setNotification}) => {
           setEditable(!editable)
         }
       })
-      .catch(err=>setNotification(err.message))
+      .catch(err => setNotification(err.message))
   }
 
   const onChange = (event) => {
@@ -56,45 +55,44 @@ const Note = ({note, notes, setNotes, setNotification}) => {
       .then(() => {
         // note was succesfully updated
         // new noteobject where text is replace on this noteid
-        const newNotes = notes.map(n=>n.noteid===note.noteid?{...note, text:noteStr}:n)
+        const newNotes = notes.map(n => n.noteid === note.noteid ? {...note, text:noteStr} : n)
 
         // set it on notes hook
         setNotes(newNotes)
 
         // set component state
         setEditable(!editable)
-        setNotification(`Note updated.`)
+        setNotification('Note updated.')
       })
-      .catch(err=>setNotification(err.message))
+      .catch(err => setNotification(err.message))
   }
 
   if (editable) {
     return(<Card className='mt-2'>
-    <Card.Body>
-      <Card.Subtitle className="mb-2 text-muted">{datestr}</Card.Subtitle>
-      <Form name='pushform' onSubmit={onPut}>
-        <Form.Group controlId="formNote">
-          <Form.Control as='textarea' name='note' rows='3' value={noteStr} onChange={onChange} />
-          </Form.Group>
-          <Form.Group controlId="formSubmit">
-            <Button type='submit'>Ok</Button>
-          </Form.Group>
-        </Form>
-      </Card.Body>
-      </Card>)
+             <Card.Body>
+               <Card.Subtitle className="mb-2 text-muted">{datetxt(note.date)}</Card.Subtitle>
+               <Form name='pushform' onSubmit={onPut}>
+                 <Form.Group controlId="formNote">
+                   <Form.Control as='textarea' name='note' rows='3' value={noteStr} onChange={onChange} />
+                   </Form.Group>
+                   <Form.Group controlId="formSubmit">
+                     <Button type='submit'>Update note</Button>
+                   </Form.Group>
+                 </Form>
+               </Card.Body>
+             </Card>)
   } else {
-    return (
-      <Card className='mt-2'>
-        <Card.Body>
-          <Card.Subtitle className="mb-2 text-muted">{datestr}</Card.Subtitle>
-          <Card.Text>{noteStr}</Card.Text>
-          <NoteFile>{note.files}</NoteFile>
-          <ButtonGroup aria-label="Memory controls" size="sm">
-            <Button variant="secondary" onClick={onClickUpdate}>edit</Button>
-            <Button variant="secondary" onClick={onClickDelete}>delete</Button>
-          </ButtonGroup>
-        </Card.Body>
-      </Card>)
+    return (<Card className='mt-2'>
+              <Card.Body>
+                <Card.Subtitle className="mb-2 text-muted">{datetxt(note.date)}</Card.Subtitle>
+                <Card.Text>{note.text}</Card.Text>
+                <NoteFile>{note.files}</NoteFile>
+                <ButtonGroup aria-label="Memory controls" size="sm">
+                  <Button variant="secondary" onClick={onClickEdit}>edit</Button>
+                  <Button variant="secondary" onClick={onClickDelete}>delete</Button>
+                </ButtonGroup>
+              </Card.Body>
+            </Card>)
     }
 }
 
