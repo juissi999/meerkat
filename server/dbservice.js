@@ -9,15 +9,15 @@ if (!fs.existsSync(dbdir)) {
   fs.mkdirSync(dbdir)
 }
 
-let db = new sqlite.Database(dbpath, (err) => {
+const db = new sqlite.Database(dbpath, (err) => {
   if (err) {
-   return console.error(err.message)
+    return console.error(err.message)
   }
 
   const queries = ['CREATE TABLE IF NOT EXISTS notes(text TEXT, date INT, noteid INT PRIMARY KEY)',
-                   'CREATE TABLE IF NOT EXISTS files (noteid INT, filename TEXT)']
+    'CREATE TABLE IF NOT EXISTS files (noteid INT, filename TEXT)']
 
-  for (let i=0;i<queries.length;i++){
+  for (let i = 0; i < queries.length; i++) {
     db.run(queries[i], (err) => {
       if (err) {
         return console.error(err.message)
@@ -27,23 +27,23 @@ let db = new sqlite.Database(dbpath, (err) => {
 })
 
 exports.getAllNotes = (cb) => {
-  let allNotes = []
+  const allNotes = []
 
   db.each('SELECT * FROM notes', (err, row) => {
     if (err) {
-      return cb(error)
+      return cb(err)
     }
     allNotes.push(row)
-  }, ()=>{return cb(null, allNotes)})
+  }, () => cb(null, allNotes))
 }
 
 exports.getOneNote = (noteid, cb) => {
   const querystr = 'SELECT * FROM notes WHERE noteid=?'
-  db.get(querystr, [noteid], (err, row)=>{
+  db.get(querystr, [noteid], (err, row) => {
     if (err) {
       return cb(err)
     }
-    
+
     // if note does not exist, return empty JSON
     if (row === undefined) {
       return cb(null, {})
@@ -104,12 +104,12 @@ exports.deleteFiles = (noteid, cb) => {
 }
 
 exports.getAllFiles = (cb) => {
-  let allFiles = []
+  const allFiles = []
 
   db.each('SELECT * FROM files', (err, row) => {
     if (err) {
-      return cb(error)
+      return cb(err)
     }
     allFiles.push(row)
-  }, ()=>{return cb(null, allFiles)})
+  }, () => cb(null, allFiles))
 }

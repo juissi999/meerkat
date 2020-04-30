@@ -1,18 +1,17 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import noteservice from '../../noteservice'
 import fileservice from '../../fileservice'
 import FileInput from '../FileInput'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
-const NotePushForm = ({notes, setNotes, setNotification}) => {
-
+const NotePushForm = ({ notes, setNotes, setNotification }) => {
   const [memo, setMemo] = useState('')
   const [file, setFile] = useState(null)
 
-  const newentry = {'text':memo}
+  const newentry = { text: memo }
 
-  const on_submit = (event) => {
+  const onSubmit = (event) => {
     event.preventDefault()
 
     // prevent empty input
@@ -34,9 +33,9 @@ const NotePushForm = ({notes, setNotes, setNotification}) => {
         if (file !== null) {
           fileservice
             .post(file, noteid)
-            .then((response)=>{
+            .then((response) => {
               setFile(null)
-              //console.log(response, noteid)
+              // console.log(response, noteid)
               addedentry.files = [response.filename]
               const newNotes = notes.concat(addedentry)
               setNotes(newNotes)
@@ -47,25 +46,26 @@ const NotePushForm = ({notes, setNotes, setNotification}) => {
           setNotes(newNotes)
         }
       })
-
   }
 
-  const on_change = (event) => {
+  const onChange = (event) => {
     setMemo(event.target.value)
   }
-  //<textarea name='note' value={memo} onChange={on_change}/>
+  // <textarea name='note' value={memo} onChange={on_change}/>
 
-  return (<Form name='pushform' onSubmit={on_submit}>
-            <Form.Group controlId="formMemory">
-              <Form.Control as='textarea' rows='3' value={memo} onChange={on_change} />
-            </Form.Group>
-            <Form.Group controlId="formFile">
-              <FileInput file={file} setFile={setFile}/>
-            </Form.Group>
-            <Form.Group controlId="formSubmit">
-              <Button size='lg' type='submit' >Remember</Button>
-            </Form.Group>
-          </Form>)
+  return (
+    <Form name='pushform' onSubmit={onSubmit}>
+      <Form.Group controlId='formMemory'>
+        <Form.Control as='textarea' rows='3' value={memo} onChange={onChange} />
+      </Form.Group>
+      <Form.Group controlId='formFile'>
+        <FileInput file={file} setFile={setFile} />
+      </Form.Group>
+      <Form.Group controlId='formSubmit'>
+        <Button size='lg' type='submit'>Remember</Button>
+      </Form.Group>
+    </Form>
+  )
 }
 
 export default NotePushForm

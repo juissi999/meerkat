@@ -6,10 +6,9 @@ import Container from 'react-bootstrap/Container'
 
 let notificationTimer = null
 
-const Notification = ({children, setNotification}) => {
-
+const Notification = ({ children, setNotification }) => {
   clearTimeout(notificationTimer)
-  notificationTimer = setTimeout(()=>{
+  notificationTimer = setTimeout(() => {
     setNotification(null)
   }, 3000)
 
@@ -18,13 +17,15 @@ const Notification = ({children, setNotification}) => {
     return null
   }
 
-  return (<Container className='fixed-top'>
-            <Row>
-              <Col>
-                <Alert variant={'success'}>{children}</Alert>
-              </Col>
-            </Row>
-          </Container>)
+  return (
+    <Container className='fixed-top'>
+      <Row>
+        <Col>
+          <Alert variant='success'>{children}</Alert>
+        </Col>
+      </Row>
+    </Container>
+  )
 }
 
 export default Notification

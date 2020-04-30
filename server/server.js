@@ -1,5 +1,5 @@
 // a node.js webserver without any frameworks
-// run: "node ./server"
+// run: 'node ./server'
 
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -17,14 +17,14 @@ var arguments = process.argv.slice(2)
 var PORT = 80
 if (arguments.length > 1) {
   // too much arguments
-  console.error("Maximum argument count 1: port for server to listen")
+  console.error('Maximum argument count 1: port for server to listen')
   return
 } else if (arguments.length == 1) {
   // right amount of arguments
   PORT = Number(arguments[0])
   if (isNaN(PORT)) {
     // make sure argument was a proper number
-    console.error("Expecting a numerical argument.")
+    console.error('Expecting a numerical argument.')
     return
   }
 }

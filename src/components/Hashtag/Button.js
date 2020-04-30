@@ -1,16 +1,15 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button'
 
-const HashtagButton = ({name, selectedHts, setSelectedHts}) => {
-
+const HashtagButton = ({ name, selectedHts, setSelectedHts }) => {
   const isselected = selectedHts.includes(name)
 
   // check if hashtag is on selectedHts hook array and remove it
   // if it is or append it if it's not
   const onClick = () => {
     if (isselected) {
-      setSelectedHts(selectedHts.filter(htname=>{
-        if (htname!==name){
+      setSelectedHts(selectedHts.filter(htname => {
+        if (htname !== name) {
           return htname
         }
       }))
@@ -24,7 +23,11 @@ const HashtagButton = ({name, selectedHts, setSelectedHts}) => {
   if (isselected) {
     variant = 'info'
   }
-  return (<><Button variant={variant} value={name} onClick={onClick}>{name}</Button>{' '}</>)
+  return (
+    <>
+      <Button variant={variant} value={name} onClick={onClick}>{name}</Button>{' '}
+    </>
+  )
 }
 
 export default HashtagButton

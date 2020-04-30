@@ -5,13 +5,13 @@ exports.getAll = (request, response) => {
     if (err) {
       return console.log(err)
     }
-    response.json(notes) 
-    })
+    response.json(notes)
+  })
 }
 
 exports.getOne = (request, response) => {
   const noteid = Number(request.params.id)
-  dbservice.getOneNote(noteid, (err, note)=>{
+  dbservice.getOneNote(noteid, (err, note) => {
     if (err) {
       response.status(409).end()
       return console.log(err)
@@ -22,16 +22,16 @@ exports.getOne = (request, response) => {
 
 exports.post = (request, response) => {
   const posttime = Date.now()
-  const noteid = Math.floor(Math.random()*1000000000);
-  const note = {text:request.body.text, noteid:noteid, date:posttime}
+  const noteid = Math.floor(Math.random() * 1000000000)
+  const note = { text: request.body.text, noteid: noteid, date: posttime }
 
   if (!note.text) {
     return response.status(400).json({
-      error: 'Content missing.' 
+      error: 'Content missing.'
     })
   }
 
-  dbservice.postNote(noteid, note.text, posttime, (err) =>{
+  dbservice.postNote(noteid, note.text, posttime, (err) => {
     if (err) {
       response.status(409).end()
       return console.log(err)
@@ -49,7 +49,7 @@ exports.delete = (request, response) => {
       return console.log(err)
     }
     // after note deleted, delete all linked files
-    dbservice.deleteFiles(id, (err)=>{
+    dbservice.deleteFiles(id, (err) => {
       if (err) {
         response.status(409).end()
         return console.log(err)
@@ -63,9 +63,9 @@ exports.delete = (request, response) => {
 exports.put = (request, response) => {
   const id = Number(request.params.id)
   const notestr = request.body.text
-  //const posttime = Date.now()
+  // const posttime = Date.now()
 
-  dbservice.putNote(id, notestr, (err) =>{
+  dbservice.putNote(id, notestr, (err) => {
     if (err) {
       response.status(409).end()
       return console.log(err)

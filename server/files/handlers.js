@@ -12,8 +12,7 @@ const MAXSIZE = 5000000
 const UPLOADDIR = 'uploads/'
 
 const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-
+  destination: (req, file, cb) => {
     // check if upload directory exists and if not, create it
     const uploadpath = path.resolve(builddir, UPLOADDIR)
     if (!fs.existsSync(uploadpath)) {
@@ -22,7 +21,7 @@ const storage = multer.diskStorage({
 
     cb(null, uploadpath)
   },
-  filename: function(req, file, cb) {
+  filename: (req, file, cb) => {
     const timestamp = Math.round((new Date()).getTime() / 1000)
     cb(null, timestamp.toString() + '_' + file.originalname)
   }
@@ -32,11 +31,10 @@ exports.get = (request, response) => {
 }
 
 exports.post = (request, response) => {
-
   const opts = {
-    storage:storage,
-    limits:{
-      fileSize:MAXSIZE
+    storage: storage,
+    limits: {
+      fileSize: MAXSIZE
     }
   }
 
@@ -57,9 +55,11 @@ exports.post = (request, response) => {
         console.log(err)
         return response.status(status.CONFLICT)
       }
-      response.json({filename:fname,
-                      noteid:noteid,
-                      uploaddir:UPLOADDIR})
+      response.json({
+        filename: fname,
+        noteid: noteid,
+        uploaddir: UPLOADDIR
+      })
       response.status(200).end()
     })
   })
@@ -71,5 +71,5 @@ exports.getAll = (request, response) => {
       return console.log(err)
     }
     response.json(files)
-    })
+  })
 }

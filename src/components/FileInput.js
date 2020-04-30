@@ -1,10 +1,8 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import Form from 'react-bootstrap/Form'
 
-const FileInput = ({file, setFile}) => {
-
+const FileInput = ({ file, setFile }) => {
   const zerolabel = 'Add file'
-
   const [label, setLabel] = useState(zerolabel)
 
   useEffect(() => {
@@ -24,13 +22,14 @@ const FileInput = ({file, setFile}) => {
     }
   }
 
-  return(<Form.File
-            id="custom-file"
-            label= {label}
-            onChange={onChange}
-            custom
-          />)
-  
+  return (
+    <Form.File
+      id='custom-file'
+      label={label}
+      onChange={onChange}
+      custom
+    />
+  )
 }
 
 export default FileInput

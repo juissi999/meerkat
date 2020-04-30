@@ -2,7 +2,7 @@ import axios from 'axios'
 const baseUrl = '/files'
 
 const post = (filename, noteid) => {
-  let data = new FormData()
+  const data = new FormData()
   data.append('noteid', noteid)
   data.append('memFile', filename)
 
@@ -24,4 +24,4 @@ const del = (filename) => {
   return request.then(response => response.data)
 }
 
-export default {post, get, del, getAll}
+export default { post, get, del, getAll }
