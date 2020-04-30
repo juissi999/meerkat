@@ -46,6 +46,10 @@ const Note = ({ note, notes, setNotes, setNotification }) => {
     setNoteStr(event.target.value)
   }
 
+  const onCancel = () => {
+    setEditable(!editable)
+  }
+
   const onPut = (event) => {
     event.preventDefault()
 
@@ -77,6 +81,8 @@ const Note = ({ note, notes, setNotes, setNotification }) => {
             </Form.Group>
             <Form.Group controlId='formSubmit'>
               <Button type='submit'>Update note</Button>
+              {' '}
+              <Button onClick={onCancel}>Cancel</Button>
             </Form.Group>
           </Form>
         </Card.Body>
