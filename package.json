@@ -4,6 +4,7 @@
   "description": "A quick on the go web app for making and retrieving notes",
   "main": "server.js",
   "scripts": {
+    "lintfix": "standard --fix",
     "lint": "standard && echo OK",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/server.js",
