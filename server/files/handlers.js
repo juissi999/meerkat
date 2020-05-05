@@ -1,8 +1,7 @@
 const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
-const status = require('http-status-codes')
-const dbservice = require('../dbservice')
+const File = require('../models/file')
 
 // use webpack config file to get build directory
 const wpconf = require('../../webpack.config')
@@ -43,33 +42,43 @@ exports.post = (request, response) => {
   upload(request, response, (err) => {
     if (err) {
       if (err.code === 'LIMIT_FILE_SIZE') {
-        return response.sendStatus(status.REQUEST_TOO_LONG)
+        return response.send(400).send({ error: 'File too big.' })
       }
-      return response.status(status.BAD_REQUEST)
+      return response.status(400).end()
     }
+
     // add to database linker information
     const fname = request.file.filename
     const noteid = request.body.noteid
-    dbservice.postFile(noteid, fname, (err) => {
-      if (err) {
-        console.log(err)
-        return response.status(status.CONFLICT)
-      }
-      response.json({
-        filename: fname,
-        noteid: noteid,
-        uploaddir: UPLOADDIR
-      })
-      response.status(200).end()
+
+    const file = new File({
+      noteid: noteid,
+      filename: fname
     })
+
+    file.save()
+      .then(() => {
+        response.json({
+          filename: fname,
+          noteid: noteid,
+          uploaddir: UPLOADDIR
+        })
+        response.status(200).end()
+      })
+      .catch(err => {
+        console.log(err)
+        response.status(400).end()
+      })
   })
 }
 
 exports.getAll = (request, response) => {
-  dbservice.getAllFiles((err, files) => {
-    if (err) {
-      return console.log(err)
-    }
-    response.json(files)
-  })
+  File.find({})
+    .then(files => {
+      response.json(files)
+    })
+    .catch(err => {
+      console.log(err.message)
+      response.status(400).end()
+    })
 }
