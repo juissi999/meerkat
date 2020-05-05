@@ -57,14 +57,13 @@ exports.post = (request, response) => {
     })
 
     file.save()
-      .then(()=>{
+      .then(() => {
         response.json({
           filename: fname,
           noteid: noteid,
           uploaddir: UPLOADDIR
         })
         response.status(200).end()
-  
       })
       .catch(err => {
         console.log(err)
@@ -75,11 +74,11 @@ exports.post = (request, response) => {
 
 exports.getAll = (request, response) => {
   File.find({})
-  .then(files => {
-    response.json(files)
-  })
-  .catch(err => {
-    response.status(409).end()
-    console.log(err.message)
-  })
+    .then(files => {
+      response.json(files)
+    })
+    .catch(err => {
+      response.status(409).end()
+      console.log(err.message)
+    })
 }

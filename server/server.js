@@ -8,8 +8,6 @@ const path = require('path')
 const noteRouter = require('./notes/routes')
 const fileRouter = require('./files/routes')
 
-var cookie_ttl = 60*60; // seconds: 60*60*24 is one day
-
 // use cli arguments to decide listening port
 const PORT = process.env.PORT || 80
 

@@ -13,7 +13,7 @@ exports.getAll = (request, response) => {
 }
 
 exports.getOne = (request, response) => {
-  Note.findOne({noteid:request.params.id})
+  Note.findOne({ noteid: request.params.id })
     .then(note => {
       response.json(note)
     })
@@ -53,9 +53,9 @@ exports.post = (request, response) => {
 exports.delete = (request, response) => {
   const id = Number(request.params.id)
 
-  Note.deleteOne({noteid:id})
+  Note.deleteOne({ noteid: id })
     .then(() => {
-      return File.deleteOne({noteid:id})
+      return File.deleteOne({ noteid: id })
     })
     .then(() => {
       // note and possible files deleted, all ok
@@ -72,8 +72,8 @@ exports.put = (request, response) => {
   const notestr = request.body.text
   // const posttime = Date.now()
 
-  const filter = {noteid:id}
-  const update = {text:notestr}
+  const filter = { noteid: id }
+  const update = { text: notestr }
 
   Note.updateOne(filter, update)
     .then(updated => {
