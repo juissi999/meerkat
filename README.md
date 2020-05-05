@@ -27,9 +27,11 @@ Build front-end by typing:
 
 Start server by typing:
 
-`npm run start [portnum]`
+`npm run start`
 
-where [portnum] is a port number where the server will start listening. If you do not provide a portnumber, the server will listen on port 80.
+The server will listen on port 80 by default. Specify port on .env-file: PORT.
+
+Connect your mongoDB-database by specifying URL on .env-file: MONGODB_URI.
 
 ### Technologies used
 
@@ -44,4 +46,5 @@ where [portnum] is a port number where the server will start listening. If you d
 * Webpack
 * File upload with forms and multer
 * npm
-* SQL on sqlite3
+* dotenv
+* Mongoose (MongoDB)
