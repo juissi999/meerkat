@@ -1,7 +1,6 @@
 const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
-const status = require('http-status-codes')
 const File = require('../models/file')
 
 // use webpack config file to get build directory
@@ -43,10 +42,11 @@ exports.post = (request, response) => {
   upload(request, response, (err) => {
     if (err) {
       if (err.code === 'LIMIT_FILE_SIZE') {
-        return response.sendStatus(status.REQUEST_TOO_LONG)
+        return response.send(400).send({ error: 'File too big.' })
       }
-      return response.status(status.BAD_REQUEST)
+      return response.status(400).end()
     }
+
     // add to database linker information
     const fname = request.file.filename
     const noteid = request.body.noteid
@@ -67,7 +67,7 @@ exports.post = (request, response) => {
       })
       .catch(err => {
         console.log(err)
-        response.status(status.CONFLICT)
+        response.status(400).end()
       })
   })
 }
@@ -78,7 +78,7 @@ exports.getAll = (request, response) => {
       response.json(files)
     })
     .catch(err => {
-      response.status(409).end()
       console.log(err.message)
+      response.status(400).end()
     })
 }

@@ -26,7 +26,6 @@
     "axios": "^0.19.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "http-status-codes": "^1.4.0",
     "mongoose": "^5.9.11",
     "multer": "^1.4.2"
   },

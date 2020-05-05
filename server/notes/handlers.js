@@ -7,7 +7,7 @@ exports.getAll = (request, response) => {
       response.json(notes)
     })
     .catch(err => {
-      response.status(409).end()
+      response.status(400).end()
       console.log(err.message)
     })
 }
@@ -15,11 +15,15 @@ exports.getAll = (request, response) => {
 exports.getOne = (request, response) => {
   Note.findOne({ noteid: request.params.id })
     .then(note => {
-      response.json(note)
+      if (note) {
+        response.json(note)
+      } else {
+        response.status(404).end()
+      }
     })
     .catch(err => {
-      response.status(409).end()
       console.log(err.message)
+      response.status(400).end()
     })
 }
 
