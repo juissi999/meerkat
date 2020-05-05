@@ -6,7 +6,7 @@ const NoteList = ({ notes, setNotes, notesVisible, setNotification }) => {
     // sort notes, sort process can be customized now
     const sortedNotes = notelist.slice(0)
     sortedNotes.sort((a, b) => {
-      return b.date - a.date
+      return new Date(b.date) - new Date(a.date)
     })
 
     return sortedNotes.map((note, i) =>

@@ -24,10 +24,6 @@ const App = () => {
   const getAll = () => {
     noteservice.getAll()
       .then(notedata => {
-        // setNotes(data)
-        return notedata
-      })
-      .then(notedata => {
         fileservice.getAll()
           .then(fdata => {
             const noteswithfiles = notedata.map(n => {
