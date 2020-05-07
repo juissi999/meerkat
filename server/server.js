@@ -1,6 +1,9 @@
 // run: 'node ./server'
 // Specify port on .env
 
+// get environmental variables
+require('dotenv').config()
+
 const express = require('express')
 const bodyParser = require('body-parser')
 

@@ -1,8 +1,5 @@
 const mongoose = require('mongoose')
 
-// get environmental variables
-require('dotenv').config()
-
 const url = process.env.MONGODB_URI
 
 console.log('Connecting to', url)
