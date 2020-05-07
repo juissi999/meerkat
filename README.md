@@ -9,6 +9,10 @@ A quick animal who probably forgots a lot quickly too. Also meerkat resembles th
 
 Store memos by writing a note. Add file to note if you want. Add hashtags to note. Filter notes in the database by using hashtags inside notes. Edit or delete existing notes.
 
+### Demo
+
+Deploys on Heroku with cloud DB. Check: http://meerk4t.herokuapp.com/.
+
 ### Usage
 
 Start a command line and go to the app directory.
