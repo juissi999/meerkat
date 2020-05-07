@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import Form from 'react-bootstrap/Form'
 
-const INTERVAL = 5000
-const INITIAL_STATE = true
+// use initiallyOn boolean prop if you want the component to start checked
 
-const Refresher = ({ getterFcn }) => {
-  const [checked, setChecked] = useState(INITIAL_STATE)
+const Refresher = ({ getterFcn, initiallyOn, interval }) => {
+  const [checked, setChecked] = useState(false)
+
+  useEffect(() => {
+    if (initiallyOn) {
+      setChecked(true)
+    }
+  }, [])
 
   useEffect(() => {
     if (checked) {
-      const intv = setInterval(getterFcn, INTERVAL)
+      const intv = setInterval(getterFcn, interval)
       return () => clearInterval(intv)
     }
   }, [checked])

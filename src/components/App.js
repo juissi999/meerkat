@@ -74,12 +74,12 @@ const App = () => {
       <Notification setNotification={setNotification}>{notification}</Notification>
       <Row>
         <Col>
-          <h1>Meerkat</h1>
+          <h1>meerkat</h1>
         </Col>
       </Row>
       <Row>
         <Col>
-          <Refresher getterFcn={getAll} />
+          <Refresher getterFcn={getAll} interval={15000} />
         </Col>
       </Row>
       <Row className='mt-3'>
