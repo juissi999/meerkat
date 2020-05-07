@@ -6,12 +6,25 @@ require('dotenv').config()
 
 const express = require('express')
 const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
 
 const path = require('path')
 const noteRouter = require('./notes/routes')
 const fileRouter = require('./files/routes')
 
-// use cli arguments to decide listening port
+// connect to mongoDB
+const url = process.env.MONGODB_URI
+
+console.log('Connecting to', url)
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(result => {
+    console.log('Connected to MongoDB')
+  })
+  .catch((error) => {
+    console.log('Error connecting to MongoDB:', error.message)
+  })
+
+// use env-variable to decide listening port
 const PORT = process.env.PORT || 80
 
 // start node express
