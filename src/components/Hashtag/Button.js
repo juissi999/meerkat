@@ -19,7 +19,7 @@ const HashtagButton = ({ name, selectedHts, setSelectedHts }) => {
     }
   }
 
-  let variant = 'outline-info'
+  let variant = 'light'
   if (isselected) {
     variant = 'info'
   }

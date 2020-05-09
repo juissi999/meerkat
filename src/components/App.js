@@ -14,6 +14,16 @@ import { updateHashtags } from '../utils'
 import noteservice from '../noteservice'
 import fileservice from '../fileservice'
 
+const bgColors = [
+  'lightblue',
+  'lightgreen',
+  'lightpink',
+  'plum',
+  'lightgrey',
+  'wheat',
+  'darkseagreen'
+]
+
 const App = () => {
   const [notes, setNotes] = useState([])
   const [notification, setNotification] = useState(null)
@@ -36,7 +46,13 @@ const App = () => {
       })
   }
 
-  useEffect(getAll, [])
+  useEffect(() => {
+    getAll()
+    const orig = document.body.className;
+    document.body.style.backgroundColor = 
+      bgColors[Math.floor(Math.random()*bgColors.length)]
+    return (orig) => {document.body.className = orig}
+  }, [])
 
   // effect-hook updates hashtags every time notes change
   useEffect(() => {
@@ -70,7 +86,7 @@ const App = () => {
   }, [selectedHts])
 
   return (
-    <Container>
+    <Container >
       <Notification setNotification={setNotification}>{notification}</Notification>
       <Row>
         <Col>
