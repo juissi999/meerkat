@@ -98,17 +98,17 @@ const App = () => {
           <Refresher getterFcn={getAll} interval={15000} />
         </Col>
       </Row>
-      <Row className='mt-3'>
+      <Row className='mt-2'>
         <Col>
           <NotePushForm notes={notes} setNotes={setNotes} setNotification={setNotification} />
         </Col>
       </Row>
-      <Row className='mt-3'>
+      <Row>
         <Col>
           <HashtagList hashtags={hashtags} selectedHts={selectedHts} setSelectedHts={setSelectedHts} />
         </Col>
       </Row>
-      <Row className='mt-3'>
+      <Row>
         <Col>
           <NoteList notes={notes} setNotes={setNotes} notesVisible={notesVisible} setNotification={setNotification} />
         </Col>

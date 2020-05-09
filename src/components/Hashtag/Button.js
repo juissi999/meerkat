@@ -25,7 +25,7 @@ const HashtagButton = ({ name, selectedHts, setSelectedHts }) => {
   }
   return (
     <>
-      <Button variant={variant} value={name} onClick={onClick}>{name}</Button>{' '}
+      <Button className='mb-1' variant={variant} value={name} onClick={onClick}>{name}</Button>{' '}
     </>
   )
 }
