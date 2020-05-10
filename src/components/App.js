@@ -48,10 +48,10 @@ const App = () => {
 
   useEffect(() => {
     getAll()
-    const orig = document.body.className;
-    document.body.style.backgroundColor = 
-      bgColors[Math.floor(Math.random()*bgColors.length)]
-    return (orig) => {document.body.className = orig}
+    const orig = document.body.className
+    document.body.style.backgroundColor =
+      bgColors[Math.floor(Math.random() * bgColors.length)]
+    return () => { document.body.className = orig }
   }, [])
 
   // effect-hook updates hashtags every time notes change
@@ -86,7 +86,7 @@ const App = () => {
   }, [selectedHts])
 
   return (
-    <Container >
+    <Container>
       <Notification setNotification={setNotification}>{notification}</Notification>
       <Row>
         <Col>
