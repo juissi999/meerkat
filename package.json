@@ -1,6 +1,6 @@
 {
   "name": "meerkat",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A quick on the go web app for making and retrieving notes",
   "main": "server.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "type": "git",
     "url": "git+https://github.com/juissi999/meerkat.git"
   },
-  "author": "",
+  "author": "juissi999",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/juissi999/meerkat/issues"
