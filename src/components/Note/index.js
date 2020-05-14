@@ -16,15 +16,16 @@ const Note = ({ note, notes, setNotes, setNotification }) => {
   }
 
   const onClickDelete = () => {
-    noteservice.del(note.noteid)
+    noteservice
+      .del(note.noteid)
       .then(() => {
-        const newNotes = notes.filter(n => {
+        const newNotes = notes.filter((n) => {
           return n.noteid !== note.noteid
         })
         setNotes(newNotes)
         setNotification('Note deleted.')
       })
-      .catch(err => setNotification(err.message))
+      .catch((err) => setNotification(err.message))
   }
 
   const onClickEdit = () => {
@@ -33,13 +34,13 @@ const Note = ({ note, notes, setNotes, setNotification }) => {
       .then((receivedNote) => {
         if (Object.keys(receivedNote).length === 0) {
           setNotification('Note does not exist.')
-          setNotes(notes.filter(n => n.noteid !== note.noteid))
+          setNotes(notes.filter((n) => n.noteid !== note.noteid))
         } else {
           setNoteStr(receivedNote.text)
           setEditable(!editable)
         }
       })
-      .catch(err => setNotification(err.message))
+      .catch((err) => setNotification(err.message))
   }
 
   const onChange = (event) => {
@@ -58,7 +59,9 @@ const Note = ({ note, notes, setNotes, setNotification }) => {
       .then(() => {
         // note was succesfully updated
         // new noteobject where text is replace on this noteid
-        const newNotes = notes.map(n => n.noteid === note.noteid ? { ...note, text: noteStr } : n)
+        const newNotes = notes.map((n) =>
+          n.noteid === note.noteid ? { ...note, text: noteStr } : n
+        )
 
         // set it on notes hook
         setNotes(newNotes)
@@ -67,21 +70,28 @@ const Note = ({ note, notes, setNotes, setNotification }) => {
         setEditable(!editable)
         setNotification('Note updated.')
       })
-      .catch(err => setNotification(err.message))
+      .catch((err) => setNotification(err.message))
   }
 
   if (editable) {
     return (
-      <Card className='mt-2'>
+      <Card className="mt-2">
         <Card.Body>
-          <Card.Subtitle className='mb-2 text-muted'>{datetxt(note.date)}</Card.Subtitle>
-          <Form name='pushform' onSubmit={onPut}>
-            <Form.Group controlId='formNote'>
-              <Form.Control as='textarea' name='note' rows='3' value={noteStr} onChange={onChange} />
+          <Card.Subtitle className="mb-2 text-muted">
+            {datetxt(note.date)}
+          </Card.Subtitle>
+          <Form name="pushform" onSubmit={onPut}>
+            <Form.Group controlId="formNote">
+              <Form.Control
+                as="textarea"
+                name="note"
+                rows="3"
+                value={noteStr}
+                onChange={onChange}
+              />
             </Form.Group>
-            <Form.Group controlId='formSubmit'>
-              <Button type='submit'>Update note</Button>
-              {' '}
+            <Form.Group controlId="formSubmit">
+              <Button type="submit">Update note</Button>{' '}
               <Button onClick={onCancel}>Cancel</Button>
             </Form.Group>
           </Form>
@@ -90,14 +100,20 @@ const Note = ({ note, notes, setNotes, setNotification }) => {
     )
   } else {
     return (
-      <Card className='mt-2'>
+      <Card className="mt-2">
         <Card.Body>
-          <Card.Subtitle className='mb-2 text-muted'>{datetxt(note.date)}</Card.Subtitle>
+          <Card.Subtitle className="mb-2 text-muted">
+            {datetxt(note.date)}
+          </Card.Subtitle>
           <Card.Text>{note.text}</Card.Text>
           <NoteFile>{note.files}</NoteFile>
-          <ButtonGroup aria-label='Memory controls' size='sm'>
-            <Button variant='secondary' onClick={onClickEdit}>edit</Button>
-            <Button variant='secondary' onClick={onClickDelete}>delete</Button>
+          <ButtonGroup aria-label="Memory controls" size="sm">
+            <Button variant="secondary" onClick={onClickEdit}>
+              edit
+            </Button>
+            <Button variant="secondary" onClick={onClickDelete}>
+              delete
+            </Button>
           </ButtonGroup>
         </Card.Body>
       </Card>

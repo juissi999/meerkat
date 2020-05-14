@@ -22,14 +22,7 @@ const FileInput = ({ file, setFile }) => {
     }
   }
 
-  return (
-    <Form.File
-      id='custom-file'
-      label={label}
-      onChange={onChange}
-      custom
-    />
-  )
+  return <Form.File id="custom-file" label={label} onChange={onChange} custom />
 }
 
 export default FileInput

@@ -28,9 +28,9 @@ const Refresher = ({ getterFcn, initiallyOn, interval }) => {
       <Form.Check
         onChange={onChange}
         checked={checked}
-        type='checkbox'
-        id='refreshCheck'
-        label='Automatic refresh'
+        type="checkbox"
+        id="refreshCheck"
+        label="Automatic refresh"
       />
     </Form>
   )

@@ -32,18 +32,16 @@ const App = () => {
   const [notesVisible, setNotesVisible] = useState([])
 
   const getAll = () => {
-    noteservice.getAll()
-      .then(notedata => {
-        fileservice.getAll()
-          .then(fdata => {
-            const noteswithfiles = notedata.map(n => {
-              const foundfiles = fdata.filter(f => f.noteid === n.noteid)
-              n.files = foundfiles.map(f => f.filename)
-              return n
-            })
-            setNotes(noteswithfiles)
-          })
+    noteservice.getAll().then((notedata) => {
+      fileservice.getAll().then((fdata) => {
+        const noteswithfiles = notedata.map((n) => {
+          const foundfiles = fdata.filter((f) => f.noteid === n.noteid)
+          n.files = foundfiles.map((f) => f.filename)
+          return n
+        })
+        setNotes(noteswithfiles)
       })
+    })
   }
 
   useEffect(() => {
@@ -51,7 +49,9 @@ const App = () => {
     const orig = document.body.className
     document.body.style.backgroundColor =
       bgColors[Math.floor(Math.random() * bgColors.length)]
-    return () => { document.body.className = orig }
+    return () => {
+      document.body.className = orig
+    }
   }, [])
 
   // effect-hook updates hashtags every time notes change
@@ -62,20 +62,22 @@ const App = () => {
   // effect-hook updates selectedhashtags every time notes change, hashtags that
   // disappeared will be removed from the selected hashtags list
   useEffect(() => {
-    setSelectedHts(selectedHts.filter(sh => hashtags.map((ht) => ht.name).includes(sh)))
+    setSelectedHts(
+      selectedHts.filter((sh) => hashtags.map((ht) => ht.name).includes(sh))
+    )
   }, [hashtags])
 
   // effect-hook filters shown notes every time selected hashtags change
   useEffect(() => {
     const sn = notes.filter((n) => {
       // find hastags for this note
-      const hts = hashtags.filter(ht => ht.linksto === n.noteid)
+      const hts = hashtags.filter((ht) => ht.linksto === n.noteid)
 
       // get the noteid from the raw hashtags (technical function)
       const htNames = hts.map((ht) => ht.name)
 
       // go through selected hts and collect matching to found hts
-      const foundHts = selectedHts.filter(sHt => {
+      const foundHts = selectedHts.filter((sHt) => {
         return htNames.includes(sHt)
       })
 
@@ -87,7 +89,9 @@ const App = () => {
 
   return (
     <Container>
-      <Notification setNotification={setNotification}>{notification}</Notification>
+      <Notification setNotification={setNotification}>
+        {notification}
+      </Notification>
       <Row>
         <Col>
           <h1>meerkat</h1>
@@ -98,19 +102,32 @@ const App = () => {
           <Refresher getterFcn={getAll} interval={15000} />
         </Col>
       </Row>
-      <Row className='mt-2'>
+      <Row className="mt-2">
         <Col>
-          <NotePushForm notes={notes} setNotes={setNotes} setNotification={setNotification} />
+          <NotePushForm
+            notes={notes}
+            setNotes={setNotes}
+            setNotification={setNotification}
+          />
         </Col>
       </Row>
       <Row>
         <Col>
-          <HashtagList hashtags={hashtags} selectedHts={selectedHts} setSelectedHts={setSelectedHts} />
+          <HashtagList
+            hashtags={hashtags}
+            selectedHts={selectedHts}
+            setSelectedHts={setSelectedHts}
+          />
         </Col>
       </Row>
       <Row>
         <Col>
-          <NoteList notes={notes} setNotes={setNotes} notesVisible={notesVisible} setNotification={setNotification} />
+          <NoteList
+            notes={notes}
+            setNotes={setNotes}
+            notesVisible={notesVisible}
+            setNotification={setNotification}
+          />
         </Col>
       </Row>
     </Container>

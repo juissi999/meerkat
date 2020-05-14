@@ -3,24 +3,23 @@ import HashtagButton from './Button'
 
 const HashtagList = ({ hashtags, selectedHts, setSelectedHts }) => {
   // find only the unique hashtags
-  const uniquehts = [...new Set(hashtags.map(ht => ht.name))]
+  const uniquehts = [...new Set(hashtags.map((ht) => ht.name))]
 
   const mapHts = () => {
-    return uniquehts.map((ht, i) => <HashtagButton key={i} name={ht} selectedHts={selectedHts} setSelectedHts={setSelectedHts} />)
+    return uniquehts.map((ht, i) => (
+      <HashtagButton
+        key={i}
+        name={ht}
+        selectedHts={selectedHts}
+        setSelectedHts={setSelectedHts}
+      />
+    ))
   }
 
   if (uniquehts.length === 0) {
-    return (
-      <>
-        Add hashtags to your notes.
-      </>
-    )
+    return <>Add hashtags to your notes.</>
   } else {
-    return (
-      <>
-        {mapHts()}
-      </>
-    )
+    return <>{mapHts()}</>
   }
 }
 

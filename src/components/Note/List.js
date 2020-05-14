@@ -9,15 +9,18 @@ const NoteList = ({ notes, setNotes, notesVisible, setNotification }) => {
       return new Date(b.date) - new Date(a.date)
     })
 
-    return sortedNotes.map((note, i) =>
-      <Note key={note.noteid} note={note} notes={notes} setNotes={setNotes} setNotification={setNotification} />)
+    return sortedNotes.map((note, i) => (
+      <Note
+        key={note.noteid}
+        note={note}
+        notes={notes}
+        setNotes={setNotes}
+        setNotification={setNotification}
+      />
+    ))
   }
 
-  return (
-    <>
-      {mapNotes(notesVisible)}
-    </>
-  )
+  return <>{mapNotes(notesVisible)}</>
 }
 
 export default NoteList

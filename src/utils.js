@@ -2,7 +2,7 @@ const findHashtags = (notestr) => {
   const hashtags = []
 
   // remove all control characters (line endings etc)
-  notestr = notestr.replace(/[^\x20-\x7E]/gmi, ' ')
+  notestr = notestr.replace(/[^\x20-\x7E]/gim, ' ')
 
   notestr.split(' ').map((element) => {
     if (element[0] === '#' && element.length > 1) {

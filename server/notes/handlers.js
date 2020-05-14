@@ -3,10 +3,10 @@ const File = require('../models/file')
 
 exports.getAll = (request, response) => {
   Note.find({})
-    .then(notes => {
+    .then((notes) => {
       response.json(notes)
     })
-    .catch(err => {
+    .catch((err) => {
       response.status(400).end()
       console.log(err.message)
     })
@@ -14,14 +14,14 @@ exports.getAll = (request, response) => {
 
 exports.getOne = (request, response) => {
   Note.findOne({ noteid: request.params.id })
-    .then(note => {
+    .then((note) => {
       if (note) {
         response.json(note)
       } else {
         response.status(404).end()
       }
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err.message)
       response.status(400).end()
     })
@@ -44,11 +44,12 @@ exports.post = (request, response) => {
     date: posttime
   })
 
-  note.save()
-    .then(savedNote => {
+  note
+    .save()
+    .then((savedNote) => {
       response.json(savedNote)
     })
-    .catch(err => {
+    .catch((err) => {
       response.status(409).end()
       return console.log(err)
     })
@@ -65,7 +66,7 @@ exports.delete = (request, response) => {
       // note and possible files deleted, all ok
       response.status(204).end()
     })
-    .catch(err => {
+    .catch((err) => {
       response.status(409).end()
       return console.log(err)
     })
@@ -80,11 +81,11 @@ exports.put = (request, response) => {
   const update = { text: notestr }
 
   Note.updateOne(filter, update)
-    .then(updated => {
+    .then((updated) => {
       // console.log(updated)
       response.status(200).end()
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err)
       response.status(409).end()
     })

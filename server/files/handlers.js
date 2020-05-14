@@ -21,13 +21,12 @@ const storage = multer.diskStorage({
     cb(null, uploadpath)
   },
   filename: (req, file, cb) => {
-    const timestamp = Math.round((new Date()).getTime() / 1000)
+    const timestamp = Math.round(new Date().getTime() / 1000)
     cb(null, timestamp.toString() + '_' + file.originalname)
   }
 })
 
-exports.get = (request, response) => {
-}
+exports.get = (request, response) => {}
 
 exports.post = (request, response) => {
   const opts = {
@@ -56,7 +55,8 @@ exports.post = (request, response) => {
       filename: fname
     })
 
-    file.save()
+    file
+      .save()
       .then(() => {
         response.json({
           filename: fname,
@@ -65,7 +65,7 @@ exports.post = (request, response) => {
         })
         response.status(200).end()
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         response.status(400).end()
       })
@@ -74,10 +74,10 @@ exports.post = (request, response) => {
 
 exports.getAll = (request, response) => {
   File.find({})
-    .then(files => {
+    .then((files) => {
       response.json(files)
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err.message)
       response.status(400).end()
     })

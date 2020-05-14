@@ -8,11 +8,13 @@ const HashtagButton = ({ name, selectedHts, setSelectedHts }) => {
   // if it is or append it if it's not
   const onClick = () => {
     if (isselected) {
-      setSelectedHts(selectedHts.filter(htname => {
-        if (htname !== name) {
-          return htname
-        }
-      }))
+      setSelectedHts(
+        selectedHts.filter((htname) => {
+          if (htname !== name) {
+            return htname
+          }
+        })
+      )
     } else {
       // add hashtag to selected
       setSelectedHts(selectedHts.concat(name))
@@ -25,7 +27,9 @@ const HashtagButton = ({ name, selectedHts, setSelectedHts }) => {
   }
   return (
     <>
-      <Button className='mb-1' variant={variant} value={name} onClick={onClick}>{name}</Button>{' '}
+      <Button className="mb-1" variant={variant} value={name} onClick={onClick}>
+        {name}
+      </Button>{' '}
     </>
   )
 }
