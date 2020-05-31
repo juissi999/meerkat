@@ -13,7 +13,7 @@ const FileInput = ({ file, setFile }) => {
     }
   }, [file])
 
-  const onChange = (event) => {
+  const onChange = event => {
     const newfile = event.target.files[0]
     // is this next line fix okay?
     event.target.value = null
@@ -22,7 +22,7 @@ const FileInput = ({ file, setFile }) => {
     }
   }
 
-  return <Form.File id="custom-file" label={label} onChange={onChange} custom />
+  return <Form.File id='custom-file' label={label} onChange={onChange} custom />
 }
 
 export default FileInput

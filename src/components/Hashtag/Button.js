@@ -9,7 +9,7 @@ const HashtagButton = ({ name, selectedHts, setSelectedHts }) => {
   const onClick = () => {
     if (isselected) {
       setSelectedHts(
-        selectedHts.filter((htname) => {
+        selectedHts.filter(htname => {
           if (htname !== name) {
             return htname
           }
@@ -27,7 +27,7 @@ const HashtagButton = ({ name, selectedHts, setSelectedHts }) => {
   }
   return (
     <>
-      <Button className="mb-1" variant={variant} value={name} onClick={onClick}>
+      <Button className='mb-1' variant={variant} value={name} onClick={onClick}>
         {name}
       </Button>{' '}
     </>

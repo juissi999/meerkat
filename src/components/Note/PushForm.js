@@ -11,7 +11,7 @@ const NotePushForm = ({ notes, setNotes, setNotification }) => {
 
   const newentry = { text: memo }
 
-  const onSubmit = (event) => {
+  const onSubmit = event => {
     event.preventDefault()
 
     // prevent empty input
@@ -21,17 +21,17 @@ const NotePushForm = ({ notes, setNotes, setNotification }) => {
 
     noteservice
       .post(newentry)
-      .then((addedentry) => {
+      .then(addedentry => {
         setMemo('')
         setNotification('New entry added!')
         return addedentry
       })
-      .then((addedentry) => {
+      .then(addedentry => {
         const noteid = addedentry.noteid
 
         // after note sent succesfully, send file
         if (file !== null) {
-          fileservice.post(file, noteid).then((response) => {
+          fileservice.post(file, noteid).then(response => {
             setFile(null)
             // console.log(response, noteid)
             addedentry.files = [response.filename]
@@ -46,21 +46,21 @@ const NotePushForm = ({ notes, setNotes, setNotification }) => {
       })
   }
 
-  const onChange = (event) => {
+  const onChange = event => {
     setMemo(event.target.value)
   }
   // <textarea name='note' value={memo} onChange={on_change}/>
 
   return (
-    <Form name="pushform" onSubmit={onSubmit}>
-      <Form.Group controlId="formMemory">
-        <Form.Control as="textarea" rows="3" value={memo} onChange={onChange} />
+    <Form name='pushform' onSubmit={onSubmit}>
+      <Form.Group controlId='formMemory'>
+        <Form.Control as='textarea' rows='3' value={memo} onChange={onChange} />
       </Form.Group>
-      <Form.Group controlId="formFile">
+      <Form.Group controlId='formFile'>
         <FileInput file={file} setFile={setFile} />
       </Form.Group>
-      <Form.Group controlId="formSubmit">
-        <Button size="lg" type="submit">
+      <Form.Group controlId='formSubmit'>
+        <Button size='lg' type='submit'>
           Remember
         </Button>
       </Form.Group>

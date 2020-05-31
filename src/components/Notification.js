@@ -18,10 +18,10 @@ const Notification = ({ children, setNotification }) => {
   }
 
   return (
-    <Container className="fixed-top">
+    <Container className='fixed-top'>
       <Row>
         <Col>
-          <Alert variant="success">{children}</Alert>
+          <Alert variant='success'>{children}</Alert>
         </Col>
       </Row>
     </Container>
