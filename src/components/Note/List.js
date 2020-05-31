@@ -51,11 +51,11 @@ const NoteList = ({ notes, setNotes, notesVisible, setNotification }) => {
 
   return (
     <>
-      <Pagination className='justify-content-md-center mb-0'>
+      <Pagination className='justify-content-center mb-0'>
         {createPagination(notesVisible)}
       </Pagination>
       {mapNotes(notesVisible)}
-      <Pagination className='justify-content-md-center mt-2'>
+      <Pagination className='justify-content-center mt-2'>
         {createPagination(notesVisible)}
       </Pagination>
     </>
