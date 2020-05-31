@@ -120,7 +120,7 @@ const App = () => {
           />
         </Col>
       </Row>
-      <Row>
+      <Row className='mt-2'>
         <Col>
           <NoteList
             notes={notes}
