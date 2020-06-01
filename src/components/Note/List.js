@@ -32,6 +32,8 @@ const NoteList = ({ notes, setNotes, notesVisible, setNotification }) => {
     if (id !== activePage) setActivePage(id)
   }
 
+  // TODO: make this more efficient so that createPagination is not called
+  // twice if performance becomes a problem
   const createPagination = notelist => {
     const items = []
 
