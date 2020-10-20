@@ -5,7 +5,7 @@ import Landing from './Landing'
 
 const Main = () => {
 
-  const isLoggedIn = useSelector(state => state)
+  const isLoggedIn = useSelector(state => state.loggedIn)
 
   const render = () => {
     if (isLoggedIn) {

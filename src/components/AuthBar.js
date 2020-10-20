@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button'
 const AuthBar = () => {
 
   const dispatch = useDispatch()
-  const isLoggedIn = useSelector(state => state)
+  const isLoggedIn = useSelector(state => state.loggedIn)
 
   const renderLoginForm = () => {
     if (isLoggedIn) {
