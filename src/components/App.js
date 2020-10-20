@@ -1,14 +1,20 @@
 import React from 'react'
-import Meerkat from './Meerkat'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+
+import authReducer from '../reducers/authReducer'
 import AuthBar from './AuthBar'
+import Main from './Main'
 
 const App = () => {
 
-  return (<>
-    <AuthBar/>
-    <Meerkat />
-    </>
-  )
+  const store = createStore(authReducer)
+
+  return (<Provider store={store}>
+            <AuthBar/>
+            <Main />
+          </Provider>
+         )
 }
 
 export default App
