@@ -2,7 +2,7 @@ import axios from 'axios'
 const baseUrl = '/user'
 
 const login = (credentials) => {
-  const request = axios.post(baseUrl, credentials)
+  const request = axios.post('/auth/login', credentials)
   return request.then((response) => response.data)
 }
 
@@ -17,6 +17,5 @@ const del = (id) => {
     return response.data
   })
 }
-
 
 export default { login, newUser, del }

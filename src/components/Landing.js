@@ -6,6 +6,8 @@ import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
 import Form from 'react-bootstrap/Form'
 
+import authService from './../services/authService'
+
 const Landing = () => {
   const dispatch = useDispatch()
 
@@ -15,8 +17,13 @@ const Landing = () => {
   const onSubmit = (e) => {
     e.preventDefault()
     const loginCredentials = { email, passwd }
-    console.log(loginCredentials)
-    dispatch({ type: 'LOGIN', data: loginCredentials })
+    const response = authService.login(loginCredentials)
+    response
+      .then(() => {
+        localStorage.setItem('token', token)
+        dispatch({ type: 'LOGIN' })
+      })
+      .catch((err) => console.log(err))
   }
 
   const onChangePassword = (event) => {
