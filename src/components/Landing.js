@@ -19,8 +19,8 @@ const Landing = () => {
     const loginCredentials = { email, passwd }
     const response = authService.login(loginCredentials)
     response
-      .then(() => {
-        localStorage.setItem('token', token)
+      .then((data) => {
+        localStorage.setItem('token', data.token)
         dispatch({ type: 'LOGIN' })
       })
       .catch((err) => console.log(err))
