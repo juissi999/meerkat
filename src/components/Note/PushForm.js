@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import noteservice from '../../noteservice'
-import fileservice from '../../fileservice'
+import noteservice from '../../services/noteservice'
+import fileservice from '../../services/fileservice'
 import FileInput from '../FileInput'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'

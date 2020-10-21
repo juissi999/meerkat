@@ -11,8 +11,8 @@ import Notification from './Notification'
 import Refresher from './Refresher'
 
 import { updateHashtags } from '../utils'
-import noteservice from '../noteservice'
-import fileservice from '../fileservice'
+import noteservice from '../services/noteservice'
+import fileservice from '../services/fileservice'
 
 const bgColors = [
   'lightblue',

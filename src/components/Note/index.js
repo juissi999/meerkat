@@ -4,7 +4,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
 
-import noteservice from '../../noteservice'
+import noteservice from '../../services/noteservice'
 import NoteFile from './File'
 
 const Note = ({ note, notes, setNotes, setNotification }) => {
