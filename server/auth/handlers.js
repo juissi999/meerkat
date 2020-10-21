@@ -1,6 +1,5 @@
 exports.post = (request, response) => {
   const credentials = request.body
-  console.log(credentials)
 
   if (!credentials) {
     return response.status(400).json({
@@ -8,9 +7,15 @@ exports.post = (request, response) => {
     })
   }
 
-  const token = 'testtoken'
+  const { email, passwd } = credentials
 
-  if (true) {
+  let valid = false
+  if (email === 'test@test.com') {
+    valid = true
+  }
+
+  if (valid) {
+    const token = 'testtoken'
     response.json({ token })
   } else {
     response.status(401).end()
