@@ -7,14 +7,14 @@ import AuthBar from './AuthBar'
 import Main from './Main'
 
 const App = () => {
-
   const store = createStore(authReducer)
 
-  return (<Provider store={store}>
-            <AuthBar/>
-            <Main />
-          </Provider>
-         )
+  return (
+    <Provider store={store}>
+      <AuthBar />
+      <Main />
+    </Provider>
+  )
 }
 
 export default App
