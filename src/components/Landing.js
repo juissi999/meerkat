@@ -13,15 +13,28 @@ const Landing = () => {
 
   const [email, setEmail] = useState('')
   const [passwd, setPasswd] = useState('')
+  const [formAction, setFormAction] = useState('login')
 
-  const onSubmit = (e) => {
+  const onLogin = (e) => {
     e.preventDefault()
     const loginCredentials = { email, passwd }
     const response = authService.login(loginCredentials)
+    //const response = authService.newUser(loginCredentials)
     response
       .then((data) => {
         localStorage.setItem('token', data.token)
         dispatch({ type: 'LOGIN' })
+      })
+      .catch((err) => console.log(err))
+  }
+
+  const onRegister = (e) => {
+    e.preventDefault()
+    const registerCredentials = { email, passwd }
+    const response = authService.newUser(registerCredentials)
+    response
+      .then((data) => {
+        console.log('Register succesful.')
       })
       .catch((err) => console.log(err))
   }
@@ -39,7 +52,15 @@ const Landing = () => {
       <Row>
         <Col>
           <h1>meerkat</h1>
-          <Form onSubmit={onSubmit}>
+          <Button
+            variant="primary"
+            onClick={() =>
+              setFormAction(formAction === 'login' ? 'register' : 'login')
+            }
+          >
+            {formAction}
+          </Button>
+          <Form onSubmit={formAction === 'login' ? onLogin : onRegister}>
             <Form.Group controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
               <Form.Control
@@ -62,7 +83,7 @@ const Landing = () => {
               />
             </Form.Group>
             <Button variant="primary" type="submit">
-              Login
+              Submit
             </Button>
           </Form>
         </Col>
