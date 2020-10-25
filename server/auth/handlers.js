@@ -1,4 +1,5 @@
 const { v4 } = require('uuid')
+const bcrypt = require('bcryptjs')
 
 const User = require('../models/user')
 
@@ -37,22 +38,38 @@ exports.postLogin = (request, response) => {
 }
 
 exports.postUser = (request, response) => {
-  const user = new User({
-    email: request.body.email,
-    id: v4(),
-    passwordHash: request.body.passwd
-  })
+  const passwd = request.body.passwd
+  const email = request.body.email
+  const rounds = 11
 
-  user
-    .save()
-    .then((savedUser) => {
-      console.log('created user:', savedUser)
-      response.json(savedUser)
+  bcrypt.hash(passwd, rounds, (berr, pwdHash) => {
+    if (berr) {
+      console.log(berr)
+      return response.status(409).end()
+    }
+
+    // TODO what if conflict?
+    const userId = v4()
+
+    const user = new User({
+      email: email,
+      id: userId,
+      passwordHash: pwdHash
     })
-    .catch((err) => {
-      response.status(409).end()
-      return console.log(err)
-    })
+
+    console.log('user', user)
+
+    user
+      .save()
+      .then((result) => {
+        console.log('User created: ' + email) // DEBUG
+        return response.json(result)
+      })
+      .catch((err) => {
+        response.status(409).end()
+        return console.log(err)
+      })
+  })
 }
 
 exports.deleteUser = (request, response) => {
