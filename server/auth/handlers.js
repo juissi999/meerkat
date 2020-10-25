@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs')
 
 const User = require('../models/user')
 
+const rounds = 11
+
 exports.postLogin = (request, response) => {
   const credentials = request.body
 
@@ -12,35 +14,39 @@ exports.postLogin = (request, response) => {
     })
   }
 
-  const { email, passwd } = credentials
+  //User.find({}).then((result) => console.log('user', result))
 
-  User.find({ email, passwd })
-    .then((auth) => {
-      console.log(auth)
-      response.json(auth)
+  const passwd = request.body.passwd
+  const email = request.body.email
+
+  User.findOne({ email }, (err, user) => {
+    console.log(user)
+
+    if (user === null) {
+      return response.status(401).send('Unauthorized')
+    }
+
+    bcrypt.compare(passwd, user.passwordHash, function (err2, match) {
+      if (err2) {
+        // Hash comparison failed. Password might still be correct, though.
+        console.log(err2)
+        return response.status(401).send('Unauthorized')
+      }
+
+      if (!match) {
+        // no password match => Authentication failure
+        return response.status(401).send('Unauthorized')
+      }
+
+      const token = 'testtoken'
+      response.json({ token })
     })
-    .catch((err) => {
-      console.log(err.message)
-      response.status(401).end()
-    })
-
-  let valid = false
-  if (email === 'test@test.com') {
-    valid = true
-  }
-
-  if (valid) {
-    const token = 'testtoken'
-    response.json({ token })
-  } else {
-    response.status(401).end()
-  }
+  })
 }
 
 exports.postUser = (request, response) => {
   const passwd = request.body.passwd
   const email = request.body.email
-  const rounds = 11
 
   bcrypt.hash(passwd, rounds, (berr, pwdHash) => {
     if (berr) {

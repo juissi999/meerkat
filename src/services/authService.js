@@ -2,7 +2,7 @@ import axios from 'axios'
 const baseUrl = '/auth'
 
 const login = (credentials) => {
-  const request = axios.post('/login', credentials)
+  const request = axios.post(`${baseUrl}/login`, credentials)
   return request.then((response) => response.data)
 }
 
