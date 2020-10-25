@@ -6,7 +6,7 @@ const User = require('../models/user')
 
 const rounds = 11
 
-exports.postLogin = (request, response) => {
+exports.login = (request, response) => {
   const credentials = request.body
 
   if (!credentials) {
@@ -21,8 +21,6 @@ exports.postLogin = (request, response) => {
   const email = request.body.email
 
   User.findOne({ email }, (err, user) => {
-    console.log(user)
-
     if (user === null) {
       return response.status(401).send('Unauthorized')
     }
@@ -45,7 +43,7 @@ exports.postLogin = (request, response) => {
       }
 
       const tokenOptions = {
-        expiresIn: '1h' // '60d' // two months,
+        expiresIn: '1h' // '60d' is two months,
       }
 
       const token = jwt.sign(tokenPayload, process.env.SECRET, tokenOptions)
@@ -56,7 +54,7 @@ exports.postLogin = (request, response) => {
   })
 }
 
-exports.postUser = (request, response) => {
+exports.createUser = (request, response) => {
   const passwd = request.body.passwd
   const email = request.body.email
 
