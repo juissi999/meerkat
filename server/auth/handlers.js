@@ -39,7 +39,18 @@ exports.postLogin = (request, response) => {
         return response.status(401).send('Unauthorized')
       }
 
-      const token = 'testtoken'
+      const tokenPayload = {
+        email: user.email,
+        id: user.id
+      }
+
+      const tokenOptions = {
+        expiresIn: '1h' // '60d' // two months,
+      }
+
+      const token = jwt.sign(tokenPayload, process.env.SECRET, tokenOptions)
+      console.log(user.email + ' logged in.')
+
       response.json({ token })
     })
   })
