@@ -13,6 +13,16 @@ exports.postLogin = (request, response) => {
 
   const { email, passwd } = credentials
 
+  User.find({ email, passwd })
+    .then((auth) => {
+      console.log(auth)
+      response.json(auth)
+    })
+    .catch((err) => {
+      console.log(err.message)
+      response.status(401).end()
+    })
+
   let valid = false
   if (email === 'test@test.com') {
     valid = true
@@ -33,13 +43,16 @@ exports.postUser = (request, response) => {
     passwordHash: request.body.passwd
   })
 
-  console.log(user)
-
-  if (true) {
-    response.end()
-  } else {
-    response.status(401).end()
-  }
+  user
+    .save()
+    .then((savedUser) => {
+      console.log('created user:', savedUser)
+      response.json(savedUser)
+    })
+    .catch((err) => {
+      response.status(409).end()
+      return console.log(err)
+    })
 }
 
 exports.deleteUser = (request, response) => {
