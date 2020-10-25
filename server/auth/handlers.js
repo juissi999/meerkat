@@ -1,4 +1,8 @@
-exports.post = (request, response) => {
+const { v4 } = require('uuid')
+
+const User = require('../models/user')
+
+exports.postLogin = (request, response) => {
   const credentials = request.body
 
   if (!credentials) {
@@ -20,4 +24,26 @@ exports.post = (request, response) => {
   } else {
     response.status(401).end()
   }
+}
+
+exports.postUser = (request, response) => {
+  const user = new User({
+    email: request.body.email,
+    id: v4(),
+    passwordHash: request.body.passwd
+  })
+
+  console.log(user)
+
+  if (true) {
+    response.end()
+  } else {
+    response.status(401).end()
+  }
+}
+
+exports.deleteUser = (request, response) => {
+  const id = request.params.id
+
+  return response.end()
 }

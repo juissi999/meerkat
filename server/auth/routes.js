@@ -5,6 +5,10 @@ const handlers = require('./handlers')
 // IDEMPONENT = effect is the same if you do the action once or n times
 
 // IDEMPONENT
-router.post('/login', handlers.post)
+router.post('/login', handlers.postLogin)
+
+router.post('/add', handlers.postUser)
+
+router.post('/delete/:id', handlers.deleteUser)
 
 module.exports = router
