@@ -1,5 +1,6 @@
 const { v4 } = require('uuid')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 const User = require('../models/user')
 
