@@ -20,72 +20,79 @@ exports.login = (request, response) => {
   const passwd = request.body.passwd
   const email = request.body.email
 
-  User.findOne({ email }, (err, user) => {
-    if (user === null) {
-      return response.status(401).send('Unauthorized')
-    }
-
-    bcrypt.compare(passwd, user.passwordHash, function (err2, match) {
-      if (err2) {
-        // Hash comparison failed. Password might still be correct, though.
-        console.log(err2)
-        return response.status(401).send('Unauthorized')
+  User.findOne({ email })
+    .then((user) => {
+      if (user === null) {
+        throw new Error('User doesnt exist.')
       }
 
-      if (!match) {
-        // no password match => Authentication failure
-        return response.status(401).send('Unauthorized')
-      }
+      bcrypt
+        .compare(passwd, user.passwordHash)
+        .then((match) => {
+          if (!match) {
+            // no password match => Authentication failure
+            throw new Error('Wrong password.')
+          }
 
-      const tokenPayload = {
-        email: user.email,
-        id: user.id
-      }
+          const tokenPayload = {
+            email: user.email,
+            id: user.id
+          }
 
-      const tokenOptions = {
-        expiresIn: '1h' // '60d' is two months,
-      }
+          const tokenOptions = {
+            expiresIn: '1h' // '60d' is two months,
+          }
 
-      const token = jwt.sign(tokenPayload, process.env.SECRET, tokenOptions)
-      console.log(user.email + ' logged in.')
+          const token = jwt.sign(tokenPayload, process.env.SECRET, tokenOptions)
+          console.log(user.email + ' logged in.')
 
-      response.json({ token })
+          response.json({ token })
+        })
+        .catch((err) => {
+          console.log(err)
+          return response.status(401).send('Unauthorized')
+        })
     })
-  })
+    .catch((err) => {
+      console.log(err)
+      return response.status(401).send('Unauthorized')
+    })
 }
 
 exports.createUser = (request, response) => {
   const passwd = request.body.passwd
   const email = request.body.email
 
-  bcrypt.hash(passwd, rounds, (berr, pwdHash) => {
-    if (berr) {
-      console.log(berr)
-      return response.status(409).end()
-    }
+  // check user with this email does not exist
+  User.findOne({ email })
+    .then((user) => {
+      if (user) {
+        throw new Error('Email in use.')
+      }
 
-    // TODO what if conflict?
-    const userId = v4()
-
-    const user = new User({
-      email: email,
-      id: userId,
-      passwordHash: pwdHash
+      // create password hash
+      return bcrypt.hash(passwd, rounds)
     })
+    .then((pwdHash) => {
+      const userId = v4()
 
-    console.log('user', user)
+      const user = new User({
+        email: email,
+        id: userId,
+        passwordHash: pwdHash
+      })
 
-    user
-      .save()
-      .then((result) => {
-        console.log('User created: ' + email) // DEBUG
-        return response.json(result)
-      })
-      .catch((err) => {
-        response.status(409).end()
-        return console.log(err)
-      })
-  })
+      // save user details to database
+      return user.save()
+    })
+    .then((result) => {
+      console.log('User created: ' + email) // DEBUG
+      return response.json(result)
+    })
+    .catch((err) => {
+      console.log(err)
+      return response.status(400).end()
+    })
 }
 
 exports.deleteUser = (request, response) => {
