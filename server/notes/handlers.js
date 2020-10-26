@@ -1,8 +1,20 @@
 const Note = require('../models/note')
 const File = require('../models/file')
+const jwt = require('jsonwebtoken')
 
 exports.getAll = (request, response) => {
-  Note.find({})
+  let userId = null
+
+  const token = extractToken(request.headers.authorization)
+  if (token) {
+    const id = extractUserId(token)
+    if (!id) {
+      return response.status(400).end()
+    }
+    userId = id
+  }
+
+  Note.find({ ownerId: userId })
     .then((notes) => {
       response.json(notes)
     })
@@ -13,7 +25,19 @@ exports.getAll = (request, response) => {
 }
 
 exports.getOne = (request, response) => {
-  Note.findOne({ noteid: request.params.id })
+  const noteId = request.params.id
+
+  let userId = null
+  const token = extractToken(request.headers.authorization)
+  if (token) {
+    const id = extractUserId(token)
+    if (!id) {
+      return response.status(400).end()
+    }
+    userId = id
+  }
+
+  Note.findOne({ noteid: noteId, ownerId: userId })
     .then((note) => {
       if (note) {
         response.json(note)
@@ -38,10 +62,21 @@ exports.post = (request, response) => {
     })
   }
 
+  let userId = null
+  const token = extractToken(request.headers.authorization)
+  if (token) {
+    const id = extractUserId(token)
+    if (!id) {
+      return response.status(400).end()
+    }
+    userId = id
+  }
+
   const note = new Note({
     text: request.body.text,
     noteid: noteid,
-    date: posttime
+    date: posttime,
+    ownerId: userId
   })
 
   note
@@ -58,7 +93,17 @@ exports.post = (request, response) => {
 exports.delete = (request, response) => {
   const id = Number(request.params.id)
 
-  Note.deleteOne({ noteid: id })
+  let userId = null
+  const token = extractToken(request.headers.authorization)
+  if (token) {
+    const id = extractUserId(token)
+    if (!id) {
+      return response.status(400).end()
+    }
+    userId = id
+  }
+
+  Note.deleteOne({ noteid: id, ownerId: userId })
     .then(() => {
       return File.deleteOne({ noteid: id })
     })
@@ -77,7 +122,17 @@ exports.put = (request, response) => {
   const notestr = request.body.text
   // const posttime = Date.now()
 
-  const filter = { noteid: id }
+  let userId = null
+  const token = extractToken(request.headers.authorization)
+  if (token) {
+    const id = extractUserId(token)
+    if (!id) {
+      return response.status(400).end()
+    }
+    userId = id
+  }
+
+  const filter = { noteid: id, ownerId: userId }
   const update = { text: notestr }
 
   Note.updateOne(filter, update)
@@ -89,4 +144,25 @@ exports.put = (request, response) => {
       console.log(err)
       response.status(409).end()
     })
+}
+
+const extractToken = (tokenString) => {
+  if (!tokenString) {
+    return null
+  }
+  tokenArray = tokenString.split(' ')
+
+  if (tokenArray[0] === 'Bearer' && tokenArray.length === 2) {
+    return tokenArray[1]
+  }
+}
+
+const extractUserId = (token) => {
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET)
+    return decoded.id
+  } catch (error) {
+    console.log(error)
+    return null
+  }
 }
