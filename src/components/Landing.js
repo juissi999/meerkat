@@ -24,6 +24,8 @@ const Landing = () => {
       .then((data) => {
         localStorage.setItem('token', data.token)
         dispatch({ type: 'LOGIN' })
+        // reload here to get the api use newly saved token
+        window.location.reload()
       })
       .catch((err) => console.log(err))
   }
