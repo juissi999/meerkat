@@ -10,7 +10,7 @@ module.exports = function (options) {
     if (token) {
       const id = extractUserId(token, SECRET)
       if (!id) {
-        return response.status(400).end()
+        return response.status(401).end()
       }
       userId = id
     }
