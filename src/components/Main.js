@@ -17,6 +17,8 @@ const Main = () => {
 
   const render = () => {
     if (isLoggedIn) {
+      // reload here to get the api use newly saved token
+      window.location.reload()
       return <Meerkat />
     } else {
       return <Landing />
