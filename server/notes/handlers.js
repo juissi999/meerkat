@@ -1,18 +1,8 @@
 const Note = require('../models/note')
 const File = require('../models/file')
-const jwt = require('jsonwebtoken')
 
 exports.getAll = (request, response) => {
-  let userId = null
-
-  const token = extractToken(request.headers.authorization)
-  if (token) {
-    const id = extractUserId(token)
-    if (!id) {
-      return response.status(400).end()
-    }
-    userId = id
-  }
+  const userId = request.userId
 
   Note.find({ ownerId: userId })
     .then((notes) => {
@@ -27,15 +17,7 @@ exports.getAll = (request, response) => {
 exports.getOne = (request, response) => {
   const noteId = request.params.id
 
-  let userId = null
-  const token = extractToken(request.headers.authorization)
-  if (token) {
-    const id = extractUserId(token)
-    if (!id) {
-      return response.status(400).end()
-    }
-    userId = id
-  }
+  const userId = request.userId
 
   Note.findOne({ noteid: noteId, ownerId: userId })
     .then((note) => {
@@ -62,15 +44,7 @@ exports.post = (request, response) => {
     })
   }
 
-  let userId = null
-  const token = extractToken(request.headers.authorization)
-  if (token) {
-    const id = extractUserId(token)
-    if (!id) {
-      return response.status(400).end()
-    }
-    userId = id
-  }
+  const userId = request.userId
 
   const note = new Note({
     text: request.body.text,
@@ -93,15 +67,7 @@ exports.post = (request, response) => {
 exports.delete = (request, response) => {
   const id = Number(request.params.id)
 
-  let userId = null
-  const token = extractToken(request.headers.authorization)
-  if (token) {
-    const id = extractUserId(token)
-    if (!id) {
-      return response.status(400).end()
-    }
-    userId = id
-  }
+  const userId = request.userId
 
   Note.deleteOne({ noteid: id, ownerId: userId })
     .then(() => {
@@ -122,15 +88,7 @@ exports.put = (request, response) => {
   const notestr = request.body.text
   // const posttime = Date.now()
 
-  let userId = null
-  const token = extractToken(request.headers.authorization)
-  if (token) {
-    const id = extractUserId(token)
-    if (!id) {
-      return response.status(400).end()
-    }
-    userId = id
-  }
+  const userId = request.userId
 
   const filter = { noteid: id, ownerId: userId }
   const update = { text: notestr }
@@ -144,25 +102,4 @@ exports.put = (request, response) => {
       console.log(err)
       response.status(409).end()
     })
-}
-
-const extractToken = (tokenString) => {
-  if (!tokenString) {
-    return null
-  }
-  tokenArray = tokenString.split(' ')
-
-  if (tokenArray[0] === 'Bearer' && tokenArray.length === 2) {
-    return tokenArray[1]
-  }
-}
-
-const extractUserId = (token) => {
-  try {
-    const decoded = jwt.verify(token, process.env.SECRET)
-    return decoded.id
-  } catch (error) {
-    console.log(error)
-    return null
-  }
 }

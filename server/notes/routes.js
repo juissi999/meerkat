@@ -1,5 +1,8 @@
 const router = require('express').Router()
 const handlers = require('./handlers')
+const tokenValidator = require('../tokenValidator')
+
+router.use(tokenValidator({ SECRET: process.env.SECRET }))
 
 // SAFE = action does not change the servers state or database
 // IDEMPONENT = effect is the same if you do the action once or n times
