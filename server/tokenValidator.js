@@ -1,5 +1,11 @@
 const jwt = require('jsonwebtoken')
 
+// a middleware that extracts the token and checks if it's valid. Adds an userId
+// field to request object. userId is null if no token is present. If token was
+// not valid, response with 401.
+
+// Parameters: options {SECRET: string[jwt token secret]}
+
 module.exports = function (options) {
   return function (request, response, next) {
     // process.env.SECRET
