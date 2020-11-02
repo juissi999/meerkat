@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 import Button from 'react-bootstrap/Button'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Container from 'react-bootstrap/Container'
 import Form from 'react-bootstrap/Form'
+import Jumbotron from 'react-bootstrap/Jumbotron'
+import Collapse from 'react-bootstrap/Collapse'
 
 import authService from './../services/authService'
 
@@ -14,6 +12,7 @@ const Landing = () => {
   const [email, setEmail] = useState('')
   const [passwd, setPasswd] = useState('')
   const [showForm, setShowForm] = useState(false)
+  const [registerSuccesful, setRegisterSuccesful] = useState(false)
 
   const onRegister = (e) => {
     e.preventDefault()
@@ -22,6 +21,7 @@ const Landing = () => {
     response
       .then((data) => {
         console.log('Register succesful.')
+        setRegisterSuccesful(true)
       })
       .catch((err) => console.log(err))
   }
@@ -35,7 +35,7 @@ const Landing = () => {
   }
 
   const renderRegisterForm = () => {
-    if (showForm) {
+    if (!registerSuccesful) {
       return (
         <Form onSubmit={onRegister}>
           <Form.Group controlId="formBasicEmail">
@@ -59,32 +59,38 @@ const Landing = () => {
           <Button variant="primary" type="submit">
             Submit
           </Button>
+          <br />
+          <img src={meerkat} alt="this is a meerkat" />
         </Form>
+      )
+    } else {
+      return (
+        <>Thank you for register! Hop in the App from the top right corner!</>
       )
     }
   }
 
   return (
-    <Container>
-      <Row>
-        <Col>
-          <h1>meerkat</h1>
-        </Col>
-      </Row>
-      <Row className="mb-3">
-        <Col>
-          <img src={meerkat} alt="this is a meerkat" />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+    <>
+      <Jumbotron>
+        <h1>Say hello to meerkat!</h1>
+        <p>
+          Ever forgotten something? Ever wanting to write down a thought? Now
+          it's possible and easier than ever.
+        </p>
+        <p>
+          Register, write down notes and filter them with hashtags. Supported on
+          all devices with a modern browser. This means pretty much everything
+          except your toaster.
+        </p>
+        <p>
           <Button variant="primary" onClick={() => setShowForm(!showForm)}>
             Register
           </Button>
-          {renderRegisterForm()}
-        </Col>
-      </Row>
-    </Container>
+        </p>
+        <Collapse in={showForm}>{renderRegisterForm()}</Collapse>
+      </Jumbotron>
+    </>
   )
 }
 
