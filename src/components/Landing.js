@@ -8,6 +8,8 @@ import Form from 'react-bootstrap/Form'
 
 import authService from './../services/authService'
 
+import meerkat from '../images/meerkat.png'
+
 const Landing = () => {
   const [email, setEmail] = useState('')
   const [passwd, setPasswd] = useState('')
@@ -67,6 +69,15 @@ const Landing = () => {
       <Row>
         <Col>
           <h1>meerkat</h1>
+        </Col>
+      </Row>
+      <Row className="mb-3">
+        <Col>
+          <img src={meerkat} alt="this is a meerkat" />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
           <Button variant="primary" onClick={() => setShowForm(!showForm)}>
             Register
           </Button>
