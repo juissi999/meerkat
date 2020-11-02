@@ -22,6 +22,7 @@ const Landing = () => {
       .then((data) => {
         console.log('Register succesful.')
         setRegisterSuccesful(true)
+        setShowForm(false)
       })
       .catch((err) => console.log(err))
   }
@@ -34,40 +35,49 @@ const Landing = () => {
     setEmail(event.target.value)
   }
 
-  const renderRegisterForm = () => {
-    if (!registerSuccesful) {
+  const renderRegisterButton = () => {
+    if (registerSuccesful) {
       return (
-        <Form onSubmit={onRegister}>
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter email"
-              value={email}
-              onChange={onChangeEmail}
-            />
-          </Form.Group>
-          <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              value={passwd}
-              onChange={onChangePassword}
-            />
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-          <br />
-          <img src={meerkat} alt="this is a meerkat" />
-        </Form>
-      )
-    } else {
-      return (
-        <>Thank you for register! Hop in the App from the top right corner!</>
+        <strong>
+          Thank you for register! Hop in the App from the top right corner!
+        </strong>
       )
     }
+    return (
+      <Button variant="primary" onClick={() => setShowForm(!showForm)}>
+        Register
+      </Button>
+    )
+  }
+
+  const renderRegisterForm = () => {
+    return (
+      <Form onSubmit={onRegister}>
+        <Form.Group controlId="formBasicEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control
+            type="email"
+            placeholder="Enter email"
+            value={email}
+            onChange={onChangeEmail}
+          />
+        </Form.Group>
+        <Form.Group controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            value={passwd}
+            onChange={onChangePassword}
+          />
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+        <br />
+        <img src={meerkat} alt="this is a meerkat" />
+      </Form>
+    )
   }
 
   return (
@@ -83,11 +93,7 @@ const Landing = () => {
           all devices with a modern browser. This means pretty much everything
           except your toaster.
         </p>
-        <p>
-          <Button variant="primary" onClick={() => setShowForm(!showForm)}>
-            Register
-          </Button>
-        </p>
+        <p>{renderRegisterButton()}</p>
         <Collapse in={showForm}>{renderRegisterForm()}</Collapse>
       </Jumbotron>
     </>
