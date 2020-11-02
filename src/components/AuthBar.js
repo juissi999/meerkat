@@ -23,7 +23,7 @@ const AuthBar = () => {
       return (
         <Form onSubmit={onLogin}>
           <Form.Row className="align-items-center">
-            <Col xs="auto">
+            <Col xs="auto" className="mb-1">
               <Form.Control
                 type="email"
                 placeholder="Email"
@@ -31,7 +31,7 @@ const AuthBar = () => {
                 onChange={onChangeEmail}
               />
             </Col>
-            <Col xs="auto">
+            <Col xs="auto" className="mb-1">
               <Form.Control
                 type="password"
                 placeholder="Password"
