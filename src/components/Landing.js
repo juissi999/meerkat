@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
 import Form from 'react-bootstrap/Form'
 
+import api from '../services/api'
 import authService from './../services/authService'
 
 const Landing = () => {
@@ -22,10 +23,13 @@ const Landing = () => {
     //const response = authService.newUser(loginCredentials)
     response
       .then((data) => {
-        localStorage.setItem('token', data.token)
+        const token = data.token
+        localStorage.setItem('token', token)
+        // set token to api instance (it was already started)
+        api.defaults.headers.Authorization = `Bearer ${token}`
         dispatch({ type: 'LOGIN' })
         // reload here to get the api use newly saved token
-        window.location.reload()
+        //window.location.reload()
       })
       .catch((err) => console.log(err))
   }
