@@ -7,6 +7,7 @@ require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const ip = require('ip')
 
 const path = require('path')
 const noteRouter = require('./notes/routes')
@@ -28,6 +29,9 @@ mongoose
 // use env-variable to decide listening port
 const PORT = process.env.PORT || 80
 
+// get my ip
+const IP = ip.address()
+
 // start node express
 const app = express()
 app.use(bodyParser.json())
@@ -44,5 +48,5 @@ app.get('*', (req, res) => {
 })
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+  console.log(`Server running on ip ${IP} port ${PORT}`)
 })
