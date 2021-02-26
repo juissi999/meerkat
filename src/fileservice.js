@@ -1,25 +1,25 @@
 import axios from 'axios'
 const baseUrl = '/files'
 
-const post = (filename, noteid) => {
+const post = async (filename, noteid) => {
   const data = new FormData()
   data.append('noteid', noteid)
   data.append('memFile', filename)
 
-  const request = axios.post(baseUrl, data)
-  return request.then(response => response.data)
+  const response = await axios.post(baseUrl, data)
+  return response.data
 }
 
-const getAll = () => {
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data)
+const getAll = async () => {
+  const response = await axios.get(baseUrl)
+  return response.data
 }
 
 const get = () => {}
 
-const del = filename => {
-  const request = axios.delete(`${baseUrl}/${filename}`)
-  return request.then(response => response.data)
+const del = async (filename) => {
+  const response = await axios.delete(`${baseUrl}/${filename}`)
+  return response.data
 }
 
 export default { post, get, del, getAll }
