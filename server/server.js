@@ -13,6 +13,8 @@ const path = require('path')
 const noteRouter = require('./notes/routes')
 const fileRouter = require('./files/routes')
 
+const dbState = require('./middlewares/dbState')
+
 // connect to mongoDB
 const url = process.env.MONGODB_URI
 
@@ -37,9 +39,8 @@ const app = express()
 app.use(bodyParser.json())
 app.use(express.static('build'))
 
-app.use('/notes', noteRouter)
-
-app.use('/files', fileRouter)
+app.use('/notes', dbState, noteRouter)
+app.use('/files', dbState, fileRouter)
 
 // return index for all the other routes which are not find so
 // that they will lead to mainpage
