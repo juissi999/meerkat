@@ -15,6 +15,8 @@ Deploys on Heroku with cloud DB. Check: http://meerk4t.herokuapp.com/.
 
 ### Usage
 
+#### Application
+
 Start a command line and go to the app directory.
 
 Download by typing:
@@ -36,6 +38,21 @@ Start server by typing:
 The server will listen on port 80 by default. Specify port on .env-file: PORT.
 
 Connect your mongoDB-database by specifying URL on .env-file: MONGODB_URI.
+
+#### Database
+
+If you use local mongodb, download mongodb, specify and create folder for database.
+Start mongod instance on your machine.
+
+*On Windows*, replace version and path with your system specific an type:
+
+`"C:\Program Files\MongoDB\Server\4.4\bin\mongod.exe"`
+
+*On Linux*, type:
+
+`mongod`
+
+*On Cloud*, check the specific cloud manual.
 
 ### Technologies used
 
