@@ -31,17 +31,15 @@ const App = () => {
   const [selectedHts, setSelectedHts] = useState([])
   const [notesVisible, setNotesVisible] = useState([])
 
-  const getAll = () => {
-    noteservice.getAll().then(notedata => {
-      fileservice.getAll().then(fdata => {
-        const noteswithfiles = notedata.map(n => {
-          const foundfiles = fdata.filter(f => f.noteid === n.noteid)
-          n.files = foundfiles.map(f => f.filename)
-          return n
-        })
-        setNotes(noteswithfiles)
-      })
+  const getAll = async () => {
+    const notedata = await noteservice.getAll()
+    const fdata = await fileservice.getAll()
+    const noteswithfiles = notedata.map((n) => {
+      const foundfiles = fdata.filter((f) => f.noteid === n.noteid)
+      n.files = foundfiles.map((f) => f.filename)
+      return n
     })
+    setNotes(noteswithfiles)
   }
 
   useEffect(() => {
@@ -63,21 +61,21 @@ const App = () => {
   // disappeared will be removed from the selected hashtags list
   useEffect(() => {
     setSelectedHts(
-      selectedHts.filter(sh => hashtags.map(ht => ht.name).includes(sh))
+      selectedHts.filter((sh) => hashtags.map((ht) => ht.name).includes(sh))
     )
   }, [hashtags])
 
   // effect-hook filters shown notes every time selected hashtags change
   useEffect(() => {
-    const sn = notes.filter(n => {
+    const sn = notes.filter((n) => {
       // find hastags for this note
-      const hts = hashtags.filter(ht => ht.linksto === n.noteid)
+      const hts = hashtags.filter((ht) => ht.linksto === n.noteid)
 
       // get the noteid from the raw hashtags (technical function)
-      const htNames = hts.map(ht => ht.name)
+      const htNames = hts.map((ht) => ht.name)
 
       // go through selected hts and collect matching to found hts
-      const foundHts = selectedHts.filter(sHt => {
+      const foundHts = selectedHts.filter((sHt) => {
         return htNames.includes(sHt)
       })
 
@@ -102,7 +100,7 @@ const App = () => {
           <Refresher getterFcn={getAll} interval={15000} />
         </Col>
       </Row>
-      <Row className='mt-2'>
+      <Row className="mt-2">
         <Col>
           <NotePushForm
             notes={notes}
@@ -120,7 +118,7 @@ const App = () => {
           />
         </Col>
       </Row>
-      <Row className='mt-2'>
+      <Row className="mt-2">
         <Col>
           <NoteList
             notes={notes}
