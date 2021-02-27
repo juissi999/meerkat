@@ -7,7 +7,11 @@ import Button from 'react-bootstrap/Button'
 
 const NotePushForm = ({ notes, setNotes, setNotification }) => {
   const [memo, setMemo] = useState('')
-  const [file, setFile] = useState(null)
+  const [uploadFiles, setUploadFiles] = useState([])
+
+  // label for fileinput component
+  const zerolabel = 'Add files'
+  const [label, setLabel] = useState(zerolabel)
 
   const newentry = { text: memo }
 
@@ -27,10 +31,14 @@ const NotePushForm = ({ notes, setNotes, setNotification }) => {
       const noteid = addedentry.noteid
 
       // after note sent succesfully, send file
-      if (file !== null) {
-        const response = await fileservice.post(file, noteid)
-        setFile(null)
-        addedentry.files = [response.filename]
+      if (uploadFiles.length > 0) {
+        const responses = [...uploadFiles].map((file) =>
+          fileservice.post(file, noteid)
+        )
+        //const response = await fileservice.post(uploadFiles, noteid)
+        const addedFiles = await Promise.all(responses)
+        updateUploadFiles([])
+        addedentry.files = addedFiles.map((r) => r.filename)
         const newNotes = notes.concat(addedentry)
         setNotes(newNotes)
         // TODO: error handling here, file could not be uploaded, dont add to entry
@@ -49,13 +57,27 @@ const NotePushForm = ({ notes, setNotes, setNotification }) => {
   }
   // <textarea name='note' value={memo} onChange={on_change}/>
 
+  const updateUploadFiles = (files) => {
+    setUploadFiles(files)
+
+    if (files.length === 0) {
+      setLabel(zerolabel)
+    } else {
+      if (files.length === 1) {
+        setLabel(files[0].name)
+      } else {
+        setLabel(files.length.toString() + ' files')
+      }
+    }
+  }
+
   return (
     <Form name="pushform" onSubmit={onSubmit}>
       <Form.Group controlId="formMemory">
         <Form.Control as="textarea" rows="3" value={memo} onChange={onChange} />
       </Form.Group>
       <Form.Group controlId="formFile">
-        <FileInput file={file} setFile={setFile} />
+        <FileInput label={label} updateUploadFiles={updateUploadFiles} />
       </Form.Group>
       <Form.Group controlId="formSubmit">
         <Button size="lg" type="submit">
