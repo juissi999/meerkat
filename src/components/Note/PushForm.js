@@ -77,7 +77,11 @@ const NotePushForm = ({ notes, setNotes, setNotification }) => {
         <Form.Control as="textarea" rows="3" value={memo} onChange={onChange} />
       </Form.Group>
       <Form.Group controlId="formFile">
-        <FileInput label={label} updateUploadFiles={updateUploadFiles} />
+        <FileInput
+          label={label}
+          uploadFiles={uploadFiles}
+          updateUploadFiles={updateUploadFiles}
+        />
       </Form.Group>
       <Form.Group controlId="formSubmit">
         <Button size="lg" type="submit">
