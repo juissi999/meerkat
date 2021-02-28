@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'react-bootstrap/Image'
 import Card from 'react-bootstrap/Card'
+import CardColumns from 'react-bootstrap/CardColumns'
 
 const uploaddir = 'uploads'
 const previewImageExtensions = ['jpg', 'png', 'jpeg', 'gif']
@@ -13,19 +14,29 @@ const NoteFile = ({ children }) => {
 
     if (previewImageExtensions.includes(extension)) {
       return (
-        <a href={filepath} key={c}>
-          <Image src={filepath} fluid />
-        </a>
+        <Card
+          border="dark"
+          style={{ maxWidth: '18rem', padding: '1rem' }}
+          key={c}
+        >
+          <a href={filepath}>
+            <Image src={filepath} fluid />
+          </a>
+        </Card>
       )
     }
     return (
-      <Card.Link key={c} href={filepath}>
-        {c}
-      </Card.Link>
+      <Card
+        border="dark"
+        style={{ maxWidth: '18rem', padding: '1rem' }}
+        key={c}
+      >
+        <Card.Link href={filepath}>{c}</Card.Link>
+      </Card>
     )
   }
 
-  return <Card.Text>{children.map(filedisplay)}</Card.Text>
+  return <CardColumns>{children.map(filedisplay)}</CardColumns>
 }
 
 export default NoteFile
