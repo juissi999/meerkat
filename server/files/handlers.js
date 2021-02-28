@@ -91,3 +91,18 @@ exports.getAll = (request, response) => {
       response.status(400).end()
     })
 }
+
+exports.delete = (request, response) => {
+  const id = Number(request.params.noteid)
+  const filename = request.params.filename
+
+  File.deleteOne({ noteid: id, filename: filename })
+    .then(() => {
+      // file deleted, all ok
+      response.status(204).end()
+    })
+    .catch((err) => {
+      response.status(409).end()
+      return console.log(err)
+    })
+}

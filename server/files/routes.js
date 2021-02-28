@@ -12,4 +12,6 @@ router.get('/', handlers.getAll)
 // SAFE, IDEMPONENT
 router.get('/:noteid', handlers.getFiles)
 
+router.delete('/:noteid/:filename', handlers.delete)
+
 module.exports = router
