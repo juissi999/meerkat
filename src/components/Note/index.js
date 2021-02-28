@@ -5,11 +5,13 @@ import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
 
 import noteservice from '../../noteservice'
+import fileservice from '../../fileservice'
 import NoteFile from './File'
 
 const Note = ({ note, notes, setNotes, setNotification }) => {
   const [editable, setEditable] = useState(false)
   const [noteStr, setNoteStr] = useState('')
+  const [editableFiles, setEditableFiles] = useState([])
 
   const datetxt = (dstring) => {
     return new Date(dstring).toString()
@@ -31,11 +33,14 @@ const Note = ({ note, notes, setNotes, setNotification }) => {
   const onClickEdit = async () => {
     try {
       const receivedNote = await noteservice.getOne(note.noteid)
+      const receivedFiles = await fileservice.getNotesFiles(note.noteid)
       if (Object.keys(receivedNote).length === 0) {
         setNotification('Note does not exist.')
         setNotes(notes.filter((n) => n.noteid !== note.noteid))
       } else {
         setNoteStr(receivedNote.text)
+
+        setEditableFiles(receivedFiles.map((file) => file.filename))
         setEditable(!editable)
       }
     } catch (err) {
@@ -51,15 +56,29 @@ const Note = ({ note, notes, setNotes, setNotification }) => {
     setEditable(!editable)
   }
 
+  const onDeleteFile = async (filename) => {
+    await fileservice.deleteFile(note.noteid, filename)
+    setEditableFiles(editableFiles.filter((file) => file !== filename))
+  }
+
   const onPut = async (event) => {
     event.preventDefault()
 
     try {
       await noteservice.update(note.noteid, { text: noteStr })
+      const receivedFiles = await fileservice.getNotesFiles(note.noteid)
+
       // note was succesfully updated
       // new noteobject where text is replace on this noteid
+      // and files replaced with what is in backend now
       const newNotes = notes.map((n) =>
-        n.noteid === note.noteid ? { ...note, text: noteStr } : n
+        n.noteid === note.noteid
+          ? {
+              ...note,
+              text: noteStr,
+              files: receivedFiles.map((f) => f.filename)
+            }
+          : n
       )
 
       // set it on notes hook
@@ -89,6 +108,20 @@ const Note = ({ note, notes, setNotes, setNotification }) => {
                 value={noteStr}
                 onChange={onChange}
               />
+            </Form.Group>
+            <Form.Group controlId="formFilelist">
+              {editableFiles.map((file) => (
+                <Form.Row key={file} className="my-1">
+                  {file}
+                  <Button
+                    variant="danger"
+                    className="mx-1"
+                    onClick={() => onDeleteFile(file)}
+                  >
+                    X
+                  </Button>
+                </Form.Row>
+              ))}
             </Form.Group>
             <Form.Group controlId="formSubmit">
               <Button type="submit">Update note</Button>{' '}

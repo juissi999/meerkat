@@ -13,13 +13,13 @@ const NoteFile = ({ children }) => {
 
     if (previewImageExtensions.includes(extension)) {
       return (
-        <a href={filepath} key={i}>
+        <a href={filepath} key={c}>
           <Image src={filepath} fluid />
         </a>
       )
     }
     return (
-      <Card.Link key={i} href={filepath}>
+      <Card.Link key={c} href={filepath}>
         {c}
       </Card.Link>
     )
