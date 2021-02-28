@@ -60,7 +60,7 @@ exports.delete = (request, response) => {
 
   Note.deleteOne({ noteid: id })
     .then(() => {
-      return File.deleteOne({ noteid: id })
+      return File.deleteMany({ noteid: id })
     })
     .then(() => {
       // note and possible files deleted, all ok
