@@ -10,6 +10,6 @@ router.post('/', handlers.post)
 router.get('/', handlers.getAll)
 
 // SAFE, IDEMPONENT
-router.get('/:id', handlers.get)
+router.get('/:noteid', handlers.getFiles)
 
 module.exports = router
