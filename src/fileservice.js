@@ -15,11 +15,14 @@ const getAll = async () => {
   return response.data
 }
 
-const get = () => {}
-
-const del = async (filename) => {
-  const response = await axios.delete(`${baseUrl}/${filename}`)
+const getNotesFiles = async (noteid) => {
+  const response = await axios.get(`${baseUrl}/${noteid}`)
   return response.data
 }
 
-export default { post, get, del, getAll }
+const deleteFile = async (noteid, filename) => {
+  const response = await axios.delete(`${baseUrl}/${noteid}/${filename}`)
+  return response.data
+}
+
+export default { post, deleteFile, getAll, getNotesFiles }
