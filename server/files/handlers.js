@@ -50,7 +50,7 @@ exports.post = (request, response) => {
   upload(request, response, (err) => {
     if (err) {
       if (err.code === 'LIMIT_FILE_SIZE') {
-        return response.send(400).send({ error: 'File too big.' })
+        return response.status(400).send({ error: 'File too big.' })
       }
       return response.status(400).end()
     }
