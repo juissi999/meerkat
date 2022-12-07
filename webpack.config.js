@@ -2,7 +2,7 @@ const HtmlWebPackPlugin = require('html-webpack-plugin')
 const path = require('path')
 
 module.exports = {
-
+  entry: path.resolve(__dirname, 'client/index.js'),
   module: {
     rules: [
       {
@@ -23,15 +23,16 @@ module.exports = {
       {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader']
-      }]
+      }
+    ]
   },
   output: {
     path: path.resolve(__dirname, 'build')
   },
   plugins: [
     new HtmlWebPackPlugin({
-      template: path.resolve(__dirname, 'src/index.html'),
-      favicon: './src/images/favicon.ico',
+      template: path.resolve(__dirname, 'client/index.html'),
+      favicon: './client/images/favicon.ico',
       filename: 'index.html'
     })
   ]
