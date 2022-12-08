@@ -33,10 +33,12 @@ const App = () => {
 
   const getAll = async () => {
     const notedata = await noteservice.getAll()
-    const fdata = await fileservice.getAll()
-    const noteswithfiles = notedata.map((n) => {
-      const foundfiles = fdata.filter((f) => f.noteid === n.noteid)
-      n.files = foundfiles.map((f) => f.filename)
+    const promises = notedata.map(async (note) =>
+      fileservice.getNotesFiles(note.noteid)
+    )
+    const files = await Promise.all(promises)
+    const noteswithfiles = notedata.map((n, index) => {
+      n.files = files[index].map((file) => file.filename)
       return n
     })
     setNotes(noteswithfiles)
