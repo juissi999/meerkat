@@ -7,9 +7,6 @@ const handlers = require('./handlers')
 router.post('/', handlers.post)
 
 // SAFE, IDEMPONENT
-router.get('/', handlers.getAll)
-
-// SAFE, IDEMPONENT
 router.get('/:noteid', handlers.getFiles)
 
 router.delete('/:noteid/:filename', handlers.delete)

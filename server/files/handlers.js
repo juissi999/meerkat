@@ -81,17 +81,6 @@ exports.post = (request, response) => {
   })
 }
 
-exports.getAll = (request, response) => {
-  File.find({})
-    .then((files) => {
-      response.json(files)
-    })
-    .catch((err) => {
-      console.log(err.message)
-      response.status(400).end()
-    })
-}
-
 exports.delete = (request, response) => {
   const id = Number(request.params.noteid)
   const filename = request.params.filename
