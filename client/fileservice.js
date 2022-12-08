@@ -10,11 +10,6 @@ const post = async (filename, noteid) => {
   return response.data
 }
 
-const getAll = async () => {
-  const response = await axios.get(baseUrl)
-  return response.data
-}
-
 const getNotesFiles = async (noteid) => {
   const response = await axios.get(`${baseUrl}/${noteid}`)
   return response.data
@@ -25,4 +20,4 @@ const deleteFile = async (noteid, filename) => {
   return response.data
 }
 
-export default { post, deleteFile, getAll, getNotesFiles }
+export default { post, deleteFile, getNotesFiles }
