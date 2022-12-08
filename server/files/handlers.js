@@ -26,7 +26,7 @@ const storage = multer.diskStorage({
   }
 })
 
-exports.getFiles = (request, response) => {
+exports.getFilesByNoteId = (request, response) => {
   File.find({ noteid: request.params.noteid })
     .then((files) => {
       response.json(files)
