@@ -11,7 +11,7 @@ Store memos by writing a note. Add file to note if you want. Add hashtags to not
 
 ### Demo
 
-Deploys on Heroku with cloud DB. Check: http://meerk4t.herokuapp.com/.
+Demo currently offline.
 
 ### Usage
 
