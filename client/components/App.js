@@ -31,8 +31,8 @@ const App = () => {
   const [selectedHts, setSelectedHts] = useState([])
   const [notesVisible, setNotesVisible] = useState([])
 
-  const getAll = async () => {
-    const notedata = await noteservice.getAll({ startIndex: 0, limit: 1000 })
+  const fetchNotes = async () => {
+    const notedata = await noteservice.getNotes({ startIndex: 0, limit: 1000 })
     const promises = notedata.map(async (note) =>
       fileservice.getNotesFiles(note.noteid)
     )
@@ -45,7 +45,7 @@ const App = () => {
   }
 
   useEffect(() => {
-    getAll()
+    fetchNotes()
     const orig = document.body.className
     document.body.style.backgroundColor =
       bgColors[Math.floor(Math.random() * bgColors.length)]

@@ -1,7 +1,7 @@
 import axios from 'axios'
 const baseUrl = '/notes'
 
-const getAll = async (pagination) => {
+const getNotes = async (pagination) => {
   const { startIndex, limit } = pagination
   const response = await axios.get(
     `${baseUrl}?startIndex=${startIndex}&limit=${limit} }`
@@ -34,4 +34,4 @@ const update = async (id, newObject) => {
   return response.data
 }
 
-export default { getAll, getCount, getOne, post, del, update }
+export default { getNotes, getCount, getOne, post, del, update }
