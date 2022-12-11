@@ -2,7 +2,12 @@ const Note = require('../models/note')
 const File = require('../models/file')
 
 exports.getAll = (request, response) => {
+  const { startIndex, limit } = request.query
+
   Note.find({})
+    .skip(parseInt(startIndex))
+    .limit(parseInt(limit))
+    .sort({ date: 'desc' })
     .then((notes) => {
       response.json(notes)
     })
