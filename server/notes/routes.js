@@ -7,6 +7,8 @@ const handlers = require('./handlers')
 // SAFE, IDEMPONENT
 router.get('/', handlers.getAll)
 
+router.get('/count', handlers.getCount)
+
 router.post('/', handlers.post)
 
 // SAFE, IDEMPONENT

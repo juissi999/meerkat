@@ -12,6 +12,10 @@ exports.getAll = (request, response) => {
     })
 }
 
+exports.getCount = (request, response) => {
+  Note.find({}).countDocuments((err, count) => response.send(count.toString()))
+}
+
 exports.getOne = (request, response) => {
   Note.findOne({ noteid: request.params.id })
     .then((note) => {
