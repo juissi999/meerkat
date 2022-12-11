@@ -99,7 +99,7 @@ const App = () => {
       </Row>
       <Row>
         <Col>
-          <Refresher getterFcn={getAll} interval={15000} />
+          <Refresher getterFcn={fetchNotes} interval={15000} />
         </Col>
       </Row>
       <Row className="mt-2">
