@@ -2,63 +2,61 @@ import React, { useState } from 'react'
 import Pagination from 'react-bootstrap/Pagination'
 import Note from './index'
 
-const itemsInPage = 15
-
-const NoteList = ({ notes, setNotes, notesVisible, setNotification }) => {
+const NoteList = ({
+  notes,
+  setNotes,
+  setNotification,
+  startIndex,
+  setStartIndex,
+  LIMIT,
+  noteCount
+}) => {
   const [activePage, setActivePage] = useState(1)
 
-  const mapNotes = notelist => {
+  const mapNotes = (notelist) => {
     // sort notes, sort process can be customized now
     const sortedNotes = notelist.slice(0)
-    sortedNotes.sort((a, b) => {
-      return new Date(b.date) - new Date(a.date)
-    })
+    // sortedNotes.sort((a, b) => {
+    //   return new Date(b.date) - new Date(a.date)
+    // })
 
     return sortedNotes.map((note, i) => {
-      if (Math.floor(i / itemsInPage) === activePage - 1) {
-        return (
-          <Note
-            key={note.noteid}
-            note={note}
-            notes={notes}
-            setNotes={setNotes}
-            setNotification={setNotification}
-          />
-        )
-      }
+      return (
+        <Note
+          key={note.noteid}
+          note={note}
+          notes={notes}
+          setNotes={setNotes}
+          setNotification={setNotification}
+          setStartIndex={setStartIndex}
+        />
+      )
     })
   }
-  const onPaginationClick = id => {
-    if (id !== activePage) setActivePage(id)
-  }
 
-  // TODO: make this more efficient so that createPagination is not called
-  // twice if performance becomes a problem
-  const createPagination = notelist => {
-    const items = []
-
-    for (let i = 1; i < notelist.length / itemsInPage + 1; i++) {
-      items.push(
-        <Pagination.Item
-          key={i}
-          active={i === activePage}
-          onClick={() => onPaginationClick(i)}
-        >
-          {i}
-        </Pagination.Item>
-      )
+  const updatePagination = async (newStartIndex) => {
+    if (newStartIndex < 0) {
+      setStartIndex(0)
+    } else {
+      setStartIndex(newStartIndex)
     }
-    return items
   }
 
   return (
     <>
-      <Pagination className='justify-content-center mb-0'>
-        {createPagination(notesVisible)}
-      </Pagination>
-      {mapNotes(notesVisible)}
-      <Pagination className='justify-content-center mt-2'>
-        {createPagination(notesVisible)}
+      {mapNotes(notes)}
+      <Pagination className="justify-content-center mt-2">
+        <Pagination.Prev
+          disabled={startIndex <= 0}
+          onClick={() => updatePagination(startIndex - LIMIT)}
+        ></Pagination.Prev>
+        <Pagination.Item>
+          {startIndex + 1}-{startIndex + notes.length}/{noteCount}
+        </Pagination.Item>
+        <Pagination.Next
+          disabled={startIndex + LIMIT >= noteCount}
+          onClick={() => updatePagination(startIndex + LIMIT)}
+        ></Pagination.Next>
       </Pagination>
     </>
   )

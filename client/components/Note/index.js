@@ -8,7 +8,7 @@ import noteservice from '../../noteservice'
 import fileservice from '../../fileservice'
 import NoteFile from './File'
 
-const Note = ({ note, notes, setNotes, setNotification }) => {
+const Note = ({ note, notes, setNotes, setNotification, setStartIndex }) => {
   const [editable, setEditable] = useState(false)
   const [noteStr, setNoteStr] = useState('')
   const [editableFiles, setEditableFiles] = useState([])
@@ -20,10 +20,7 @@ const Note = ({ note, notes, setNotes, setNotification }) => {
   const onClickDelete = async () => {
     try {
       await noteservice.del(note.noteid)
-      const newNotes = notes.filter((n) => {
-        return n.noteid !== note.noteid
-      })
-      setNotes(newNotes)
+      setStartIndex(-1)
       setNotification('Note deleted.')
     } catch (err) {
       setNotification(err.message)

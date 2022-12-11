@@ -24,15 +24,23 @@ const bgColors = [
   'darkseagreen'
 ]
 
+const LIMIT = 10
+
 const App = () => {
   const [notes, setNotes] = useState([])
   const [notification, setNotification] = useState(null)
   const [hashtags, setHashtags] = useState([])
   const [selectedHts, setSelectedHts] = useState([])
   const [notesVisible, setNotesVisible] = useState([])
+  const [startIndex, setStartIndex] = useState(0)
+  const [noteCount, setNoteCount] = useState(0)
 
   const fetchNotes = async () => {
-    const notedata = await noteservice.getNotes({ startIndex: 0, limit: 1000 })
+    const notedata = await noteservice.getNotes({
+      startIndex: startIndex,
+      limit: LIMIT
+    })
+    const noteCount = await noteservice.getCount()
     const promises = notedata.map(async (note) =>
       fileservice.getNotesFiles(note.noteid)
     )
@@ -42,9 +50,11 @@ const App = () => {
       return n
     })
     setNotes(noteswithfiles)
+    setNoteCount(noteCount)
   }
 
   useEffect(() => {
+    // the mounted hook
     fetchNotes()
     const orig = document.body.className
     document.body.style.backgroundColor =
@@ -53,6 +63,16 @@ const App = () => {
       document.body.className = orig
     }
   }, [])
+
+  useEffect(() => {
+    // check that pagination is within limits
+    if (startIndex < 0) {
+      // this allows us to "force run" update with startIndex -1 for example
+      setStartIndex(0)
+      return
+    }
+    fetchNotes()
+  }, [startIndex])
 
   // effect-hook updates hashtags every time notes change
   useEffect(() => {
@@ -105,9 +125,8 @@ const App = () => {
       <Row className="mt-2">
         <Col>
           <NotePushForm
-            notes={notes}
-            setNotes={setNotes}
             setNotification={setNotification}
+            setStartIndex={setStartIndex}
           />
         </Col>
       </Row>
@@ -125,8 +144,11 @@ const App = () => {
           <NoteList
             notes={notes}
             setNotes={setNotes}
-            notesVisible={notesVisible}
             setNotification={setNotification}
+            startIndex={startIndex}
+            setStartIndex={setStartIndex}
+            LIMIT={LIMIT}
+            noteCount={noteCount}
           />
         </Col>
       </Row>

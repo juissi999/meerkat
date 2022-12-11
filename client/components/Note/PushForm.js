@@ -5,7 +5,7 @@ import FileInput from '../FileInput'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
-const NotePushForm = ({ notes, setNotes, setNotification }) => {
+const NotePushForm = ({ setNotification, setStartIndex }) => {
   const [memo, setMemo] = useState('')
   const [uploadFiles, setUploadFiles] = useState([])
 
@@ -39,16 +39,19 @@ const NotePushForm = ({ notes, setNotes, setNotification }) => {
         const addedFiles = await Promise.all(responses)
         updateUploadFiles([])
         addedentry.files = addedFiles.map((r) => r.filename)
-        const newNotes = notes.concat(addedentry)
-        setNotes(newNotes)
+        // const newNotes = notes.concat(addedentry)
+        // setNotes(newNotes)
+
         // TODO: error handling here, file could not be uploaded, dont add to entry
       } else {
         addedentry.files = []
-        const newNotes = notes.concat(addedentry)
-        setNotes(newNotes)
+        // const newNotes = notes.concat(addedentry)
+        // setNotes(newNotes)
       }
     } catch (err) {
       setNotification(err.message)
+    } finally {
+      setStartIndex(-1)
     }
   }
 
