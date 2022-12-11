@@ -1,6 +1,8 @@
 const Note = require('../models/note')
 const File = require('../models/file')
 
+const htutils = require('../hashtagUtils')
+
 exports.getAll = (request, response) => {
   const { startIndex, limit } = request.query
 
@@ -19,6 +21,19 @@ exports.getAll = (request, response) => {
 
 exports.getCount = (request, response) => {
   Note.find({}).countDocuments((err, count) => response.send(count.toString()))
+}
+
+exports.getHashtags = (request, response) => {
+  const notes = Note.find({})
+    .then((notes) => {
+      const hashtags = htutils.getAllHashtags(notes)
+      console.log(hashtags)
+      response.json(notes)
+    })
+    .catch((err) => {
+      response.status(400).end()
+      console.log(err.message)
+    })
 }
 
 exports.getOne = (request, response) => {

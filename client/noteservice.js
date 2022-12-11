@@ -14,6 +14,11 @@ const getCount = async () => {
   return response.data
 }
 
+const getHashtags = async () => {
+  const response = await axios.get(`${baseUrl}/hashtags`)
+  return response.data
+}
+
 const getOne = async (id) => {
   const response = await axios.get(`${baseUrl}/${id}`)
   return response.data
@@ -34,4 +39,4 @@ const update = async (id, newObject) => {
   return response.data
 }
 
-export default { getNotes, getCount, getOne, post, del, update }
+export default { getNotes, getCount, getHashtags, getOne, post, del, update }

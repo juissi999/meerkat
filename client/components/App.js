@@ -42,6 +42,9 @@ const App = () => {
       limit: LIMIT
     })
     const totalNoteCount = await noteservice.getCount()
+
+    const getHashtags = await noteservice.getHashtags()
+
     const promises = notedata.map(async (note) =>
       fileservice.getNotesFiles(note.noteid)
     )

@@ -9,6 +9,8 @@ router.get('/', handlers.getAll)
 
 router.get('/count', handlers.getCount)
 
+router.get('/hashtags', handlers.getHashtags)
+
 router.post('/', handlers.post)
 
 // SAFE, IDEMPONENT
