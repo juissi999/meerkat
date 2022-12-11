@@ -32,7 +32,7 @@ const App = () => {
   const [notesVisible, setNotesVisible] = useState([])
 
   const getAll = async () => {
-    const notedata = await noteservice.getAll()
+    const notedata = await noteservice.getAll({ startIndex: 0, limit: 1000 })
     const promises = notedata.map(async (note) =>
       fileservice.getNotesFiles(note.noteid)
     )
