@@ -2,17 +2,7 @@ import React, { useState } from 'react'
 import Pagination from 'react-bootstrap/Pagination'
 import Note from './index'
 
-const NoteList = ({
-  notes,
-  setNotes,
-  setNotification,
-  startIndex,
-  setStartIndex,
-  LIMIT,
-  noteCount
-}) => {
-  const [activePage, setActivePage] = useState(1)
-
+const NoteList = ({ notes, setNotes, setNotification, setStartIndex }) => {
   const mapNotes = (notelist) => {
     // sort notes, sort process can be customized now
     const sortedNotes = notelist.slice(0)
@@ -34,32 +24,7 @@ const NoteList = ({
     })
   }
 
-  const updatePagination = async (newStartIndex) => {
-    if (newStartIndex < 0) {
-      setStartIndex(0)
-    } else {
-      setStartIndex(newStartIndex)
-    }
-  }
-
-  return (
-    <>
-      {mapNotes(notes)}
-      <Pagination className="justify-content-center mt-2">
-        <Pagination.Prev
-          disabled={startIndex <= 0}
-          onClick={() => updatePagination(startIndex - LIMIT)}
-        ></Pagination.Prev>
-        <Pagination.Item>
-          {startIndex + 1}-{startIndex + notes.length}/{noteCount}
-        </Pagination.Item>
-        <Pagination.Next
-          disabled={startIndex + LIMIT >= noteCount}
-          onClick={() => updatePagination(startIndex + LIMIT)}
-        ></Pagination.Next>
-      </Pagination>
-    </>
-  )
+  return <>{mapNotes(notes)}</>
 }
 
 export default NoteList

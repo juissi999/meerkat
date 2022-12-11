@@ -9,6 +9,7 @@ import NotePushForm from './Note/PushForm'
 import HashtagList from './Hashtag/List'
 import Notification from './Notification'
 import Refresher from './Refresher'
+import MPagination from './MPagination'
 
 import { updateHashtags } from '../utils'
 import noteservice from '../noteservice'
@@ -33,14 +34,14 @@ const App = () => {
   const [selectedHts, setSelectedHts] = useState([])
   const [notesVisible, setNotesVisible] = useState([])
   const [startIndex, setStartIndex] = useState(0)
-  const [noteCount, setNoteCount] = useState(0)
+  const [totalNoteCount, settotalNoteCount] = useState(0)
 
   const fetchNotes = async () => {
     const notedata = await noteservice.getNotes({
       startIndex: startIndex,
       limit: LIMIT
     })
-    const noteCount = await noteservice.getCount()
+    const totalNoteCount = await noteservice.getCount()
     const promises = notedata.map(async (note) =>
       fileservice.getNotesFiles(note.noteid)
     )
@@ -50,7 +51,7 @@ const App = () => {
       return n
     })
     setNotes(noteswithfiles)
-    setNoteCount(noteCount)
+    settotalNoteCount(totalNoteCount)
   }
 
   useEffect(() => {
@@ -145,10 +146,14 @@ const App = () => {
             notes={notes}
             setNotes={setNotes}
             setNotification={setNotification}
+            setStartIndex={setStartIndex}
+          />
+          <MPagination
+            noteCount={notes.length}
             startIndex={startIndex}
             setStartIndex={setStartIndex}
             LIMIT={LIMIT}
-            noteCount={noteCount}
+            totalNoteCount={totalNoteCount}
           />
         </Col>
       </Row>
