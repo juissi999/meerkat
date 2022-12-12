@@ -33,7 +33,7 @@ exports.getCount = (request, response) => {
 exports.getHashtags = (request, response) => {
   Note.find({})
     .then((notes) => {
-      const hashtags = htutils.findAllHashtagsInNoteArray(notes)
+      const hashtags = notes.reduce((acc, cur) => acc.concat(cur.hashtags), [])
       response.json(hashtags)
     })
     .catch((err) => {
@@ -60,18 +60,21 @@ exports.getOne = (request, response) => {
 exports.post = (request, response) => {
   const posttime = Date.now()
   const noteid = uuidv4()
-  const txt = request.body.text
+  const noteText = request.body.text
 
-  if (!txt) {
+  if (!noteText) {
     return response.status(400).json({
       error: 'Content missing.'
     })
   }
 
+  const hashtags = htutils.findHashtagsFromString(noteText)
+
   const note = new Note({
-    text: request.body.text,
+    text: noteText,
     noteid: noteid,
-    date: posttime
+    date: posttime,
+    hashtags: hashtags
   })
 
   note
