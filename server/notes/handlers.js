@@ -4,12 +4,17 @@ const File = require('../models/file')
 const htutils = require('../hashtagUtils')
 
 exports.getAll = (request, response) => {
-  const { startIndex, limit } = request.query
+  const { startIndex, limit, hashtags } = request.query
+
+  // query string doesnt contain #-signs, add them
+  if (hashtags) {
+    const hashtagArray = hashtags.split(',').map((ht) => `#${ht}`)
+  }
 
   Note.find({})
+    .sort({ date: 'desc' })
     .skip(parseInt(startIndex))
     .limit(parseInt(limit))
-    .sort({ date: 'desc' })
     .then((notes) => {
       response.json(notes)
     })
@@ -26,7 +31,7 @@ exports.getCount = (request, response) => {
 exports.getHashtags = (request, response) => {
   Note.find({})
     .then((notes) => {
-      const hashtags = htutils.getAllHashtags(notes)
+      const hashtags = htutils.findAllHashtagsInNoteArray(notes)
       response.json(hashtags)
     })
     .catch((err) => {

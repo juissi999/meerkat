@@ -19,7 +19,7 @@ const findHashtagsFromString = (notestr) => {
   return hashtags
 }
 
-const getAllHashtags = (dataArray) => {
+const findAllHashtagsInNoteArray = (dataArray) => {
   const htarray = dataArray.reduce((accumulator, currentdata) => {
     const ht = findHashtagsFromString(currentdata.text)
     const htmap = ht.map((h) => {
@@ -36,4 +36,4 @@ const getAllHashtags = (dataArray) => {
   return hashtags
 }
 
-module.exports = { getAllHashtags }
+module.exports = { findAllHashtagsInNoteArray, findHashtagsFromString }

@@ -1,10 +1,17 @@
 import axios from 'axios'
 const baseUrl = '/notes'
 
-const getNotes = async (pagination) => {
+const getNotes = async (pagination, hashtags) => {
   const { startIndex, limit } = pagination
+
+  // trim hashtags to work on a query (no # allowed, special meaning)
+  const hashtagStr = hashtags.map((ht) => ht.slice(1)).join(',')
+
+  // construct hashtag query str
+  const hashtagQuery = hashtags.length === 0 ? '' : `&hashtags=${hashtagStr}`
+
   const response = await axios.get(
-    `${baseUrl}?startIndex=${startIndex}&limit=${limit}`
+    `${baseUrl}?startIndex=${startIndex}&limit=${limit}${hashtagQuery}`
   )
   return response.data
 }

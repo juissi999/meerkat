@@ -36,14 +36,16 @@ const App = () => {
   const [totalNoteCount, settotalNoteCount] = useState(0)
 
   const fetchNotes = async () => {
-    const notedata = await noteservice.getNotes({
-      startIndex: startIndex,
-      limit: LIMIT
-    })
+    const notedata = await noteservice.getNotes(
+      {
+        startIndex: startIndex,
+        limit: LIMIT
+      },
+      selectedHts
+    )
     const totalNoteCount = await noteservice.getCount()
 
     const hashtags = await noteservice.getHashtags()
-    console.log(hashtags)
     setHashtags(hashtags)
 
     const promises = notedata.map(async (note) =>
