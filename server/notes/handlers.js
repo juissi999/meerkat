@@ -9,11 +9,13 @@ exports.getAll = (request, response) => {
   const { startIndex, limit, hashtags } = request.query
 
   // query string doesnt contain #-signs, add them
+  let query = {}
   if (hashtags) {
     const hashtagArray = hashtags.split(',').map((ht) => `#${ht}`)
+    query = { hashtags: { $all: hashtagArray } }
   }
 
-  Note.find({})
+  Note.find(query)
     .sort({ date: 'desc' })
     .skip(parseInt(startIndex))
     .limit(parseInt(limit))
