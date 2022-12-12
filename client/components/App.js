@@ -84,6 +84,8 @@ const App = () => {
   // effect-hook updates selectedhashtags every time notes change, hashtags that
   // disappeared will be removed from the selected hashtags list
   useEffect(() => {
+    setStartIndex(0)
+    fetchNotes()
     setSelectedHts(selectedHts.filter((sh) => hashtags.includes(sh)))
   }, [hashtags])
 
