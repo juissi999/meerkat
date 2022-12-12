@@ -1,3 +1,5 @@
+const { v4: uuidv4 } = require('uuid')
+
 const Note = require('../models/note')
 const File = require('../models/file')
 
@@ -57,7 +59,7 @@ exports.getOne = (request, response) => {
 
 exports.post = (request, response) => {
   const posttime = Date.now()
-  const noteid = Math.floor(Math.random() * 1000000000)
+  const noteid = uuidv4()
   const txt = request.body.text
 
   if (!txt) {
