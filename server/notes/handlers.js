@@ -111,9 +111,10 @@ exports.put = (request, response) => {
   const id = request.params.id
   const notestr = request.body.text
   // const posttime = Date.now()
+  const hashtags = htutils.findHashtagsFromString(notestr)
 
   const filter = { noteid: id }
-  const update = { text: notestr }
+  const update = { text: notestr, hashtags }
 
   Note.updateOne(filter, update)
     .then((updated) => {
