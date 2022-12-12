@@ -86,7 +86,7 @@ exports.post = (request, response) => {
 }
 
 exports.delete = (request, response) => {
-  const id = Number(request.params.id)
+  const id = request.params.id
 
   Note.deleteOne({ noteid: id })
     .then(() => {
@@ -103,7 +103,7 @@ exports.delete = (request, response) => {
 }
 
 exports.put = (request, response) => {
-  const id = Number(request.params.id)
+  const id = request.params.id
   const notestr = request.body.text
   // const posttime = Date.now()
 
