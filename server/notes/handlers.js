@@ -24,11 +24,10 @@ exports.getCount = (request, response) => {
 }
 
 exports.getHashtags = (request, response) => {
-  const notes = Note.find({})
+  Note.find({})
     .then((notes) => {
       const hashtags = htutils.getAllHashtags(notes)
-      console.log(hashtags)
-      response.json(notes)
+      response.json(hashtags)
     })
     .catch((err) => {
       response.status(400).end()

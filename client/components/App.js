@@ -11,7 +11,6 @@ import Notification from './Notification'
 import Refresher from './Refresher'
 import MPagination from './MPagination'
 
-import { updateHashtags } from '../utils'
 import noteservice from '../noteservice'
 import fileservice from '../fileservice'
 
@@ -32,7 +31,7 @@ const App = () => {
   const [notification, setNotification] = useState(null)
   const [hashtags, setHashtags] = useState([])
   const [selectedHts, setSelectedHts] = useState([])
-  const [notesVisible, setNotesVisible] = useState([])
+  // const [notesVisible, setNotesVisible] = useState([])
   const [startIndex, setStartIndex] = useState(0)
   const [totalNoteCount, settotalNoteCount] = useState(0)
 
@@ -43,7 +42,9 @@ const App = () => {
     })
     const totalNoteCount = await noteservice.getCount()
 
-    const getHashtags = await noteservice.getHashtags()
+    const hashtags = await noteservice.getHashtags()
+    console.log(hashtags)
+    setHashtags(hashtags)
 
     const promises = notedata.map(async (note) =>
       fileservice.getNotesFiles(note.noteid)
@@ -78,11 +79,6 @@ const App = () => {
     fetchNotes()
   }, [startIndex])
 
-  // effect-hook updates hashtags every time notes change
-  useEffect(() => {
-    updateHashtags(notes, setHashtags)
-  }, [notes])
-
   // effect-hook updates selectedhashtags every time notes change, hashtags that
   // disappeared will be removed from the selected hashtags list
   useEffect(() => {
@@ -93,22 +89,19 @@ const App = () => {
 
   // effect-hook filters shown notes every time selected hashtags change
   useEffect(() => {
-    const sn = notes.filter((n) => {
-      // find hastags for this note
-      const hts = hashtags.filter((ht) => ht.linksto === n.noteid)
-
-      // get the noteid from the raw hashtags (technical function)
-      const htNames = hts.map((ht) => ht.name)
-
-      // go through selected hts and collect matching to found hts
-      const foundHts = selectedHts.filter((sHt) => {
-        return htNames.includes(sHt)
-      })
-
-      return selectedHts.length === foundHts.length
-    })
-
-    setNotesVisible(sn)
+    // const sn = notes.filter((n) => {
+    //   // find hastags for this note
+    //   const hts = hashtags.filter((ht) => ht.linksto === n.noteid)
+    //   // get the noteid from the raw hashtags (technical function)
+    //   const htNames = hts.map((ht) => ht.name)
+    //   // go through selected hts and collect matching to found hts
+    //   const foundHts = selectedHts.filter((sHt) => {
+    //     return htNames.includes(sHt)
+    //   })
+    //   return selectedHts.length === foundHts.length
+    // })
+    //fetchNotes()
+    // setNotesVisible(sn)
   }, [selectedHts])
 
   return (

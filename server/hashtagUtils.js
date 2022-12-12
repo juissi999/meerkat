@@ -29,7 +29,11 @@ const getAllHashtags = (dataArray) => {
     return accumulator.concat(htmap)
   }, [])
 
-  return htarray
+  const hashtags = htarray.map((ht) => {
+    return { name: ht.name }
+  })
+
+  return hashtags
 }
 
 module.exports = { getAllHashtags }
