@@ -4,7 +4,7 @@ const baseUrl = '/notes'
 const getNotes = async (pagination) => {
   const { startIndex, limit } = pagination
   const response = await axios.get(
-    `${baseUrl}?startIndex=${startIndex}&limit=${limit} }`
+    `${baseUrl}?startIndex=${startIndex}&limit=${limit}`
   )
   return response.data
 }
