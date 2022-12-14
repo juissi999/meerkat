@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = '/notes'
+const baseUrl = '/api/notes'
 
 const generateHashtagQuery = (hashtags, startChar) => {
   // trim hashtags to work on a query (no # allowed, special meaning)

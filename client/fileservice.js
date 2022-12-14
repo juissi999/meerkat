@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = '/files'
+const baseUrl = '/api/files'
 
 const post = async (filename, noteid) => {
   const data = new FormData()

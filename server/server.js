@@ -39,8 +39,8 @@ const app = express()
 app.use(bodyParser.json())
 app.use(express.static('build'))
 
-app.use('/notes', dbState, noteRouter)
-app.use('/files', dbState, fileRouter)
+app.use('/api/notes', dbState, noteRouter)
+app.use('/api/files', dbState, fileRouter)
 
 // return index for all the other routes which are not find so
 // that they will lead to mainpage
