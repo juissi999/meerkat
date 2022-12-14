@@ -9,11 +9,7 @@ exports.getAll = (request, response) => {
   const { startIndex, limit, hashtags } = request.query
 
   // query string doesnt contain #-signs, add them
-  let query = {}
-  if (hashtags) {
-    const hashtagArray = hashtags.split(',').map((ht) => `#${ht}`)
-    query = { hashtags: { $all: hashtagArray } }
-  }
+  const query = htutils.constructHashtagMongooseQuery(hashtags)
 
   Note.find(query)
     .sort({ date: 'desc' })
@@ -29,7 +25,13 @@ exports.getAll = (request, response) => {
 }
 
 exports.getCount = (request, response) => {
-  Note.find({}).countDocuments((err, count) => response.send(count.toString()))
+  // query string doesnt contain #-signs, add them
+  const { hashtags } = request.query
+  const query = htutils.constructHashtagMongooseQuery(hashtags)
+
+  Note.find(query).countDocuments((err, count) =>
+    response.send(count.toString())
+  )
 }
 
 exports.getHashtags = (request, response) => {

@@ -43,7 +43,7 @@ const Meerkat = () => {
       },
       selectedHts
     )
-    const totalNoteCount = await noteservice.getCount()
+    const totalNoteCount = await noteservice.getCount(selectedHts)
 
     const promises = notedata.map(async (note) =>
       fileservice.getNotesFiles(note.noteid)

@@ -1,14 +1,21 @@
 import axios from 'axios'
 const baseUrl = '/notes'
 
-const getNotes = async (pagination, hashtags) => {
-  const { startIndex, limit } = pagination
-
+const generateHashtagQuery = (hashtags, startChar) => {
   // trim hashtags to work on a query (no # allowed, special meaning)
   const hashtagStr = hashtags.map((ht) => ht.slice(1)).join(',')
 
   // construct hashtag query str
-  const hashtagQuery = hashtags.length === 0 ? '' : `&hashtags=${hashtagStr}`
+  const query =
+    hashtags.length === 0 ? '' : `${startChar}hashtags=${hashtagStr}`
+
+  return query
+}
+
+const getNotes = async (pagination, hashtags) => {
+  const { startIndex, limit } = pagination
+
+  const hashtagQuery = generateHashtagQuery(hashtags, '&')
 
   const response = await axios.get(
     `${baseUrl}?startIndex=${startIndex}&limit=${limit}${hashtagQuery}`
@@ -16,8 +23,10 @@ const getNotes = async (pagination, hashtags) => {
   return response.data
 }
 
-const getCount = async () => {
-  const response = await axios.get(`${baseUrl}/count`)
+const getCount = async (hashtags) => {
+  const hashtagQuery = generateHashtagQuery(hashtags, '?')
+
+  const response = await axios.get(`${baseUrl}/count${hashtagQuery}`)
   return response.data
 }
 

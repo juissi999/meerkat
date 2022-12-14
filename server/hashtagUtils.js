@@ -36,4 +36,17 @@ const findAllHashtagsInNoteArray = (dataArray) => {
   return hashtags
 }
 
-module.exports = { findAllHashtagsInNoteArray, findHashtagsFromString }
+const constructHashtagMongooseQuery = (hashtags) => {
+  let query = {}
+  if (hashtags) {
+    const hashtagArray = hashtags.split(',').map((ht) => `#${ht}`)
+    query = { hashtags: { $all: hashtagArray } }
+  }
+  return query
+}
+
+module.exports = {
+  findAllHashtagsInNoteArray,
+  findHashtagsFromString,
+  constructHashtagMongooseQuery
+}
