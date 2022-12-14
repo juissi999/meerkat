@@ -45,9 +45,6 @@ const Meerkat = () => {
     )
     const totalNoteCount = await noteservice.getCount()
 
-    const hashtags = await noteservice.getHashtags()
-    setHashtags(hashtags)
-
     const promises = notedata.map(async (note) =>
       fileservice.getNotesFiles(note.noteid)
     )
@@ -60,9 +57,20 @@ const Meerkat = () => {
     settotalNoteCount(totalNoteCount)
   }
 
+  const fetchHashtags = async () => {
+    const hashtags = await noteservice.getHashtags()
+    setHashtags(hashtags)
+  }
+
+  const updateData = async () => {
+    await fetchNotes()
+    await fetchHashtags()
+  }
+
   useEffect(() => {
     // the mounted hook
     fetchNotes()
+    fetchHashtags()
     const orig = document.body.className
     document.body.style.backgroundColor =
       bgColors[Math.floor(Math.random() * bgColors.length)]
@@ -81,29 +89,9 @@ const Meerkat = () => {
     fetchNotes()
   }, [startIndex])
 
-  // effect-hook updates selectedhashtags every time notes change, hashtags that
-  // disappeared will be removed from the selected hashtags list
-  useEffect(() => {
-    setStartIndex(0)
-    fetchNotes()
-    setSelectedHts(selectedHts.filter((sh) => hashtags.includes(sh)))
-  }, [hashtags])
-
   // effect-hook filters shown notes every time selected hashtags change
   useEffect(() => {
-    // const sn = notes.filter((n) => {
-    //   // find hastags for this note
-    //   const hts = hashtags.filter((ht) => ht.linksto === n.noteid)
-    //   // get the noteid from the raw hashtags (technical function)
-    //   const htNames = hts.map((ht) => ht.name)
-    //   // go through selected hts and collect matching to found hts
-    //   const foundHts = selectedHts.filter((sHt) => {
-    //     return htNames.includes(sHt)
-    //   })
-    //   return selectedHts.length === foundHts.length
-    // })
-    //fetchNotes()
-    // setNotesVisible(sn)
+    fetchNotes()
   }, [selectedHts])
 
   return (
@@ -125,7 +113,7 @@ const Meerkat = () => {
         <Col>
           <NotePushForm
             setNotification={setNotification}
-            setStartIndex={setStartIndex}
+            updateData={updateData}
           />
         </Col>
       </Row>
@@ -143,6 +131,7 @@ const Meerkat = () => {
           <NoteList
             notes={notes}
             setNotes={setNotes}
+            updateData={updateData}
             setNotification={setNotification}
             setStartIndex={setStartIndex}
           />

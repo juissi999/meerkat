@@ -8,7 +8,7 @@ import noteservice from '../../noteservice'
 import fileservice from '../../fileservice'
 import NoteFile from './File'
 
-const Note = ({ note, notes, setNotes, setNotification, setStartIndex }) => {
+const Note = ({ note, setNotification, updateData }) => {
   const [editable, setEditable] = useState(false)
   const [noteStr, setNoteStr] = useState('')
   const [editableFiles, setEditableFiles] = useState([])
@@ -17,10 +17,10 @@ const Note = ({ note, notes, setNotes, setNotification, setStartIndex }) => {
     return new Date(dstring).toString()
   }
 
-  const onClickDelete = async () => {
+  const onClickDeleteNote = async () => {
     try {
       await noteservice.del(note.noteid)
-      setStartIndex(-1)
+      await updateData()
       setNotification('Note deleted.')
     } catch (err) {
       setNotification(err.message)
@@ -33,7 +33,7 @@ const Note = ({ note, notes, setNotes, setNotification, setStartIndex }) => {
       const receivedFiles = await fileservice.getNotesFiles(note.noteid)
       if (Object.keys(receivedNote).length === 0) {
         setNotification('Note does not exist.')
-        setNotes(notes.filter((n) => n.noteid !== note.noteid))
+        await updateData()
       } else {
         setNoteStr(receivedNote.text)
 
@@ -58,33 +58,20 @@ const Note = ({ note, notes, setNotes, setNotification, setStartIndex }) => {
     setEditableFiles(editableFiles.filter((file) => file !== filename))
   }
 
-  const onPut = async (event) => {
+  const onUpdateNote = async (event) => {
     event.preventDefault()
 
     try {
       await noteservice.update(note.noteid, { text: noteStr })
-      const receivedFiles = await fileservice.getNotesFiles(note.noteid)
-
       // note was succesfully updated
-      // new noteobject where text is replace on this noteid
-      // and files replaced with what is in backend now
-      const newNotes = notes.map((n) =>
-        n.noteid === note.noteid
-          ? {
-              ...note,
-              text: noteStr,
-              files: receivedFiles.map((f) => f.filename)
-            }
-          : n
-      )
-
-      // set it on notes hook
-      setNotes(newNotes)
+      // signal upwards that notes were updated
+      updateData()
 
       // set component state
       setEditable(!editable)
       setNotification('Note updated.')
     } catch (err) {
+      // something went wrong in note update
       setNotification(err.message)
     }
   }
@@ -96,7 +83,7 @@ const Note = ({ note, notes, setNotes, setNotification, setStartIndex }) => {
           <Card.Subtitle className="mb-2 text-muted">
             {datetxt(note.date)}
           </Card.Subtitle>
-          <Form name="pushform" onSubmit={onPut}>
+          <Form name="pushform" onSubmit={onUpdateNote}>
             <Form.Group controlId="formNote">
               <Form.Control
                 as="textarea"
@@ -141,7 +128,7 @@ const Note = ({ note, notes, setNotes, setNotification, setStartIndex }) => {
             <Button variant="secondary" onClick={onClickEdit}>
               edit
             </Button>
-            <Button variant="secondary" onClick={onClickDelete}>
+            <Button variant="secondary" onClick={onClickDeleteNote}>
               delete
             </Button>
           </ButtonGroup>

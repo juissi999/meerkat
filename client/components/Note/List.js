@@ -1,8 +1,13 @@
 import React, { useState } from 'react'
-import Pagination from 'react-bootstrap/Pagination'
 import Note from './index'
 
-const NoteList = ({ notes, setNotes, setNotification, setStartIndex }) => {
+const NoteList = ({
+  notes,
+  setNotes,
+  setNotification,
+  setStartIndex,
+  updateData
+}) => {
   const mapNotes = (notelist) => {
     // sort notes, sort process can be customized now
     const sortedNotes = notelist.slice(0)
@@ -15,8 +20,7 @@ const NoteList = ({ notes, setNotes, setNotification, setStartIndex }) => {
         <Note
           key={note.noteid}
           note={note}
-          notes={notes}
-          setNotes={setNotes}
+          updateData={updateData}
           setNotification={setNotification}
           setStartIndex={setStartIndex}
         />

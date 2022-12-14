@@ -5,7 +5,7 @@ import FileInput from '../FileInput'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
-const NotePushForm = ({ setNotification, setStartIndex }) => {
+const NotePushForm = ({ setNotification, updateData }) => {
   const [memo, setMemo] = useState('')
   const [uploadFiles, setUploadFiles] = useState([])
 
@@ -51,7 +51,7 @@ const NotePushForm = ({ setNotification, setStartIndex }) => {
     } catch (err) {
       setNotification(err.message)
     } finally {
-      setStartIndex(-1)
+      await updateData()
     }
   }
 
