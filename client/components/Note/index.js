@@ -8,7 +8,7 @@ import noteservice from '../../noteservice'
 import fileservice from '../../fileservice'
 import NoteFile from './File'
 
-const Note = ({ note, setNotification, updateData }) => {
+const Note = ({ note, setNotification, updateData, onDeleteNote }) => {
   const [editable, setEditable] = useState(false)
   const [noteStr, setNoteStr] = useState('')
   const [editableFiles, setEditableFiles] = useState([])
@@ -17,14 +17,8 @@ const Note = ({ note, setNotification, updateData }) => {
     return new Date(dstring).toString()
   }
 
-  const onClickDeleteNote = async () => {
-    try {
-      await noteservice.del(note.noteid)
-      await updateData()
-      setNotification('Note deleted.')
-    } catch (err) {
-      setNotification(err.message)
-    }
+  const onClickDeleteNote = () => {
+    onDeleteNote(note.noteid)
   }
 
   const onClickEdit = async () => {
