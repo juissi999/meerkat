@@ -65,6 +65,7 @@ const Meerkat = () => {
   const updateData = async () => {
     await fetchNotes()
     await fetchHashtags()
+    setSelectedHts([])
   }
 
   useEffect(() => {
