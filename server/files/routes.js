@@ -18,7 +18,7 @@ router.post('/', handlers.post)
 // SAFE, IDEMPONENT
 /**
  * @swagger
- *  files/:noteid:
+ *  files/{noteid}:
  *    get:
  *      tags:
  *        - Files
@@ -29,7 +29,7 @@ router.get('/:noteid', handlers.getFilesByNoteId)
 
 /**
  * @swagger
- *  files/:noteid/:filename:
+ *  files/{noteid}/{filename}:
  *    delete:
  *      tags:
  *        - Files

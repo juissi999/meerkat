@@ -13,6 +13,13 @@ const handlers = require('./handlers')
  *        - Notes
  *      summary: Return all notes
  *      description: Return all notes
+ *      parameters:
+ *        - name: startIndex
+ *          in: query
+ *        - name: limit
+ *          in: query
+ *        - name: hashtags
+ *          in: query
  */
 router.get('/', handlers.getAll)
 
@@ -24,13 +31,9 @@ router.get('/', handlers.getAll)
  *        - Notes
  *      summary: Return notes count
  *      description: Return notes count
- *      properties:
- *        id:
- *          type: integer
- *          description: The Auto-generated id of a post
- *        userId:
- *          type: integer
- *          description: id of author
+ *      parameters:
+ *        - name: hashtags
+ *          in: query
  */
 router.get('/count', handlers.getCount)
 
@@ -59,7 +62,7 @@ router.post('/', handlers.post)
 // SAFE, IDEMPONENT
 /**
  * @swagger
- *  notes/:noteid:
+ *  notes/{noteid}:
  *    get:
  *      tags:
  *        - Notes
@@ -71,7 +74,7 @@ router.get('/:id', handlers.getOne)
 // IDEMPONENT
 /**
  * @swagger
- *  notes/:noteid:
+ *  notes/{noteid}:
  *    delete:
  *      tags:
  *        - Notes
@@ -83,7 +86,7 @@ router.delete('/:id', handlers.delete)
 // IDEMPONENT
 /**
  * @swagger
- *  notes/:noteid:
+ *  notes/{noteid}
  *    put:
  *      tags:
  *        - Notes
