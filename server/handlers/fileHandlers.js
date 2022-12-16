@@ -13,7 +13,8 @@ const UPLOADDIR = 'uploads/'
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     // check if upload directory exists and if not, create it
-    const uploadpath = path.resolve(builddir, UPLOADDIR)
+    const noteId = req.params.noteid
+    const uploadpath = path.resolve(builddir, UPLOADDIR, noteId)
     if (!fs.existsSync(uploadpath)) {
       fs.mkdirSync(uploadpath, { recursive: true })
     }
@@ -22,7 +23,7 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const timestamp = Math.round(new Date().getTime() / 1000)
-    cb(null, timestamp.toString() + '_' + file.originalname)
+    cb(null, file.originalname)
   }
 })
 

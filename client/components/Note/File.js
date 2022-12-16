@@ -6,9 +6,9 @@ import CardColumns from 'react-bootstrap/CardColumns'
 const uploaddir = 'uploads'
 const previewImageExtensions = ['jpg', 'png', 'jpeg', 'gif']
 
-const NoteFile = ({ children }) => {
+const NoteFile = ({ noteid, children }) => {
   const filedisplay = (c, i) => {
-    const filepath = `${uploaddir}/${c}`
+    const filepath = `${uploaddir}/${noteid}/${c}`
     const splitted = filepath.split('.')
     const extension = splitted[splitted.length - 1].toLowerCase()
 

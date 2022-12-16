@@ -117,7 +117,7 @@ const Note = ({ note, setNotification, updateData, onDeleteNote }) => {
             {datetxt(note.date)}
           </Card.Subtitle>
           <Card.Text style={{ whiteSpace: 'pre-wrap' }}>{note.text}</Card.Text>
-          <NoteFile>{note.files}</NoteFile>
+          <NoteFile noteid={note.noteid}>{note.files}</NoteFile>
           <ButtonGroup aria-label="Memory controls" size="sm">
             <Button variant="secondary" onClick={onClickEdit}>
               edit
