@@ -8,9 +8,10 @@ const handlers = require('./handlers')
  * @swagger
  *  files/:
  *    post:
- *      description: Post a new file
  *      tags:
  *        - Files
+ *      summary: Post a new file
+ *      description: Post a new file
  */
 router.post('/', handlers.post)
 
@@ -19,9 +20,10 @@ router.post('/', handlers.post)
  * @swagger
  *  files/:noteid:
  *    get:
- *      description: Get files by noteid
  *      tags:
  *        - Files
+ *      summary: Get files by noteid
+ *      description: Get files by noteid
  */
 router.get('/:noteid', handlers.getFilesByNoteId)
 
@@ -29,9 +31,10 @@ router.get('/:noteid', handlers.getFilesByNoteId)
  * @swagger
  *  files/:noteid/:filename:
  *    delete:
- *      description: delete file by noteid and filename
  *      tags:
  *        - Files
+ *      summary: delete file by noteid and filename
+ *      description: delete file by noteid and filename
  */
 router.delete('/:noteid/:filename', handlers.delete)
 

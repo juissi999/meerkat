@@ -9,9 +9,10 @@ const handlers = require('./handlers')
  * @swagger
  *  notes/:
  *    get:
- *      description: Return all notes
  *      tags:
  *        - Notes
+ *      summary: Return all notes
+ *      description: Return all notes
  */
 router.get('/', handlers.getAll)
 
@@ -19,9 +20,17 @@ router.get('/', handlers.getAll)
  * @swagger
  *  notes/count:
  *    get:
- *      description: Return notes count
  *      tags:
  *        - Notes
+ *      summary: Return notes count
+ *      description: Return notes count
+ *      properties:
+ *        id:
+ *          type: integer
+ *          description: The Auto-generated id of a post
+ *        userId:
+ *          type: integer
+ *          description: id of author
  */
 router.get('/count', handlers.getCount)
 
@@ -29,9 +38,10 @@ router.get('/count', handlers.getCount)
  * @swagger
  *  notes/hashtags:
  *    get:
- *      description: Return hashtags
  *      tags:
  *        - Notes
+ *      summary: Return hashtags
+ *      description: Return hashtags
  */
 router.get('/hashtags', handlers.getHashtags)
 
@@ -39,9 +49,10 @@ router.get('/hashtags', handlers.getHashtags)
  * @swagger
  *  notes/:
  *    post:
- *      description: Create a new note
  *      tags:
  *        - Notes
+ *      summary: Create a new note
+ *      description: Create a new note
  */
 router.post('/', handlers.post)
 
@@ -50,9 +61,10 @@ router.post('/', handlers.post)
  * @swagger
  *  notes/:noteid:
  *    get:
- *      description: Return note by id
  *      tags:
  *        - Notes
+ *      summary: Return note by id
+ *      description: Return note by id
  */
 router.get('/:id', handlers.getOne)
 
@@ -61,9 +73,10 @@ router.get('/:id', handlers.getOne)
  * @swagger
  *  notes/:noteid:
  *    delete:
- *      description: Delete note by id
  *      tags:
  *        - Notes
+ *      summary: Delete note by id
+ *      description: Delete note by id
  */
 router.delete('/:id', handlers.delete)
 
@@ -72,9 +85,10 @@ router.delete('/:id', handlers.delete)
  * @swagger
  *  notes/:noteid:
  *    put:
- *      description: Update note
  *      tags:
  *        - Notes
+ *      summary: Update note
+ *      description: Update note
  */
 router.put('/:id', handlers.put)
 
