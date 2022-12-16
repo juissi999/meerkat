@@ -35,18 +35,13 @@ const NotePushForm = ({ setNotification, updateData }) => {
         const responses = [...uploadFiles].map((file) =>
           fileservice.post(file, noteid)
         )
-        //const response = await fileservice.post(uploadFiles, noteid)
-        const addedFiles = await Promise.all(responses)
+        // upload all files
+        await Promise.all(responses)
+
+        // clean filebox
         updateUploadFiles([])
-        addedentry.files = addedFiles.map((r) => r.filename)
-        // const newNotes = notes.concat(addedentry)
-        // setNotes(newNotes)
 
         // TODO: error handling here, file could not be uploaded, dont add to entry
-      } else {
-        addedentry.files = []
-        // const newNotes = notes.concat(addedentry)
-        // setNotes(newNotes)
       }
     } catch (err) {
       setNotification(err.message)
