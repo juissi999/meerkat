@@ -10,8 +10,8 @@ const mongoose = require('mongoose')
 const ip = require('ip')
 
 const path = require('path')
-const noteRouter = require('./notes/routes')
-const fileRouter = require('./files/routes')
+const noteRouter = require('./routes/noteRoutes')
+const fileRouter = require('./routes/fileRoutes')
 
 const dbState = require('./middlewares/dbState')
 
