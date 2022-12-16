@@ -7,7 +7,7 @@ const File = require('../models/file')
 const wpconf = require('../../webpack.config')
 const builddir = wpconf.output.path
 
-const MAXSIZE = 5000000
+const MAX_UPLOAD_SIZE = Number(process.env.MAX_UPLOAD_FILE_SIZE) || 5000000
 const UPLOADDIR = 'uploads/'
 
 const storage = multer.diskStorage({
@@ -41,7 +41,7 @@ exports.addFile = (request, response) => {
   const opts = {
     storage: storage,
     limits: {
-      fileSize: MAXSIZE
+      fileSize: MAX_UPLOAD_SIZE
     }
   }
 
