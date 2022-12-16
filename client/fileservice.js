@@ -1,10 +1,9 @@
 import axios from 'axios'
 const baseUrl = '/api/files'
 
-const post = async (filename, noteid) => {
+const post = async (fileObj, noteid) => {
   const data = new FormData()
-  data.append('memFile', filename)
-
+  data.append('memFile', fileObj)
   const response = await axios.post(`${baseUrl}/${noteid}`, data)
   return response.data
 }
