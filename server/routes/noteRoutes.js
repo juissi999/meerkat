@@ -86,7 +86,7 @@ router.delete('/:id', handlers.delete)
 // IDEMPONENT
 /**
  * @swagger
- *  notes/{noteid}
+ *  notes/{noteid}:
  *    put:
  *      tags:
  *        - Notes
