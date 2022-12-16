@@ -57,7 +57,7 @@ exports.post = (request, response) => {
 
     // add to database linker information
     const fname = request.file.filename
-    const noteid = request.body.noteid
+    const noteid = request.params.noteid
 
     const file = new File({
       noteid: noteid,

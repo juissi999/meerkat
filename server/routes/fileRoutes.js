@@ -6,14 +6,14 @@ const handlers = require('../handlers/fileHandlers')
 
 /**
  * @swagger
- *  files/:
+ *  files/{noteid}:
  *    post:
  *      tags:
  *        - Files
  *      summary: Post a new file
  *      description: Post a new file
  */
-router.post('/', handlers.post)
+router.post('/:noteid', handlers.post)
 
 // SAFE, IDEMPONENT
 /**

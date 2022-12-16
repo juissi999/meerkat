@@ -3,10 +3,9 @@ const baseUrl = '/api/files'
 
 const post = async (filename, noteid) => {
   const data = new FormData()
-  data.append('noteid', noteid)
   data.append('memFile', filename)
 
-  const response = await axios.post(baseUrl, data)
+  const response = await axios.post(`${baseUrl}/${noteid}`, data)
   return response.data
 }
 
