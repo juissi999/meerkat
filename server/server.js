@@ -15,6 +15,9 @@ const fileRouter = require('./files/routes')
 
 const dbState = require('./middlewares/dbState')
 
+const swaggerUI = require('swagger-ui-express')
+const swaggerJsDoc = require('swagger-jsdoc')
+
 // connect to mongoDB
 const url = process.env.MONGODB_URI
 
@@ -38,6 +41,28 @@ const IP = ip.address()
 const app = express()
 app.use(bodyParser.json())
 app.use(express.static('build'))
+
+// setup swagger
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Meerkat API',
+      version: '1.0.0',
+      description: 'Description of the Meerkat API'
+    },
+    servers: [
+      {
+        url: 'http://localhost:5000',
+        description: 'Meerkat API Documentation'
+      }
+    ]
+  },
+  apis: ['server/notes/routes.js', 'server/files/routes.js'] //['./routes/*.js']
+}
+
+const specs = swaggerJsDoc(options)
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs))
 
 app.use('/api/notes', dbState, noteRouter)
 app.use('/api/files', dbState, fileRouter)
