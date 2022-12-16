@@ -13,7 +13,7 @@ const handlers = require('../handlers/fileHandlers')
  *      summary: Post a new file
  *      description: Post a new file
  */
-router.post('/:noteid', handlers.post)
+router.post('/:noteid', handlers.addFile)
 
 // SAFE, IDEMPONENT
 /**
@@ -36,6 +36,6 @@ router.get('/:noteid', handlers.getFilesByNoteId)
  *      summary: delete file by noteid and filename
  *      description: delete file by noteid and filename
  */
-router.delete('/:noteid/:filename', handlers.delete)
+router.delete('/:noteid/:filename', handlers.deleteFile)
 
 module.exports = router

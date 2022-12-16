@@ -37,7 +37,7 @@ exports.getFilesByNoteId = (request, response) => {
     })
 }
 
-exports.post = (request, response) => {
+exports.addFile = (request, response) => {
   const opts = {
     storage: storage,
     limits: {
@@ -81,7 +81,7 @@ exports.post = (request, response) => {
   })
 }
 
-exports.delete = (request, response) => {
+exports.deleteFile = (request, response) => {
   const id = Number(request.params.noteid)
   const filename = request.params.filename
 
