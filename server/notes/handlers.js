@@ -6,7 +6,7 @@ const File = require('../models/file')
 const htutils = require('../hashtagUtils')
 
 exports.getAll = (request, response) => {
-  const { startIndex, limit, hashtags } = request.query
+  const { startIndex = 0, limit = 10, hashtags = '' } = request.query
 
   // query string doesnt contain #-signs, add them
   const query = htutils.constructHashtagMongooseQuery(hashtags)
@@ -26,7 +26,7 @@ exports.getAll = (request, response) => {
 
 exports.getCount = (request, response) => {
   // query string doesnt contain #-signs, add them
-  const { hashtags } = request.query
+  const { hashtags = '' } = request.query
   const query = htutils.constructHashtagMongooseQuery(hashtags)
 
   Note.find(query).countDocuments((err, count) =>
