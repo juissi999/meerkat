@@ -36,15 +36,16 @@ const Meerkat = () => {
   const [totalNoteCount, settotalNoteCount] = useState(0)
 
   const fetchNotes = async () => {
-    console.log('fetch_notes')
+    const hashtagMode = 'intersection'
     const notedata = await noteservice.getNotes(
       {
         startIndex: startIndex,
         limit: LIMIT
       },
-      selectedHts
+      selectedHts,
+      hashtagMode
     )
-    const totalNoteCount = await noteservice.getCount(selectedHts)
+    const totalNoteCount = await noteservice.getCount(selectedHts, hashtagMode)
 
     const promises = notedata.map(async (note) =>
       fileservice.getNotesFiles(note.noteid)

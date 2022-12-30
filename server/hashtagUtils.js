@@ -36,11 +36,15 @@ const findAllHashtagsInNoteArray = (dataArray) => {
   return hashtags
 }
 
-const constructHashtagMongooseQuery = (hashtags) => {
+const constructHashtagMongooseQuery = (hashtags, hashtagMode) => {
   let query = {}
   if (hashtags) {
     const hashtagArray = hashtags.split(',').map((ht) => `#${ht}`)
-    query = { hashtags: { $all: hashtagArray } }
+    if (hashtagMode === 'union') {
+      query = { hashtags: { $in: hashtagArray } }
+    } else if (hashtagMode === 'intersection') {
+      query = { hashtags: { $all: hashtagArray } }
+    }
   }
   return query
 }

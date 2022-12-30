@@ -12,21 +12,23 @@ const generateHashtagQuery = (hashtags, startChar) => {
   return query
 }
 
-const getNotes = async (pagination, hashtags) => {
+const getNotes = async (pagination, hashtags, hashtagMode) => {
   const { startIndex, limit } = pagination
 
   const hashtagQuery = generateHashtagQuery(hashtags, '&')
 
   const response = await axios.get(
-    `${baseUrl}?startIndex=${startIndex}&limit=${limit}${hashtagQuery}`
+    `${baseUrl}?startIndex=${startIndex}&limit=${limit}&hashtagMode=${hashtagMode}${hashtagQuery}`
   )
   return response.data
 }
 
-const getCount = async (hashtags) => {
-  const hashtagQuery = generateHashtagQuery(hashtags, '?')
+const getCount = async (hashtags, hashtagMode) => {
+  const hashtagQuery = generateHashtagQuery(hashtags, '&')
 
-  const response = await axios.get(`${baseUrl}/count${hashtagQuery}`)
+  const response = await axios.get(
+    `${baseUrl}/count?hashtagMode=${hashtagMode}${hashtagQuery}`
+  )
   return response.data
 }
 
