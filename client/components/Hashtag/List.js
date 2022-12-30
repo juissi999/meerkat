@@ -5,30 +5,47 @@ const HashtagList = ({
   hashtags,
   selectedHts,
   setSelectedHts,
-  setStartIndex
+  setStartIndex,
+  ISSINGLESELECT
 }) => {
   // find only the unique hashtags
   const uniquehts = [...new Set(hashtags)]
 
-  const onClickHashtag = (name) => {
+  const onClickHashtag = (hashtagName) => {
     // check if hashtag is on selectedHts hook array and remove it
     // if it is or append it if it's not
-    const isselected = selectedHts.includes(name)
+    const isSelected = selectedHts.includes(hashtagName)
 
-    if (isselected) {
+    if (ISSINGLESELECT) {
+      setSingleSelectHashtag(hashtagName, isSelected)
+    } else {
+      setMultiSelectHashtag(hashtagName, isSelected)
+    }
+
+    setStartIndex(0)
+  }
+
+  const setSingleSelectHashtag = (hashtagName, isSelected) => {
+    if (isSelected) {
+      setSelectedHts([])
+    } else {
+      setSelectedHts([hashtagName])
+    }
+  }
+
+  const setMultiSelectHashtag = (hashtagName, isSelected) => {
+    if (isSelected) {
       setSelectedHts(
-        selectedHts.filter((htname) => {
-          if (htname !== name) {
-            return htname
+        selectedHts.filter((selectedHtName) => {
+          if (selectedHtName !== hashtagName) {
+            return selectedHtName
           }
         })
       )
     } else {
       // add hashtag to selected
-      setSelectedHts(selectedHts.concat(name))
+      setSelectedHts(selectedHts.concat(hashtagName))
     }
-
-    setStartIndex(0)
   }
 
   const mapHts = () => {

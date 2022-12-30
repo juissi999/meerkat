@@ -25,6 +25,7 @@ const bgColors = [
 ]
 
 const LIMIT = 10
+const ISSINGLESELECT = false
 
 const Meerkat = () => {
   const [notes, setNotes] = useState([])
@@ -130,6 +131,7 @@ const Meerkat = () => {
             selectedHts={selectedHts}
             setSelectedHts={setSelectedHts}
             setStartIndex={setStartIndex}
+            ISSINGLESELECT={ISSINGLESELECT}
           />
         </Col>
       </Row>
