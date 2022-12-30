@@ -92,8 +92,12 @@ const Meerkat = () => {
   }, [startIndex, selectedHts])
 
   useEffect(() => {
-    setStartIndex(0)
-  }, [selectedHts])
+    // check that user is not left in a page with no notes if there are notes
+    // left
+    if (startIndex !== 0 && startIndex === totalNoteCount) {
+      setStartIndex(totalNoteCount - LIMIT)
+    }
+  }, [totalNoteCount])
 
   return (
     <Container>
@@ -124,6 +128,7 @@ const Meerkat = () => {
             hashtags={hashtags}
             selectedHts={selectedHts}
             setSelectedHts={setSelectedHts}
+            setStartIndex={setStartIndex}
           />
         </Col>
       </Row>

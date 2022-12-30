@@ -27,6 +27,8 @@ const HashtagList = ({
       // add hashtag to selected
       setSelectedHts(selectedHts.concat(name))
     }
+
+    setStartIndex(0)
   }
 
   const mapHts = () => {
