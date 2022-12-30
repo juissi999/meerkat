@@ -3,7 +3,7 @@ const baseUrl = '/api/notes'
 
 const generateHashtagQuery = (hashtags, startChar) => {
   // trim hashtags to work on a query (no # allowed, special meaning)
-  const hashtagStr = hashtags.map((ht) => ht.slice(1)).join(',')
+  const hashtagStr = hashtags.map((ht) => encodeURIComponent(ht)).join(',')
 
   // construct hashtag query str
   const query =
