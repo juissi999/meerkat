@@ -7,7 +7,7 @@ const handlers = require('../handlers/noteHandlers')
 // SAFE, IDEMPONENT
 /**
  * @swagger
- *  notes/:
+ *  api/notes/:
  *    get:
  *      tags:
  *        - Notes
@@ -25,7 +25,7 @@ router.get('/', handlers.getAll)
 
 /**
  * @swagger
- *  notes/count:
+ *  api/notes/count:
  *    get:
  *      tags:
  *        - Notes
@@ -39,7 +39,7 @@ router.get('/count', handlers.getCount)
 
 /**
  * @swagger
- *  notes/hashtags:
+ *  api/notes/hashtags:
  *    get:
  *      tags:
  *        - Notes
@@ -50,7 +50,7 @@ router.get('/hashtags', handlers.getHashtags)
 
 /**
  * @swagger
- *  notes/:
+ *  api/notes/:
  *    post:
  *      tags:
  *        - Notes
@@ -62,7 +62,7 @@ router.post('/', handlers.post)
 // SAFE, IDEMPONENT
 /**
  * @swagger
- *  notes/{noteid}:
+ *  api/notes/{noteid}:
  *    get:
  *      tags:
  *        - Notes
@@ -74,7 +74,7 @@ router.get('/:id', handlers.getOne)
 // IDEMPONENT
 /**
  * @swagger
- *  notes/{noteid}:
+ *  api/notes/{noteid}:
  *    delete:
  *      tags:
  *        - Notes
@@ -86,7 +86,7 @@ router.delete('/:id', handlers.delete)
 // IDEMPONENT
 /**
  * @swagger
- *  notes/{noteid}:
+ *  api/notes/{noteid}:
  *    put:
  *      tags:
  *        - Notes

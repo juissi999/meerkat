@@ -62,7 +62,7 @@ const options = {
 }
 
 const specs = swaggerJsDoc(options)
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs))
+app.use('/api/swagger', swaggerUI.serve, swaggerUI.setup(specs))
 
 app.use('/api/notes', dbState, noteRouter)
 app.use('/api/files', dbState, fileRouter)
