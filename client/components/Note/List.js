@@ -5,7 +5,7 @@ import noteservice from '../../noteservice'
 
 let noteToDelete = null
 
-const NoteList = ({ notes, setNotification, setStartIndex, updateData }) => {
+const NoteList = ({ notes, setNotification, updateData }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
   const onDeleteNote = (noteid) => {
@@ -37,7 +37,6 @@ const NoteList = ({ notes, setNotification, setStartIndex, updateData }) => {
           note={note}
           updateData={updateData}
           setNotification={setNotification}
-          setStartIndex={setStartIndex}
           onDeleteNote={onDeleteNote}
         />
       )

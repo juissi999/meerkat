@@ -9,6 +9,7 @@ const MPagination = ({
   totalNoteCount
 }) => {
   const updatePagination = async (newStartIndex) => {
+    console.log('update_pagination')
     if (newStartIndex < 0) {
       setStartIndex(0)
     } else {

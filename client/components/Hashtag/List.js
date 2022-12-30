@@ -1,7 +1,12 @@
 import React from 'react'
 import HashtagButton from './Button'
 
-const HashtagList = ({ hashtags, selectedHts, setSelectedHts }) => {
+const HashtagList = ({
+  hashtags,
+  selectedHts,
+  setSelectedHts,
+  setStartIndex
+}) => {
   // find only the unique hashtags
   const uniquehts = [...new Set(hashtags)]
 

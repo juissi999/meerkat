@@ -36,6 +36,7 @@ const Meerkat = () => {
   const [totalNoteCount, settotalNoteCount] = useState(0)
 
   const fetchNotes = async () => {
+    console.log('fetch_notes')
     const notedata = await noteservice.getNotes(
       {
         startIndex: startIndex,
@@ -63,14 +64,12 @@ const Meerkat = () => {
   }
 
   const updateData = async () => {
-    await fetchNotes()
     await fetchHashtags()
     setSelectedHts([])
   }
 
   useEffect(() => {
-    // the mounted hook
-    fetchNotes()
+    // the mounted hook, perform only once
     fetchHashtags()
     const orig = document.body.className
     document.body.style.backgroundColor =
@@ -80,6 +79,8 @@ const Meerkat = () => {
     }
   }, [])
 
+  // effect-hook filters shown notes every time selected hashtags or index
+  // changes
   useEffect(() => {
     // check that pagination is within limits
     if (startIndex < 0) {
@@ -88,11 +89,10 @@ const Meerkat = () => {
       return
     }
     fetchNotes()
-  }, [startIndex])
+  }, [startIndex, selectedHts])
 
-  // effect-hook filters shown notes every time selected hashtags change
   useEffect(() => {
-    fetchNotes()
+    setStartIndex(0)
   }, [selectedHts])
 
   return (
@@ -134,7 +134,6 @@ const Meerkat = () => {
             setNotes={setNotes}
             updateData={updateData}
             setNotification={setNotification}
-            setStartIndex={setStartIndex}
           />
           <MPagination
             noteCount={notes.length}
