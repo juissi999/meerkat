@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
 import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
 
@@ -109,8 +110,12 @@ const Note = ({ note, setNotification, updateData, onDeleteNote }) => {
               ))}
             </Form.Group>
             <Form.Group controlId="formSubmit">
-              <Button type="submit">Update note</Button>{' '}
-              <Button onClick={onCancel}>Cancel</Button>
+              <Button type="submit" variant="dark">
+                Update note
+              </Button>{' '}
+              <Button onClick={onCancel} variant="secondary">
+                Cancel
+              </Button>
             </Form.Group>
           </Form>
         </Card.Body>
@@ -120,19 +125,25 @@ const Note = ({ note, setNotification, updateData, onDeleteNote }) => {
     return (
       <Card className="mt-2">
         <Card.Body>
-          <Card.Subtitle className="mb-2 text-muted">
-            {datetxt(note.date)}
-          </Card.Subtitle>
           <Card.Text style={{ whiteSpace: 'pre-wrap' }}>{note.text}</Card.Text>
           <NoteFile noteid={note.noteid}>{note.files}</NoteFile>
-          <ButtonGroup aria-label="Memory controls" size="sm">
-            <Button variant="secondary" onClick={onClickEdit}>
-              edit
-            </Button>
-            <Button variant="secondary" onClick={onClickDeleteNote}>
-              delete
-            </Button>
-          </ButtonGroup>
+          <ButtonToolbar
+            className="justify-content-between"
+            aria-label="Toolbar with Button groups"
+          >
+            <div class="mr-2 font-weight-light text-muted">
+              {datetxt(note.date)}
+            </div>
+
+            <ButtonGroup aria-label="Memory controls" size="sm">
+              <Button variant="outline-secondary" onClick={onClickEdit}>
+                edit
+              </Button>
+              <Button variant="outline-secondary" onClick={onClickDeleteNote}>
+                delete
+              </Button>
+            </ButtonGroup>
+          </ButtonToolbar>
         </Card.Body>
       </Card>
     )

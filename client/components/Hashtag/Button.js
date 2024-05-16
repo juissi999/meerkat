@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button'
 const HashtagButton = ({ name, isSelected, onClickHashtag }) => {
   let variant = 'light'
   if (isSelected) {
-    variant = 'info'
+    variant = 'secondary' //'info'
   }
   return (
     <>

@@ -21,7 +21,7 @@ function DeleteModal({ onDeleteConfirmed, setShow }) {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleCommit}>
+          <Button variant="dark" onClick={handleCommit}>
             Delete
           </Button>
         </Modal.Footer>
