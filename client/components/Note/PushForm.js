@@ -82,7 +82,7 @@ const NotePushForm = ({ setNotification, updateData }) => {
         />
       </Form.Group>
       <Form.Group controlId="formSubmit">
-        <Button size="lg" type="submit">
+        <Button size="lg" variant="dark" type="submit">
           Remember
         </Button>
       </Form.Group>

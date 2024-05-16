@@ -1,15 +1,7 @@
 import React, { useEffect } from 'react'
 import Meerkat from './Meerkat'
 
-const bgColors = [
-  'lightblue',
-  'lightgreen',
-  'lightpink',
-  'plum',
-  'lightgrey',
-  'wheat',
-  'darkseagreen'
-]
+const bgColors = ['#f6f5f0']
 
 const App = () => {
   useEffect(() => {
@@ -17,6 +9,7 @@ const App = () => {
     const orig = document.body.className
     document.body.style.backgroundColor =
       bgColors[Math.floor(Math.random() * bgColors.length)]
+    document.body.style.color = '#4b5361'
     return () => {
       document.body.className = orig
     }
