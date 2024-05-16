@@ -14,7 +14,14 @@ const Note = ({ note, setNotification, updateData, onDeleteNote }) => {
   const [editableFiles, setEditableFiles] = useState([])
 
   const datetxt = (dstring) => {
-    return new Date(dstring).toString()
+    const dateObj = new Date(dstring)
+    return (
+      dateObj.toISOString().slice(0, 10) +
+      ' at ' +
+      dateObj.getHours() +
+      ':' +
+      ('0' + dateObj.getMinutes()).slice(-2)
+    )
   }
 
   const onClickDeleteNote = () => {
