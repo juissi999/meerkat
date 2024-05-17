@@ -19,7 +19,7 @@ const Note = ({ note, setNotification, updateData, onDeleteNote }) => {
     return (
       dateObj.toISOString().slice(0, 10) +
       ' at ' +
-      dateObj.getHours() +
+      ('0' + dateObj.getHours()).slice(-2) +
       ':' +
       ('0' + dateObj.getMinutes()).slice(-2)
     )
