@@ -25,7 +25,7 @@ const bgColors = [
 ]
 
 const LIMIT = 10
-const ISSINGLESELECT = false
+const ISSINGLESELECT = true
 
 const Meerkat = () => {
   const [notes, setNotes] = useState([])
