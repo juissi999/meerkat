@@ -15,7 +15,7 @@ const NoteFile = ({ noteid, children }) => {
     if (previewImageExtensions.includes(extension)) {
       return (
         <Card
-          border="dark"
+          border="lightgray"
           style={{ maxWidth: '18rem', padding: '1rem' }}
           key={c}
         >
@@ -27,7 +27,7 @@ const NoteFile = ({ noteid, children }) => {
     }
     return (
       <Card
-        border="dark"
+        border="lightgray"
         style={{ maxWidth: '18rem', padding: '1rem' }}
         key={c}
       >
